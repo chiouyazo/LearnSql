@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="src/LearnSql.Sql/LearnSql.Sql.csproj" />
+  <Project Path="src/LearnSql.Data/LearnSql.Data.csproj" />
   <Project Path="src/LearnSql.Core/LearnSql.csproj" />
 </Solution>

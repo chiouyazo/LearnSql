@@ -1,0 +1,9 @@
+CREATE VIEW TABLES AS
+SELECT
+    'master' COLLATE NOCASE as [TABLE_CATALOG],
+    'main' COLLATE NOCASE as [TABLE_SCHEMA],
+    tbl_name COLLATE NOCASE as [TABLE_NAME],
+    'BASE TABLE' COLLATE NOCASE as [TABLE_TYPE]
+FROM 
+    sqlite_schema
+WHERE type ='table'

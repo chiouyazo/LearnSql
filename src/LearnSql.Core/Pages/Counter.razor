@@ -1,7 +1,12 @@
 @page "/counter"
+@using System.Data
 @using LearnSql.Sql
+@using LearnSql.Sql.Exceptions
 @using LearnSql.Sql.Extensions
+@using LearnSql.Sql.Generated
 @using Microsoft.SqlServer.TransactSql.ScriptDom
+@using Environment = System.Environment
+@using Range = System.Range
 
 @inject DatabaseProvider Database;
 
@@ -47,15 +52,45 @@
             </FirstPanel>
             <SecondPanel>
                 <MudPaper Height="100%" Class="pa-2" Style="overflow: auto">
-                    @if (_lastErrors.Any())
+                    @if (_lastValidationErrors.Any())
                     {
                         @* <MudGrid Style="padding: 5px;"> *@
-                        <MudText>The written SQL statement returned the following errors:</MudText>
-                        @foreach (ParseError parseError in _lastErrors)
+                        <MudText>The written SQL statement could not be validated:</MudText>
+                        @foreach (ParseError parseError in _lastValidationErrors)
                         {
                             <MudText>@parseError.ToSummary()</MudText>
                         }
                         // </MudGrid>
+                    }
+                    else if (_lastExecutionError is not null)
+                    {
+                        @* <MudGrid Style="padding: 5px;"> *@
+                        <MudText Color="Color.Error">@_lastExecutionError.Message</MudText>
+                        // </MudGrid>
+                    }
+                    else if (_lastResult is not null)
+                    {
+                        <MudSimpleTable Dense="true" Hover="true" Striped="true">
+                            <thead>
+                            <tr>
+                                @foreach (DataColumn column in _lastResult.Columns)
+                                {
+                                    <th>@column.ColumnName</th>
+                                }
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (DataRow row in _lastResult.Rows)
+                            {
+                                <tr>
+                                    @foreach (var value in row.ItemArray)
+                                    {
+                                        <td>@(value is DBNull ? "NULL" : value)</td>
+                                    }
+                                </tr>
+                            }
+                            </tbody>
+                        </MudSimpleTable>
                     }
                 </MudPaper>
                 </SecondPanel>
@@ -69,7 +104,9 @@
 @* </MudGrid> *@
 
 @code {
-    IList<ParseError> _lastErrors = new List<ParseError>();
+    IList<ParseError> _lastValidationErrors = new List<ParseError>();
+    TranslatedException? _lastExecutionError = null;
+    DataTable? _lastResult = null;
     
     private StandaloneCodeEditor _editor = default!;
 
@@ -90,32 +127,62 @@
         // await OnKeywordClicked(word.Word); // z.B. Erklärung zu "JOIN" öffnen
     }
 
+    // TODO: Validate if a schema was supplied and if it was valid later. Support a mode where schema doesnt matter (sqlite supports this)
     private async Task SelectAllTablesTemplate()
     {
-        await _editor.SetValue("SELECT\nFROM INFORMATION_SCHEMA.TABLES\nWHERE TABLE_TYPE='Base Table'");
+        // TODO: INFORMATION_SCHEMA.
+        await _editor.SetValue("SELECT *\nFROM TABLES\nWHERE TABLE_TYPE='Base Table'");
     }
+    // TODO: Affected rows
+    // TODO: only execute selection
 
     private async Task RunSql()
     {
-        string runCommand = await Database.RunCommand(await _editor.GetValue());
-        // _lastErrors = MsSqlValidator.Validate(await _editor.GetValue(), SqlVersion.Sql180);
-        // if (!_lastErrors.Any())
-        // {
-        //     Console.WriteLine("SQL statement validated.");
-        //     string runCommand = await Database.RunCommand(await _editor.GetValue());
-        // }
-        // else
-        // {
-        //     Console.WriteLine("SQL statement had errors:");
-        //     foreach (ParseError parseError in _lastErrors)
-        //     {
-        //         Console.WriteLine(parseError.ToSummary());
-        //     }
-        // }
+        _lastValidationErrors.Clear();
+        _lastExecutionError = null;
+
+        Selection selection = await _editor.GetSelection();
+        TextModel model = await _editor.GetModel();
+
+        string value = selection.StartLineNumber == selection.EndLineNumber && selection.StartColumn == selection.EndColumn
+            ? await model.GetValue(EndOfLinePreference.TextDefined, true)
+            : await model.GetValueInRange(selection, EndOfLinePreference.TextDefined);
+        
+        _lastValidationErrors = MsSqlValidator.Validate(value, SqlVersion.Sql180);
+        if (!_lastValidationErrors.Any())
+        {
+            Console.WriteLine("SQL statement validated.");
+            try
+            {
+                _lastResult = await Database.RunCommand(value);
+            }
+            catch (TranslatedException translatedException)
+            {
+                _lastExecutionError = translatedException;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        else
+        {
+            Console.WriteLine("SQL statement had errors:");
+            foreach (ParseError parseError in _lastValidationErrors)
+            {
+                Console.WriteLine(parseError.ToSummary());
+            }
+        }
     }
 
     private async Task ClearSql()
     {
         await _editor.SetValue("");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Database.ProvisionScenario("playground");
     }
 }
