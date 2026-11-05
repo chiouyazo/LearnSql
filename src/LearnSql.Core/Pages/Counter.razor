@@ -1,0 +1,121 @@
+@page "/counter"
+@using LearnSql.Sql
+@using LearnSql.Sql.Extensions
+@using Microsoft.SqlServer.TransactSql.ScriptDom
+
+@inject DatabaseProvider Database;
+
+<PageTitle>Playground</PageTitle>
+
+<MudText Typo="Typo.h5" GutterBottom="true">Playground</MudText>
+
+
+<MudSplitPanel Class="mud-width-full mud-height-full" Style="height: calc(100vh - 160px);" FirstPanelInitialSize="300" ResetOnDoubleClick="true" Transparent="true" MinPanelSize="300">
+    <FirstPanel>
+        <MudPaper Height="100%">
+            @* Links: Editor *@
+        </MudPaper>
+    </FirstPanel>
+    <SecondPanel>
+        <MudSplitPanel Class="mud-width-full mud-height-full" Elevation="1" Horizontal="true" MinPanelSize="200">
+            <FirstPanel>
+                <MudPaper Height="100%">
+                    <MudPaper Height="calc(100% - 48px)" Elevation="0">
+                        <StandaloneCodeEditor @ref="_editor" Id="sql-editor" ConstructionOptions="Options" OnMouseDown="OnMouseDown"/>
+                    </MudPaper>
+                    <MudToolBar Dense="true">
+                        <MudButton Class="mr-5" Color="Color.Primary" Variant="Variant.Filled"
+                                   StartIcon="@Icons.Material.Filled.PlayArrow" OnClick="RunSql">
+                            Run
+                        </MudButton>
+                        
+                        <MudMenu Label="Templates" Variant="Variant.Filled" AlignItems="AlignItems.End">
+                            <MudMenuItem OnClick="SelectAllTablesTemplate" EndIcon="@Icons.Material.Outlined.LooksOne" Label="Select all tables" />
+                            @* <MudFabMenuItem EndIcon="@Icons.Material.Outlined.LooksTwo" Label="Two" Color="Color.Tertiary" Style="color: rgb(33, 33, 33);"/> *@
+                            @* <MudFabMenuItem EndIcon="@Icons.Material.Outlined.Looks3" Label="Three" Color="Color.Tertiary" Style="color: rgb(33, 33, 33);"/> *@
+                        </MudMenu>
+                        @* <MudSelect Color="Color.Default" Variant="Variant.Filled" *@
+                        @*            StartIcon="@Icons.Material.Filled.PlayArrow" OnClick="ClearSql"> *@
+                        @*     See all tables *@
+                        @* </MudSelect> *@
+                        <MudButton Color="Color.Default" Variant="Variant.Filled"
+                                   StartIcon="@Icons.Material.Filled.PlayArrow" OnClick="ClearSql">
+                            Clear
+                        </MudButton>
+                    </MudToolBar>
+                </MudPaper>
+            </FirstPanel>
+            <SecondPanel>
+                <MudPaper Height="100%" Class="pa-2" Style="overflow: auto">
+                    @if (_lastErrors.Any())
+                    {
+                        @* <MudGrid Style="padding: 5px;"> *@
+                        <MudText>The written SQL statement returned the following errors:</MudText>
+                        @foreach (ParseError parseError in _lastErrors)
+                        {
+                            <MudText>@parseError.ToSummary()</MudText>
+                        }
+                        // </MudGrid>
+                    }
+                </MudPaper>
+                </SecondPanel>
+        </MudSplitPanel>
+    </SecondPanel>
+</MudSplitPanel>
+@* <MudGrid Spacing="2"> *@
+@* *@
+@*     <MudItem xs="12" md="6"> *@
+@*     </MudItem> *@
+@* </MudGrid> *@
+
+@code {
+    IList<ParseError> _lastErrors = new List<ParseError>();
+    
+    private StandaloneCodeEditor _editor = default!;
+
+    private StandaloneEditorConstructionOptions Options(StandaloneCodeEditor editor) =>
+        new StandaloneEditorConstructionOptions
+        {
+            Language = "sql", Theme = "vs-dark", AutomaticLayout = true, Value = "Select * from sao.customers"
+        };
+    
+    private async Task OnMouseDown(EditorMouseEvent e)
+    {
+        if (!(e.Event.CtrlKey || e.Event.MetaKey) || e.Target.Position is null) return;
+        TextModel model = await _editor.GetModel();
+        WordAtPosition? word = await model.GetWordAtPosition(e.Target.Position);
+        
+        if (word is not null)
+            Console.WriteLine(word);
+        // await OnKeywordClicked(word.Word); // z.B. Erklärung zu "JOIN" öffnen
+    }
+
+    private async Task SelectAllTablesTemplate()
+    {
+        await _editor.SetValue("SELECT\nFROM INFORMATION_SCHEMA.TABLES\nWHERE TABLE_TYPE='Base Table'");
+    }
+
+    private async Task RunSql()
+    {
+        string runCommand = await Database.RunCommand(await _editor.GetValue());
+        // _lastErrors = MsSqlValidator.Validate(await _editor.GetValue(), SqlVersion.Sql180);
+        // if (!_lastErrors.Any())
+        // {
+        //     Console.WriteLine("SQL statement validated.");
+        //     string runCommand = await Database.RunCommand(await _editor.GetValue());
+        // }
+        // else
+        // {
+        //     Console.WriteLine("SQL statement had errors:");
+        //     foreach (ParseError parseError in _lastErrors)
+        //     {
+        //         Console.WriteLine(parseError.ToSummary());
+        //     }
+        // }
+    }
+
+    private async Task ClearSql()
+    {
+        await _editor.SetValue("");
+    }
+}
