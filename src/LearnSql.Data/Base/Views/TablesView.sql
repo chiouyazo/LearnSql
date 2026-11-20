@@ -1,9 +1,11 @@
 CREATE VIEW TABLES AS
 SELECT
-    'master' COLLATE NOCASE as [TABLE_CATALOG],
-    'main' COLLATE NOCASE as [TABLE_SCHEMA],
-    tbl_name COLLATE NOCASE as [TABLE_NAME],
-    'BASE TABLE' COLLATE NOCASE as [TABLE_TYPE]
-FROM 
-    sqlite_schema
-WHERE type ='table'
+    'LearnSql' COLLATE NOCASE AS [TABLE_CATALOG],
+    'dbo' COLLATE NOCASE AS [TABLE_SCHEMA],
+    m.name COLLATE NOCASE AS [TABLE_NAME],
+    CASE m.type WHEN 'view' THEN 'VIEW' ELSE 'BASE TABLE' END COLLATE NOCASE AS [TABLE_TYPE]
+FROM
+    sqlite_schema m
+WHERE m.type IN ('table', 'view')
+    AND m.name NOT LIKE 'sqlite\_%' ESCAPE '\'
+    AND m.name NOT IN ('TABLES', 'COLUMNS');

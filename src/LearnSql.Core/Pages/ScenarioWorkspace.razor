@@ -1,0 +1,49 @@
+@page "/scenarios/{ScenarioId}"
+@implements IAsyncDisposable
+
+@if (_scenario is null)
+{
+    <PageTitle>@L["NotFoundTitle"] | @LApp["ProductName"]</PageTitle>
+
+    <div class="scenario-missing">
+        <MudText Typo="Typo.h4" HtmlTag="h1" GutterBottom="true">@L["NotFoundTitle"]</MudText>
+        <MudText Class="mb-6">@L["NotFoundText", ScenarioId]</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="" StartIcon="@Icons.Material.Filled.Home">
+            @L["NotFoundBack"]
+        </MudButton>
+    </div>
+}
+else
+{
+    <PageTitle>@Texts.GetTitle(_scenario) | @LApp["ProductName"]</PageTitle>
+
+    <h1 class="visually-hidden">@Texts.GetTitle(_scenario)</h1>
+
+    @if (_initialized)
+    {
+        <div class="scenario-workspace @(_panelOpen ? null : "scenario-collapsed")">
+            <div id="scenario-split" class="scenario-body">
+                <MudSplitPanel Horizontal="false" Class="scenario-outer" ClassFirstPanel="scenario-first"
+                               ClassDivider="scenario-divider" ClassSecondPanel="scenario-second" Elevation="1"
+                               FirstPanelInitialSize="360" MinPanelSize="240" PanelGap="8" ResetOnDoubleClick="true">
+                    <FirstPanel>
+                        <div id="scenario-learning-panel" class="scenario-learning">
+                            <LearningPanel/>
+                        </div>
+                    </FirstPanel>
+                    <SecondPanel>
+                        <SqlWorkspace>
+                            <ToolbarLeading>
+                                <MudIconButton Icon="@(_panelOpen ? Icons.Material.Filled.MenuOpen : Icons.Material.Filled.Menu)"
+                                               Size="Size.Small" aria-expanded="@(_panelOpen ? "true" : "false")"
+                                               aria-controls="scenario-learning-panel"
+                                               aria-label="@(_panelOpen ? L["HidePanel"] : L["ShowPanel"])"
+                                               OnClick="TogglePanelAsync"/>
+                            </ToolbarLeading>
+                        </SqlWorkspace>
+                    </SecondPanel>
+                </MudSplitPanel>
+            </div>
+        </div>
+    }
+}

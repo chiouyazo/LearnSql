@@ -1,39 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="LearnSql: T-SQL lernen, direkt im Browser." />
     <title>LearnSql</title>
     <base href="/" />
     <link rel="preload" id="webassembly" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
     <link rel="stylesheet" href="css/app.css" />
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <link href="LearnSql.styles.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link href="LearnSql.Core.styles.css" rel="stylesheet" />
     <script type="importmap"></script>
 </head>
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="boot" role="status" aria-live="polite">
+            <div class="boot-brand">LearnSql</div>
+            <div class="boot-track"><div class="boot-fill"></div></div>
+            <div class="boot-percent"></div>
+        </div>
     </div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="." class="reload">Reload</a>
-        <span class="dismiss">🗙</span>
+    <noscript>
+        <div class="boot-noscript">
+            <span lang="de">LearnSql benötigt JavaScript.</span>
+            <span lang="en">LearnSql requires JavaScript.</span>
+        </div>
+    </noscript>
+
+    <div id="blazor-error-ui" role="alert">
+        <span lang="de">Ein unerwarteter Fehler ist aufgetreten.</span>
+        <span lang="en">An unexpected error occurred.</span>
+        <a href="." class="reload">
+            <span lang="de">Neu laden</span>
+            <span lang="en">Reload</span>
+        </a>
+        <button type="button" class="dismiss">
+            <span class="sr-only" lang="de">Meldung schließen</span>
+            <span class="sr-only" lang="en">Dismiss message</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+                <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </button>
     </div>
-    <script src="_content/BlazorMonaco/jsInterop.js"></script>
-    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
-    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js" autostart="false"></script>
+    <script src="js/boot.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ListTitle" xml:space="preserve">
+    <value>Geführte Beispiele</value>
+  </data>
+  <data name="ListIntro" xml:space="preserve">
+    <value>Fügt das SQL Schritt für Schritt in den Editor ein, führt es aus und erklärt Abfrage, Ergebnis und Wirkung.</value>
+  </data>
+  <data name="StepCount" xml:space="preserve">
+    <value>{0} Schritte</value>
+  </data>
+  <data name="Topic_Select" xml:space="preserve">
+    <value>Abfragen</value>
+  </data>
+  <data name="Topic_Filtering" xml:space="preserve">
+    <value>Filtern</value>
+  </data>
+  <data name="Topic_Joins" xml:space="preserve">
+    <value>Verknüpfen</value>
+  </data>
+  <data name="Topic_Aggregation" xml:space="preserve">
+    <value>Aggregieren</value>
+  </data>
+  <data name="Topic_Subqueries" xml:space="preserve">
+    <value>Unterabfragen</value>
+  </data>
+  <data name="Topic_WindowFunctions" xml:space="preserve">
+    <value>Fensterfunktionen</value>
+  </data>
+  <data name="Topic_DataChange" xml:space="preserve">
+    <value>Daten ändern</value>
+  </data>
+  <data name="FreshDatabaseBadge" xml:space="preserve">
+    <value>Verändert Daten</value>
+  </data>
+  <data name="FreshDatabaseHint" xml:space="preserve">
+    <value>Dieses Beispiel startet mit einer frischen Datenbank.</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Fortsetzen</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>Noch einmal</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="ResetDialogTitle" xml:space="preserve">
+    <value>Datenbank zurücksetzen?</value>
+  </data>
+  <data name="ResetDialogMessage" xml:space="preserve">
+    <value>Dieses Beispiel verändert Daten und braucht deshalb eine frische Datenbank. Beim Start wird die Datenbank auf den Ausgangszustand zurückgesetzt: selbst angelegte Tabellen und geänderte Daten gehen verloren. Dein Text im Editor bleibt erhalten. Er wird gesichert und lässt sich mit "Mein Text zurück" wiederherstellen.</value>
+  </data>
+  <data name="ResetDialogConfirm" xml:space="preserve">
+    <value>Zurücksetzen und starten</value>
+  </data>
+  <data name="BackupText" xml:space="preserve">
+    <value>Dein Editor-Text von vor dem geführten Beispiel ist gesichert.</value>
+  </data>
+  <data name="BackupRestore" xml:space="preserve">
+    <value>Mein Text zurück</value>
+  </data>
+  <data name="BackupDiscard" xml:space="preserve">
+    <value>Verwerfen</value>
+  </data>
+  <data name="StepOf" xml:space="preserve">
+    <value>Schritt {0} von {1}</value>
+  </data>
+  <data name="ProgressLabel" xml:space="preserve">
+    <value>{0} von {1} Schritten abgeschlossen</value>
+  </data>
+  <data name="ShowMeHow" xml:space="preserve">
+    <value>Zeig mir, wie</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Der Schritt wird ausgeführt.</value>
+  </data>
+  <data name="SqlLabel" xml:space="preserve">
+    <value>SQL dieses Schritts</value>
+  </data>
+  <data name="KindChangesData" xml:space="preserve">
+    <value>Verändert Daten</value>
+  </data>
+  <data name="ExplainQueryTitle" xml:space="preserve">
+    <value>Was die Abfrage macht</value>
+  </data>
+  <data name="ExplainPartsTitle" xml:space="preserve">
+    <value>Die Bestandteile</value>
+  </data>
+  <data name="PartFragment" xml:space="preserve">
+    <value>Fragment</value>
+  </data>
+  <data name="PartMeaning" xml:space="preserve">
+    <value>Bedeutung</value>
+  </data>
+  <data name="ExplainResultTitle" xml:space="preserve">
+    <value>Was du im Ergebnis siehst</value>
+  </data>
+  <data name="ExplainEffectTitle" xml:space="preserve">
+    <value>Was sich in der Datenbank ändert</value>
+  </data>
+  <data name="CheckRowCount" xml:space="preserve">
+    <value>Die Abfrage liefert {0} Zeilen, erwartet werden {1}. Vermutlich wurden Daten verändert. Setze die Datenbank zurück und starte das Beispiel neu. Die Erklärung beschreibt den Ausgangszustand.</value>
+  </data>
+  <data name="CheckRowsAffected" xml:space="preserve">
+    <value>Hier werden {0} Zeilen verändert, erwartet werden {1}. Vermutlich sind die Daten nicht mehr im Ausgangszustand. Setze die Datenbank zurück und starte das Beispiel neu.</value>
+  </data>
+  <data name="CheckErrorMissing" xml:space="preserve">
+    <value>Dieser Schritt sollte an einer Regel der Datenbank scheitern, lief aber ohne Fehler. Vermutlich sind die Daten nicht mehr im Ausgangszustand. Setze die Datenbank zurück und starte das Beispiel neu.</value>
+  </data>
+  <data name="CheckUnexpectedError" xml:space="preserve">
+    <value>Dieser Schritt ist fehlgeschlagen (Meldung: {0}). Vermutlich sind die Daten nicht mehr im Ausgangszustand oder ein früherer Schritt fehlt. Setze die Datenbank zurück und starte das Beispiel neu.</value>
+  </data>
+  <data name="CheckRolledBack" xml:space="preserve">
+    <value>Die Änderung wurde zurückgenommen, weil "Änderungen zurückrollen" im Ergebnisbereich eingeschaltet ist. Schalte es aus und starte den Schritt mit Fortsetzen erneut.</value>
+  </data>
+  <data name="CheckInterrupted" xml:space="preserve">
+    <value>Die Ausführung wurde abgebrochen. Mit Fortsetzen startest du den Schritt erneut.</value>
+  </data>
+  <data name="FinishedTitle" xml:space="preserve">
+    <value>Geschafft</value>
+  </data>
+  <data name="FinishedText" xml:space="preserve">
+    <value>Du hast alle {0} Schritte von "{1}" gesehen.</value>
+  </data>
+  <data name="NoticeEditorUnavailable" xml:space="preserve">
+    <value>Der Editor ist gerade nicht verfügbar.</value>
+  </data>
+  <data name="NoticeNotReady" xml:space="preserve">
+    <value>Die Datenbank ist noch nicht bereit.</value>
+  </data>
+  <data name="NoticeBusy" xml:space="preserve">
+    <value>Es läuft bereits eine Ausführung.</value>
+  </data>
+  <data name="NoticeResetFailed" xml:space="preserve">
+    <value>Die Datenbank konnte nicht zurückgesetzt werden.</value>
+  </data>
+  <data name="NoticeDatabaseWasReset" xml:space="preserve">
+    <value>Die Datenbank wurde zurückgesetzt. Das Beispiel wurde deshalb beendet.</value>
+  </data>
+  <data name="NoticeScenarioSwitched" xml:space="preserve">
+    <value>Das Beispiel wurde beendet, weil das Szenario gewechselt wurde.</value>
+  </data>
+  <data name="NoticeTextRestored" xml:space="preserve">
+    <value>Dein Text ist wieder im Editor.</value>
+  </data>
+  <data name="NoticeTextKept" xml:space="preserve">
+    <value>Du hast den Text im Editor geändert. Dein ursprünglicher Text bleibt gesichert.</value>
+  </data>
+  <data name="PlayerLabel" xml:space="preserve">
+    <value>Geführtes Beispiel</value>
+  </data>
+  <data name="ControlsLabel" xml:space="preserve">
+    <value>Steuerung des Beispiels</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="AutoNext" xml:space="preserve">
+    <value>Der nächste Schritt folgt automatisch.</value>
+  </data>
+  <data name="EarlierRun" xml:space="preserve">
+    <value>Dieser Schritt wurde schon ausgeführt. Die Änderung ist bereits in der Datenbank.</value>
+  </data>
+  <data name="NoticeBackupOccupied" xml:space="preserve">
+    <value>Im Editor steht neuer Text von dir, und es gibt schon eine Sicherung. Stelle die Sicherung wieder her oder verwirf sie, dann geht es mit Fortsetzen weiter.</value>
+  </data>
+</root>

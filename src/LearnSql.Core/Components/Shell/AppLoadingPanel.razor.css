@@ -1,0 +1,10 @@
+.loading-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+}
+
+::deep .loading-card {
+    width: min(28rem, 100%);
+}

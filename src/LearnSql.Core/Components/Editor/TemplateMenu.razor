@@ -1,0 +1,8 @@
+<MudMenu Label="@L["Templates"]" StartIcon="@Icons.Material.Filled.Description" Variant="Variant.Text"
+         Size="Size.Small" Color="Color.Default" Dense="true" aria-label="@L["TemplatesAriaLabel"]">
+    @foreach (QueryTemplate template in _templates)
+    {
+        QueryTemplate selected = template;
+        <MudMenuItem OnClick="() => OnTemplateSelected.InvokeAsync(selected.Sql)">@selected.Label</MudMenuItem>
+    }
+</MudMenu>

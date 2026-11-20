@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CrossOuterApply_Name" xml:space="preserve">
+    <value>CROSS APPLY und OUTER APPLY</value>
+  </data>
+  <data name="CrossOuterApply_Alternative" xml:space="preserve">
+    <value>Verwende stattdessen einen JOIN oder eine korrelierte Unterabfrage.</value>
+  </data>
+  <data name="Pivot_Name" xml:space="preserve">
+    <value>PIVOT</value>
+  </data>
+  <data name="Pivot_Alternative" xml:space="preserve">
+    <value>Bilde die Spalten mit bedingter Aggregation, zum Beispiel SUM(CASE WHEN ... THEN ... END) zusammen mit GROUP BY.</value>
+  </data>
+  <data name="Unpivot_Name" xml:space="preserve">
+    <value>UNPIVOT</value>
+  </data>
+  <data name="Unpivot_Alternative" xml:space="preserve">
+    <value>Bilde die Zeilen mit UNION ALL über die einzelnen Spalten.</value>
+  </data>
+  <data name="Merge_Name" xml:space="preserve">
+    <value>MERGE</value>
+  </data>
+  <data name="Merge_Alternative" xml:space="preserve">
+    <value>Verwende getrennte INSERT-, UPDATE- und DELETE-Anweisungen.</value>
+  </data>
+  <data name="TryCatch_Name" xml:space="preserve">
+    <value>TRY ... CATCH</value>
+  </data>
+  <data name="TryCatch_Alternative" xml:space="preserve">
+    <value>Die Fehlerbehandlung ist noch nicht verfügbar. Führe die Anweisungen einzeln aus und prüfe die Fehlermeldung.</value>
+  </data>
+  <data name="While_Name" xml:space="preserve">
+    <value>WHILE-Schleifen</value>
+  </data>
+  <data name="While_Alternative" xml:space="preserve">
+    <value>Löse die Aufgabe mengenbasiert oder mit einer rekursiven CTE.</value>
+  </data>
+  <data name="ControlFlow_Name" xml:space="preserve">
+    <value>Ablaufsteuerung (IF, BEGIN ... END, GOTO, RETURN, WAITFOR)</value>
+  </data>
+  <data name="ControlFlow_Alternative" xml:space="preserve">
+    <value>Verwende innerhalb der Abfrage einen CASE-Ausdruck und führe die Anweisungen einzeln aus.</value>
+  </data>
+  <data name="PrintRaiseError_Name" xml:space="preserve">
+    <value>PRINT, RAISERROR und THROW</value>
+  </data>
+  <data name="PrintRaiseError_Alternative" xml:space="preserve">
+    <value>Gib Werte mit einer SELECT-Anweisung aus.</value>
+  </data>
+  <data name="Cursor_Name" xml:space="preserve">
+    <value>Cursor</value>
+  </data>
+  <data name="Cursor_Alternative" xml:space="preserve">
+    <value>Löse die Aufgabe mengenbasiert, gegebenenfalls mit Fensterfunktionen.</value>
+  </data>
+  <data name="TableVariable_Name" xml:space="preserve">
+    <value>Tabellenvariablen (DECLARE @t TABLE)</value>
+  </data>
+  <data name="TableVariable_Alternative" xml:space="preserve">
+    <value>Verwende eine temporäre Tabelle (CREATE TABLE #t), die in der Umgebung verfügbar ist.</value>
+  </data>
+  <data name="SelectAssignment_Name" xml:space="preserve">
+    <value>Variablenzuweisung per SELECT (SELECT @x = ...)</value>
+  </data>
+  <data name="SelectAssignment_Alternative" xml:space="preserve">
+    <value>Weise den Wert mit SET @x = (SELECT ...) zu.</value>
+  </data>
+  <data name="StoredProcedure_Name" xml:space="preserve">
+    <value>Gespeicherte Prozeduren</value>
+  </data>
+  <data name="StoredProcedure_Alternative" xml:space="preserve">
+    <value>Führe die Anweisungen der Prozedur direkt als Skript aus.</value>
+  </data>
+  <data name="UserDefinedFunction_Name" xml:space="preserve">
+    <value>Benutzerdefinierte Funktionen</value>
+  </data>
+  <data name="UserDefinedFunction_Alternative" xml:space="preserve">
+    <value>Schreibe den Ausdruck direkt in die Abfrage oder verwende eine Sicht.</value>
+  </data>
+  <data name="UserDefinedFunctionCall_Name" xml:space="preserve">
+    <value>Aufruf benutzerdefinierter Funktionen</value>
+  </data>
+  <data name="UserDefinedFunctionCall_Alternative" xml:space="preserve">
+    <value>Schreibe den Ausdruck direkt in die Abfrage.</value>
+  </data>
+  <data name="Trigger_Name" xml:space="preserve">
+    <value>Trigger</value>
+  </data>
+  <data name="Trigger_Alternative" xml:space="preserve">
+    <value>Führe die Anweisungen des Triggers selbst nach der Änderung aus.</value>
+  </data>
+  <data name="Execute_Name" xml:space="preserve">
+    <value>EXEC und EXECUTE</value>
+  </data>
+  <data name="Execute_Alternative" xml:space="preserve">
+    <value>Schreibe die Anweisung direkt in das Skript.</value>
+  </data>
+  <data name="OutputClause_Name" xml:space="preserve">
+    <value>OUTPUT-Klausel</value>
+  </data>
+  <data name="OutputClause_Alternative" xml:space="preserve">
+    <value>Frage die Daten nach INSERT, UPDATE oder DELETE mit einer eigenen SELECT-Anweisung ab.</value>
+  </data>
+  <data name="ForClause_Name" xml:space="preserve">
+    <value>FOR XML und FOR JSON</value>
+  </data>
+  <data name="ForClause_Alternative" xml:space="preserve">
+    <value>Gib das Ergebnis als normale Tabelle aus.</value>
+  </data>
+  <data name="TableValuedFunction_Name" xml:space="preserve">
+    <value>Tabellenwertfunktionen (STRING_SPLIT, OPENJSON, OPENXML, OPENROWSET ...)</value>
+  </data>
+  <data name="TableValuedFunction_Alternative" xml:space="preserve">
+    <value>Erzeuge die Zeilen mit VALUES, UNION ALL oder einer rekursiven CTE.</value>
+  </data>
+  <data name="JsonFunction_Name" xml:space="preserve">
+    <value>JSON-Funktionen (JSON_VALUE, JSON_QUERY, JSON_MODIFY, ISJSON)</value>
+  </data>
+  <data name="JsonFunction_Alternative" xml:space="preserve">
+    <value>Lege die Werte in eigenen Spalten ab und frage sie direkt ab.</value>
+  </data>
+  <data name="TryConvert_Name" xml:space="preserve">
+    <value>TRY_CAST, TRY_CONVERT, TRY_PARSE und PARSE</value>
+  </data>
+  <data name="TryConvert_Alternative" xml:space="preserve">
+    <value>Verwende CAST oder CONVERT und prüfe die Werte vorher mit einem CASE-Ausdruck.</value>
+  </data>
+  <data name="ConvertStyle_Name" xml:space="preserve">
+    <value>CONVERT mit diesem Formatcode</value>
+  </data>
+  <data name="ConvertStyle_Alternative" xml:space="preserve">
+    <value>Verwende einen der unterstützten Formatcodes ({0}) oder die Funktion FORMAT.</value>
+  </data>
+  <data name="DataType_Name" xml:space="preserve">
+    <value>Dieser Datentyp (zum Beispiel DATETIMEOFFSET, SQL_VARIANT, ROWVERSION, JSON)</value>
+  </data>
+  <data name="DataType_Alternative" xml:space="preserve">
+    <value>Verwende einen der Typen INT, DECIMAL, FLOAT, BIT, VARCHAR, NVARCHAR, DATE, DATETIME, DATETIME2, TIME oder VARBINARY.</value>
+  </data>
+  <data name="UserDefinedType_Name" xml:space="preserve">
+    <value>Benutzerdefinierte und XML-Datentypen</value>
+  </data>
+  <data name="UserDefinedType_Alternative" xml:space="preserve">
+    <value>Verwende einen der Standarddatentypen.</value>
+  </data>
+  <data name="IdentityColumn_Name" xml:space="preserve">
+    <value>IDENTITY-Spalte ohne direkt angegebenen PRIMARY KEY oder mit anderem Typ</value>
+  </data>
+  <data name="IdentityColumn_Alternative" xml:space="preserve">
+    <value>Verwende IDENTITY nur bei einer Ganzzahlspalte mit direkt angegebenem PRIMARY KEY, zum Beispiel Id INT IDENTITY(1,1) PRIMARY KEY.</value>
+  </data>
+  <data name="DropIndexForm_Name" xml:space="preserve">
+    <value>DROP INDEX in dieser Form (mehrere Indizes, Tabelle.Index, WITH-Optionen)</value>
+  </data>
+  <data name="DropIndexForm_Alternative" xml:space="preserve">
+    <value>Lösche jeden Index mit einer eigenen Anweisung DROP INDEX name ON tabelle.</value>
+  </data>
+  <data name="AlterColumn_Name" xml:space="preserve">
+    <value>ALTER TABLE ... ALTER COLUMN</value>
+  </data>
+  <data name="AlterColumn_Alternative" xml:space="preserve">
+    <value>Lege die Tabelle neu an und kopiere die Daten mit INSERT ... SELECT.</value>
+  </data>
+  <data name="AlterTableAddElement_Name" xml:space="preserve">
+    <value>ALTER TABLE ... ADD mit Constraints oder mehreren Spalten</value>
+  </data>
+  <data name="AlterTableAddElement_Alternative" xml:space="preserve">
+    <value>Füge pro Anweisung genau eine Spalte hinzu. Constraints gehören in CREATE TABLE.</value>
+  </data>
+  <data name="AlterTableDropElement_Name" xml:space="preserve">
+    <value>ALTER TABLE ... DROP CONSTRAINT</value>
+  </data>
+  <data name="AlterTableDropElement_Alternative" xml:space="preserve">
+    <value>Lege die Tabelle ohne den Constraint neu an und kopiere die Daten.</value>
+  </data>
+  <data name="IndexOptions_Name" xml:space="preserve">
+    <value>Indexoptionen (INCLUDE, WITH, Dateigruppen)</value>
+  </data>
+  <data name="IndexOptions_Alternative" xml:space="preserve">
+    <value>Lege den Index mit Spaltenliste und optional UNIQUE an.</value>
+  </data>
+  <data name="AlterView_Name" xml:space="preserve">
+    <value>ALTER VIEW und CREATE OR ALTER VIEW</value>
+  </data>
+  <data name="AlterView_Alternative" xml:space="preserve">
+    <value>Lösche die Sicht mit DROP VIEW und lege sie mit CREATE VIEW neu an.</value>
+  </data>
+  <data name="ViewOptions_Name" xml:space="preserve">
+    <value>Sichtoptionen (WITH SCHEMABINDING, WITH CHECK OPTION)</value>
+  </data>
+  <data name="ViewOptions_Alternative" xml:space="preserve">
+    <value>Lege die Sicht ohne Optionen an.</value>
+  </data>
+  <data name="DropMultipleTables_Name" xml:space="preserve">
+    <value>DROP TABLE mit mehreren Tabellen</value>
+  </data>
+  <data name="DropMultipleTables_Alternative" xml:space="preserve">
+    <value>Lösche die Tabellen mit je einer eigenen DROP-TABLE-Anweisung.</value>
+  </data>
+  <data name="QueryHint_Name" xml:space="preserve">
+    <value>Abfragehinweise (OPTION (...))</value>
+  </data>
+  <data name="QueryHint_Alternative" xml:space="preserve">
+    <value>Entferne die OPTION-Klausel. Die Umgebung verwendet keine Abfragehinweise.</value>
+  </data>
+  <data name="TableHint_Name" xml:space="preserve">
+    <value>Tabellenhinweise außer Sperrhinweisen (zum Beispiel INDEX, FORCESEEK)</value>
+  </data>
+  <data name="TableHint_Alternative" xml:space="preserve">
+    <value>Entferne den Tabellenhinweis. Die Umgebung verwendet keine Hinweise.</value>
+  </data>
+  <data name="GroupByOption_Name" xml:space="preserve">
+    <value>GROUP BY ... WITH ROLLUP und WITH CUBE</value>
+  </data>
+  <data name="GroupByOption_Alternative" xml:space="preserve">
+    <value>Bilde die Zwischensummen mit mehreren GROUP-BY-Abfragen und UNION ALL.</value>
+  </data>
+  <data name="GroupingSets_Name" xml:space="preserve">
+    <value>ROLLUP, CUBE und GROUPING SETS</value>
+  </data>
+  <data name="GroupingSets_Alternative" xml:space="preserve">
+    <value>Bilde die Zwischensummen mit mehreren GROUP-BY-Abfragen und UNION ALL.</value>
+  </data>
+  <data name="DerivedTableColumnList_Name" xml:space="preserve">
+    <value>Spaltenliste bei einer abgeleiteten Tabelle ((SELECT ...) AS t (a, b))</value>
+  </data>
+  <data name="DerivedTableColumnList_Alternative" xml:space="preserve">
+    <value>Vergib die Spaltennamen mit AS in der SELECT-Liste der Unterabfrage.</value>
+  </data>
+  <data name="ValuesTable_Name" xml:space="preserve">
+    <value>VALUES als Tabellenquelle mit Spaltenliste</value>
+  </data>
+  <data name="ValuesTable_Alternative" xml:space="preserve">
+    <value>Verwende eine CTE mit Spaltenliste: WITH t (a, b) AS (SELECT 1, 2 UNION ALL SELECT 3, 4) SELECT ...</value>
+  </data>
+  <data name="AnyAll_Name" xml:space="preserve">
+    <value>ANY, ALL und SOME mit Unterabfrage</value>
+  </data>
+  <data name="AnyAll_Alternative" xml:space="preserve">
+    <value>Verwende MIN oder MAX in der Unterabfrage oder EXISTS.</value>
+  </data>
+  <data name="FullText_Name" xml:space="preserve">
+    <value>Volltextsuche (CONTAINS, FREETEXT)</value>
+  </data>
+  <data name="FullText_Alternative" xml:space="preserve">
+    <value>Verwende LIKE mit Platzhaltern.</value>
+  </data>
+  <data name="LikeCharacterClass_Name" xml:space="preserve">
+    <value>LIKE mit Zeichenklassen ([a-z], [^abc])</value>
+  </data>
+  <data name="LikeCharacterClass_Alternative" xml:space="preserve">
+    <value>Kombiniere mehrere LIKE-Bedingungen mit OR.</value>
+  </data>
+  <data name="WindowsCollation_Name" xml:space="preserve">
+    <value>COLLATE mit einer SQL-Server-Kollation</value>
+  </data>
+  <data name="WindowsCollation_Alternative" xml:space="preserve">
+    <value>Verwende COLLATE NOCASE für Vergleiche, die Groß- und Kleinschreibung ignorieren, oder COLLATE BINARY.</value>
+  </data>
+  <data name="ColumnCollation_Name" xml:space="preserve">
+    <value>COLLATE mit einer SQL-Server-Kollation in der Spaltendefinition</value>
+  </data>
+  <data name="ColumnCollation_Alternative" xml:space="preserve">
+    <value>Verwende COLLATE NOCASE oder COLLATE BINARY.</value>
+  </data>
+  <data name="UpdateFrom_Name" xml:space="preserve">
+    <value>UPDATE ... FROM mit JOIN</value>
+  </data>
+  <data name="UpdateFrom_Alternative" xml:space="preserve">
+    <value>Verwende eine korrelierte Unterabfrage im SET, zum Beispiel UPDATE t SET a = (SELECT ... WHERE ...).</value>
+  </data>
+  <data name="DeleteFrom_Name" xml:space="preserve">
+    <value>DELETE ... FROM mit JOIN</value>
+  </data>
+  <data name="DeleteFrom_Alternative" xml:space="preserve">
+    <value>Verwende WHERE ... IN (SELECT ...) oder WHERE EXISTS (SELECT ...).</value>
+  </data>
+  <data name="TopInModification_Name" xml:space="preserve">
+    <value>TOP bei INSERT, UPDATE und DELETE</value>
+  </data>
+  <data name="TopInModification_Alternative" xml:space="preserve">
+    <value>Begrenze die Zeilen mit WHERE ... IN (SELECT TOP n ...).</value>
+  </data>
+  <data name="TopPercentOrTies_Name" xml:space="preserve">
+    <value>TOP ... PERCENT und TOP ... WITH TIES</value>
+  </data>
+  <data name="TopPercentOrTies_Alternative" xml:space="preserve">
+    <value>Verwende TOP n ohne PERCENT oder löse die Aufgabe mit ROW_NUMBER beziehungsweise RANK.</value>
+  </data>
+  <data name="BitwiseXor_Name" xml:space="preserve">
+    <value>Bitweises XOR (^)</value>
+  </data>
+  <data name="BitwiseXor_Alternative" xml:space="preserve">
+    <value>Verwende (a | b) &amp; ~(a &amp; b).</value>
+  </data>
+  <data name="BitwiseXorAssignment_Name" xml:space="preserve">
+    <value>Zuweisung mit ^=</value>
+  </data>
+  <data name="BitwiseXorAssignment_Alternative" xml:space="preserve">
+    <value>Verwende (a | b) &amp; ~(a &amp; b).</value>
+  </data>
+  <data name="SystemVariable_Name" xml:space="preserve">
+    <value>Systemvariablen (@@ROWCOUNT, @@ERROR, @@VERSION, @@TRANCOUNT ...)</value>
+  </data>
+  <data name="SystemVariable_Alternative" xml:space="preserve">
+    <value>Ermittle die Werte mit einer eigenen SELECT-Anweisung, zum Beispiel SELECT COUNT(*).</value>
+  </data>
+  <data name="UserFunction_Name" xml:space="preserve">
+    <value>Benutzerfunktionen (USER, CURRENT_USER, SESSION_USER, SYSTEM_USER)</value>
+  </data>
+  <data name="UserFunction_Alternative" xml:space="preserve">
+    <value>Die Umgebung kennt nur einen Benutzer. Verwende ein Textliteral.</value>
+  </data>
+  <data name="Sequence_Name" xml:space="preserve">
+    <value>Sequenzen (NEXT VALUE FOR, CREATE SEQUENCE)</value>
+  </data>
+  <data name="Sequence_Alternative" xml:space="preserve">
+    <value>Verwende eine Spalte INTEGER PRIMARY KEY, die fortlaufende Werte vergibt.</value>
+  </data>
+  <data name="ForeignSchema_Name" xml:space="preserve">
+    <value>Schema- und datenbankqualifizierte Namen außer dbo</value>
+  </data>
+  <data name="ForeignSchema_Alternative" xml:space="preserve">
+    <value>Verwende Objektnamen ohne Schema oder mit dbo. Die Umgebung hat nur ein Schema.</value>
+  </data>
+  <data name="NamedTransaction_Name" xml:space="preserve">
+    <value>Benannte, verteilte oder markierte Transaktionen</value>
+  </data>
+  <data name="NamedTransaction_Alternative" xml:space="preserve">
+    <value>Verwende BEGIN TRANSACTION ohne Namen und setze bei Bedarf Savepoints mit SAVE TRANSACTION name.</value>
+  </data>
+  <data name="NamedCommit_Name" xml:space="preserve">
+    <value>COMMIT mit Transaktionsname</value>
+  </data>
+  <data name="NamedCommit_Alternative" xml:space="preserve">
+    <value>Verwende COMMIT TRANSACTION ohne Namen.</value>
+  </data>
+  <data name="RollbackVariableName_Name" xml:space="preserve">
+    <value>ROLLBACK mit Variable als Name</value>
+  </data>
+  <data name="RollbackVariableName_Alternative" xml:space="preserve">
+    <value>Verwende ROLLBACK TRANSACTION mit einem festen Savepoint-Namen.</value>
+  </data>
+  <data name="SavepointName_Name" xml:space="preserve">
+    <value>SAVE TRANSACTION mit Variable als Name</value>
+  </data>
+  <data name="SavepointName_Alternative" xml:space="preserve">
+    <value>Verwende SAVE TRANSACTION mit einem festen Namen.</value>
+  </data>
+  <data name="SetOption_Name" xml:space="preserve">
+    <value>SET-Optionen mit Auswirkung auf die Ausführung</value>
+  </data>
+  <data name="SetOption_Alternative" xml:space="preserve">
+    <value>Entferne die SET-Anweisung. Die Umgebung verwendet immer die Standardeinstellungen.</value>
+  </data>
+  <data name="SetCommand_Name" xml:space="preserve">
+    <value>SET-Anweisungen wie DATEFIRST, LANGUAGE, ROWCOUNT, IDENTITY_INSERT</value>
+  </data>
+  <data name="SetCommand_Alternative" xml:space="preserve">
+    <value>Entferne die SET-Anweisung. Die Umgebung verwendet immer die Standardeinstellungen.</value>
+  </data>
+  <data name="Use_Name" xml:space="preserve">
+    <value>USE</value>
+  </data>
+  <data name="Use_Alternative" xml:space="preserve">
+    <value>Die Umgebung enthält genau eine Datenbank, ein Wechsel ist nicht nötig.</value>
+  </data>
+  <data name="CreateSchema_Name" xml:space="preserve">
+    <value>CREATE SCHEMA</value>
+  </data>
+  <data name="CreateSchema_Alternative" xml:space="preserve">
+    <value>Lege die Objekte direkt im Standardschema dbo an.</value>
+  </data>
+  <data name="UnsupportedStatement_Name" xml:space="preserve">
+    <value>Diese Anweisung (Administration, Sicherheit, Server- und Datenbankobjekte)</value>
+  </data>
+  <data name="UnsupportedStatement_Alternative" xml:space="preserve">
+    <value>Verwende SELECT, INSERT, UPDATE, DELETE sowie CREATE, ALTER und DROP für Tabellen, Sichten und Indizes.</value>
+  </data>
+</root>

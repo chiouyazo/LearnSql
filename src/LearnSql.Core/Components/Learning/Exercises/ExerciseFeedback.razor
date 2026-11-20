@@ -1,0 +1,180 @@
+@inject IStringLocalizer<ExerciseStrings> L
+
+<div class="exercise-feedback" role="status" aria-live="polite" aria-atomic="true">
+    @if (Result is not null)
+    {
+        switch (Result.Outcome)
+        {
+            case ExerciseCheckOutcome.Correct:
+                <div class="feedback feedback-success">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="feedback-icon"/>
+                    <div class="feedback-body">
+                        <strong>@L["FeedbackCorrect"]</strong>
+                        @if (Result.ResultSetCount > 1)
+                        {
+                            <span>@L["MultipleResultSets", Result.ResultSetCount]</span>
+                        }
+                    </div>
+                </div>
+                break;
+            case ExerciseCheckOutcome.Wrong:
+                <div class="feedback feedback-warning">
+                    <MudIcon Icon="@Icons.Material.Filled.ErrorOutline" Class="feedback-icon"/>
+                    <div class="feedback-body">
+                        <strong>@L["FeedbackWrong"]</strong>
+                        <ul class="feedback-list">
+                            @foreach (string line in DifferenceLines(Result.Comparison!))
+                            {
+                                <li>@line</li>
+                            }
+                        </ul>
+                        @if (Result.ResultSetCount > 1)
+                        {
+                            <span>@L["MultipleResultSets", Result.ResultSetCount]</span>
+                        }
+                        @if (HasRowDifferences)
+                        {
+                            <MudButton Variant="Variant.Text" Size="Size.Small" OnClick="ToggleDiff"
+                                       StartIcon="@(_showDiff ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                                       aria-expanded="@(_showDiff ? "true" : "false")">
+                                @(_showDiff ? L["HideDiff"] : L["ShowDiff"])
+                            </MudButton>
+                        }
+                    </div>
+                </div>
+                @if (_showDiff && HasRowDifferences)
+                {
+                    <div class="feedback-diff">
+                        @if (Result.Comparison!.MissingRows.Count > 0)
+                        {
+                            <ExerciseDiffTable Title="@L["DiffMissingTitle"]" Columns="Result.Comparison.ExpectedColumns"
+                                               Rows="Result.Comparison.MissingRows"/>
+                        }
+                        @if (Result.Comparison!.ExtraRows.Count > 0)
+                        {
+                            <ExerciseDiffTable Title="@L["DiffExtraTitle"]" Columns="Result.Comparison.ActualColumns"
+                                               Rows="Result.Comparison.ExtraRows"/>
+                        }
+                    </div>
+                }
+                break;
+            case ExerciseCheckOutcome.QueryFailed:
+                <div class="feedback feedback-error">
+                    <MudIcon Icon="@Icons.Material.Filled.Error" Class="feedback-icon"/>
+                    <div class="feedback-body">
+                        <strong>@FailedTitle</strong>
+                        <pre class="feedback-error-text">@Result.Error!.Display</pre>
+                        <span>@L["FailedExplanation"]</span>
+                    </div>
+                </div>
+                break;
+            case ExerciseCheckOutcome.NoResultSet:
+                <div class="feedback feedback-warning">
+                    <MudIcon Icon="@Icons.Material.Filled.ErrorOutline" Class="feedback-icon"/>
+                    <div class="feedback-body">
+                        <strong>@L["FeedbackNoResult"]</strong>
+                        <span>@L["FeedbackNoResultText"]</span>
+                    </div>
+                </div>
+                break;
+            case ExerciseCheckOutcome.DatabaseModified:
+                <div class="feedback feedback-warning">
+                    <MudIcon Icon="@Icons.Material.Filled.Storage" Class="feedback-icon"/>
+                    <div class="feedback-body">
+                        <strong>@L["FeedbackModified"]</strong>
+                        <span>@L["FeedbackModifiedText"]</span>
+                    </div>
+                </div>
+                break;
+            case ExerciseCheckOutcome.ReferenceFailed:
+                <div class="feedback feedback-error">
+                    <MudIcon Icon="@Icons.Material.Filled.Error" Class="feedback-icon"/>
+                    <div class="feedback-body">
+                        <strong>@L["FeedbackReferenceFailed"]</strong>
+                        @if (Result.Error is not null)
+                        {
+                            <pre class="feedback-error-text">@Result.Error.Display</pre>
+                        }
+                    </div>
+                </div>
+                break;
+            default:
+                <div class="feedback feedback-info">
+                    <MudIcon Icon="@Icons.Material.Filled.Info" Class="feedback-icon"/>
+                    <div class="feedback-body">@L["Feedback" + Result.Outcome]</div>
+                </div>
+                break;
+        }
+    }
+</div>
+
+@code {
+    private ExerciseCheckResult? _bound;
+    private bool _showDiff;
+
+    [Parameter]
+    public ExerciseCheckResult? Result { get; set; }
+
+    private bool HasRowDifferences =>
+        Result?.Comparison is { ColumnCountDiffers: false } comparison
+        && (comparison.MissingRows.Count > 0 || comparison.ExtraRows.Count > 0);
+
+    private string FailedTitle =>
+        Result!.Error!.Kind switch
+        {
+            ExecutionErrorKind.Diagnostics => L["FailedDiagnostics"],
+            ExecutionErrorKind.Sql => L["FailedSql"],
+            _ => L["FailedOther"],
+        };
+
+    protected override void OnParametersSet()
+    {
+        if (!ReferenceEquals(_bound, Result))
+        {
+            _bound = Result;
+            _showDiff = false;
+        }
+    }
+
+    private void ToggleDiff()
+    {
+        _showDiff = !_showDiff;
+    }
+
+    private IEnumerable<string> DifferenceLines(ResultComparison comparison)
+    {
+        if (comparison.ColumnCountDiffers)
+        {
+            yield return L["DiffColumns", comparison.ExpectedColumns.Count, comparison.ActualColumns.Count];
+        }
+
+        if (comparison.RowCountDiffers)
+        {
+            yield return L["DiffRowCounts", comparison.ExpectedRowCount, comparison.ActualRowCount];
+        }
+
+        if (comparison.MissingRows.Count > 0)
+        {
+            yield return comparison.MissingRows.Count == 1
+                ? L["DiffMissingOne"]
+                : L["DiffMissingMany", comparison.MissingRows.Count];
+        }
+
+        if (comparison.ExtraRows.Count > 0)
+        {
+            yield return comparison.ExtraRows.Count == 1
+                ? L["DiffExtraOne"]
+                : L["DiffExtraMany", comparison.ExtraRows.Count];
+        }
+
+        if (comparison.OrderDiffers)
+        {
+            yield return L["DiffOrder"];
+        }
+
+        if (comparison.ActualTruncated)
+        {
+            yield return L["DiffTruncated"];
+        }
+    }
+}

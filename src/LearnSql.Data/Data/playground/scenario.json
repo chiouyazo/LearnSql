@@ -1,0 +1,469 @@
+{
+  "id": "playground",
+  "sortOrder": 3,
+  "title": "Playground: IT-Handelshaus",
+  "description": "Ein IT-Handelshaus mit 19 Tabellen für Stammdaten, Kunden, Mitarbeiter, Aufträge, Rechnungen und Zahlungen.",
+  "schemaResources": [
+    "Base/Schema/01.MasterData.sql",
+    "Base/Schema/02.PersonalData.sql",
+    "Base/Schema/03.MovementData.sql"
+  ],
+  "viewResources": [
+    "Base/Views/ColumnsView.sql",
+    "Base/Views/TablesView.sql"
+  ],
+  "seedResources": [
+    "Data/playground/Seed/01.MasterData.sql",
+    "Data/playground/Seed/02.PersonalData.sql",
+    "Data/playground/Seed/03.MovementData.sql",
+    "Data/playground/Seed/04.ExtensionData.sql"
+  ],
+  "exercises": [
+    {
+      "id": "select-01",
+      "title": "Länderliste",
+      "description": "Zeige Name und ISO2-Code aller Länder alphabetisch nach Name sortiert.",
+      "topic": "Select",
+      "difficulty": "Beginner",
+      "hints": [
+        "Du brauchst nur die Tabelle Country und zwei Spalten.",
+        "Sortiere mit ORDER BY.",
+        "SELECT Name, Iso2 FROM Country ORDER BY Name"
+      ],
+      "solutionSql": "SELECT Name, Iso2 FROM Country ORDER BY Name",
+      "orderMatters": true,
+      "expectedRowCount": 14
+    },
+    {
+      "id": "select-02",
+      "title": "Teuerste Dienstleistungen",
+      "description": "Zeige Name und Nettoverkaufspreis der drei teuersten Artikel, die Dienstleistungen sind (IsService = 1).",
+      "topic": "Select",
+      "difficulty": "Beginner",
+      "hints": [
+        "Filtere zuerst auf Dienstleistungen, sortiere danach nach Preis.",
+        "ORDER BY SalesPriceNet DESC und TOP 3 begrenzen die Ausgabe.",
+        "SELECT TOP 3 Name, SalesPriceNet FROM Item WHERE IsService = 1 ORDER BY SalesPriceNet DESC"
+      ],
+      "solutionSql": "SELECT TOP 3\n    Name,\n    SalesPriceNet\nFROM Item\nWHERE IsService = 1\nORDER BY SalesPriceNet DESC",
+      "orderMatters": true,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "filter-01",
+      "title": "Kreditwürdige Großkunden",
+      "description": "Zeige Firmenname und Kreditlimit aller aktiven, nicht gesperrten Kunden mit einem Kreditlimit von mindestens 50000. Sortiere nach Firmenname.",
+      "topic": "Filtering",
+      "difficulty": "Beginner",
+      "hints": [
+        "Es müssen drei Bedingungen gleichzeitig gelten.",
+        "IsActive und IsBlocked sind BIT-Spalten mit den Werten 0 und 1.",
+        "WHERE IsActive = 1 AND IsBlocked = 0 AND CreditLimit >= 50000"
+      ],
+      "solutionSql": "SELECT\n    CompanyName,\n    CreditLimit\nFROM Customer\nWHERE IsActive = 1\n    AND IsBlocked = 0\n    AND CreditLimit >= 50000\nORDER BY CompanyName",
+      "orderMatters": true,
+      "expectedRowCount": 5
+    },
+    {
+      "id": "filter-02",
+      "title": "Mitarbeiter ohne Gehaltsangabe",
+      "description": "Welche Mitarbeiter haben kein Gehalt hinterlegt? Zeige Vorname, Nachname und Telefon.",
+      "topic": "Filtering",
+      "difficulty": "Beginner",
+      "hints": [
+        "Ein fehlendes Gehalt ist NULL.",
+        "Verwende IS NULL statt = NULL.",
+        "WHERE Salary IS NULL"
+      ],
+      "solutionSql": "SELECT\n    FirstName,\n    LastName,\n    Phone\nFROM Employee\nWHERE Salary IS NULL",
+      "orderMatters": false,
+      "expectedRowCount": 2
+    },
+    {
+      "id": "filter-03",
+      "title": "Bestellungen ohne Ansprechpartner",
+      "description": "Zeige Bestellnummer und Bestelldatum aller Bestellungen, bei denen kein Ansprechpartner (ContactId) erfasst wurde, sortiert nach Bestelldatum.",
+      "topic": "Filtering",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Gesucht sind Bestellungen, bei denen ContactId fehlt.",
+        "Filtere mit IS NULL, sortiere nach OrderDate.",
+        "WHERE ContactId IS NULL ORDER BY OrderDate"
+      ],
+      "solutionSql": "SELECT\n    OrderNo,\n    OrderDate\nFROM Orders\nWHERE ContactId IS NULL\nORDER BY OrderDate",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "filter-04",
+      "title": "Rechnungen ohne Leistungsdatum",
+      "description": "Zeige Rechnungsnummer und Status aller Rechnungen, die kein Leistungsdatum (ServiceDate) haben und keine Gutschrift sind.",
+      "topic": "Filtering",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Zwei Bedingungen: ServiceDate fehlt und IsCreditNote ist 0.",
+        "Kombiniere IS NULL mit AND.",
+        "WHERE ServiceDate IS NULL AND IsCreditNote = 0"
+      ],
+      "solutionSql": "SELECT\n    InvoiceNo,\n    Status\nFROM Invoice\nWHERE ServiceDate IS NULL\n    AND IsCreditNote = 0",
+      "orderMatters": false,
+      "expectedRowCount": 2
+    },
+    {
+      "id": "join-01",
+      "title": "Bestellung, Kunde und Sachbearbeiter",
+      "description": "Zeige Bestellnummer, Firmenname des Kunden und Nachname des zuständigen Mitarbeiters für alle Bestellungen, sortiert nach Bestellnummer.",
+      "topic": "Joins",
+      "difficulty": "Beginner",
+      "hints": [
+        "Orders verweist mit CustomerId auf Customer und mit EmployeeId auf Employee.",
+        "Zwei INNER JOINs hintereinander.",
+        "INNER JOIN Customer c ON c.Id = o.CustomerId INNER JOIN Employee e ON e.Id = o.EmployeeId"
+      ],
+      "solutionSql": "SELECT\n    o.OrderNo,\n    c.CompanyName,\n    e.LastName\nFROM Orders o\nINNER JOIN Customer c ON c.Id = o.CustomerId\nINNER JOIN Employee e ON e.Id = o.EmployeeId\nORDER BY o.OrderNo",
+      "orderMatters": true,
+      "expectedRowCount": 30
+    },
+    {
+      "id": "join-02",
+      "title": "Kunden ohne Aufträge",
+      "description": "Welche Kunden haben noch keine Bestellung? Zeige den Firmennamen, sortiert alphabetisch.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Du musst auch Kunden ohne Bestellung behalten.",
+        "LEFT JOIN von Customer auf Orders, dann nach fehlendem Partner filtern.",
+        "WHERE o.Id IS NULL"
+      ],
+      "solutionSql": "SELECT c.CompanyName\nFROM Customer c\nLEFT JOIN Orders o ON o.CustomerId = c.Id\nWHERE o.Id IS NULL\nORDER BY c.CompanyName",
+      "orderMatters": true,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "join-03",
+      "title": "Artikelgruppen mit Obergruppe",
+      "description": "Zeige jede Artikelgruppe mit dem Namen ihrer Obergruppe (ParentName). Gruppen ohne Obergruppe sollen mit NULL erscheinen. Sortiere nach Id der Gruppe.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Die Tabelle ItemGroup verweist auf sich selbst (ParentGroupId).",
+        "Verbinde die Tabelle mit sich selbst und verwende zwei verschiedene Aliase. Ein LEFT JOIN behält Gruppen ohne Obergruppe.",
+        "FROM ItemGroup g LEFT JOIN ItemGroup parent ON parent.Id = g.ParentGroupId"
+      ],
+      "solutionSql": "SELECT\n    g.Name,\n    parent.Name AS ParentName\nFROM ItemGroup g\nLEFT JOIN ItemGroup parent ON parent.Id = g.ParentGroupId\nORDER BY g.Id",
+      "orderMatters": true,
+      "expectedRowCount": 10
+    },
+    {
+      "id": "join-04",
+      "title": "Rechnungen ohne Zahlung",
+      "description": "Zeige Rechnungsnummer und Status aller Rechnungen, zu denen keine Zahlung erfasst wurde, sortiert nach Rechnungsnummer.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Wieder fehlt der passende Eintrag in der anderen Tabelle.",
+        "LEFT JOIN von Invoice auf Payment.",
+        "WHERE p.Id IS NULL"
+      ],
+      "solutionSql": "SELECT\n    i.InvoiceNo,\n    i.Status\nFROM Invoice i\nLEFT JOIN Payment p ON p.InvoiceId = i.Id\nWHERE p.Id IS NULL\nORDER BY i.InvoiceNo",
+      "orderMatters": true,
+      "expectedRowCount": 8
+    },
+    {
+      "id": "agg-01",
+      "title": "Aufträge je Mitarbeiter",
+      "description": "Zeige Nachname und Anzahl der Bestellungen (OrderCount) für Mitarbeiter mit mindestens 4 Bestellungen. Sortiere nach Anzahl absteigend, dann nach Nachname.",
+      "topic": "Aggregation",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Gruppiere die Bestellungen nach Mitarbeiter.",
+        "Bedingungen auf COUNT(*) gehören in HAVING.",
+        "GROUP BY e.Id, e.LastName HAVING COUNT(*) >= 4"
+      ],
+      "solutionSql": "SELECT\n    e.LastName,\n    COUNT(*) AS OrderCount\nFROM Employee e\nINNER JOIN Orders o ON o.EmployeeId = e.Id\nGROUP BY e.Id, e.LastName\nHAVING COUNT(*) >= 4\nORDER BY OrderCount DESC, e.LastName",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "agg-02",
+      "title": "Umsatz je Kunde",
+      "description": "Berechne je Kunde die Summe der Nettobeträge (NetTotal, gerundet auf 2 Stellen) aller Rechnungen, die weder storniert noch Entwurf sind. Gutschriften zählen mit negativem Betrag mit. Zeige die fünf besten Kunden, höchster Umsatz zuerst.",
+      "topic": "Aggregation",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Filtere zuerst die Rechnungsstatus, dann gruppiere pro Kunde.",
+        "WHERE Status <> 'Cancelled' AND Status <> 'Draft', danach SUM(TotalNet).",
+        "SELECT TOP 5 mit ORDER BY NetTotal DESC"
+      ],
+      "solutionSql": "SELECT TOP 5\n    c.CompanyName,\n    ROUND(SUM(i.TotalNet), 2) AS NetTotal\nFROM Invoice i\nINNER JOIN Customer c ON c.Id = i.CustomerId\nWHERE i.Status <> 'Cancelled'\n    AND i.Status <> 'Draft'\nGROUP BY c.Id, c.CompanyName\nORDER BY NetTotal DESC",
+      "orderMatters": true,
+      "expectedRowCount": 5
+    },
+    {
+      "id": "agg-03",
+      "title": "Offene Posten",
+      "description": "Zeige für alle nicht stornierten Rechnungen im Status Issued oder PartiallyPaid (keine Gutschriften) die Rechnungsnummer, den Bruttobetrag, die gezahlte Summe (Paid, ohne Zahlungen 0) und den Restbetrag (Remaining). Runde Paid und Remaining auf 2 Stellen. Sortiere nach Restbetrag absteigend.",
+      "topic": "Aggregation",
+      "difficulty": "Advanced",
+      "hints": [
+        "Rechnungen ohne Zahlung müssen erhalten bleiben.",
+        "LEFT JOIN auf Payment und COALESCE(SUM(p.Amount), 0).",
+        "Der Restbetrag ist i.TotalGross - COALESCE(SUM(p.Amount), 0), gruppiert nach Rechnung."
+      ],
+      "solutionSql": "SELECT\n    i.InvoiceNo,\n    i.TotalGross,\n    ROUND(COALESCE(SUM(p.Amount), 0), 2) AS Paid,\n    ROUND(i.TotalGross - COALESCE(SUM(p.Amount), 0), 2) AS Remaining\nFROM Invoice i\nLEFT JOIN Payment p ON p.InvoiceId = i.Id\nWHERE i.IsCreditNote = 0\n    AND i.Status IN ('Issued', 'PartiallyPaid')\nGROUP BY i.Id, i.InvoiceNo, i.TotalGross\nORDER BY Remaining DESC",
+      "orderMatters": true,
+      "expectedRowCount": 6
+    },
+    {
+      "id": "sub-01",
+      "title": "Kunden mit offener Rechnung",
+      "description": "Zeige den Firmennamen aller Kunden, die mindestens eine Rechnung im Status Issued oder PartiallyPaid haben, ohne Join. Sortiere alphabetisch.",
+      "topic": "Subqueries",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Suche zuerst die Kunden-Ids in der Rechnungstabelle.",
+        "IN mit einer Unterabfrage auf Invoice.",
+        "WHERE Id IN (SELECT CustomerId FROM Invoice WHERE Status IN ('Issued', 'PartiallyPaid'))"
+      ],
+      "solutionSql": "SELECT CompanyName\nFROM Customer\nWHERE Id IN (\n    SELECT CustomerId\n    FROM Invoice\n    WHERE Status IN ('Issued', 'PartiallyPaid')\n)\nORDER BY CompanyName",
+      "orderMatters": true,
+      "expectedRowCount": 6
+    },
+    {
+      "id": "sub-02",
+      "title": "Über dem Gruppendurchschnitt",
+      "description": "Zeige Artikelname, Preis und Gruppenname aller Artikel, die teurer sind als der Durchschnittspreis ihrer eigenen Artikelgruppe. Sortiere nach Gruppenname und Artikelname.",
+      "topic": "Subqueries",
+      "difficulty": "Advanced",
+      "hints": [
+        "Der Vergleichswert hängt von der jeweiligen Zeile ab (korrelierte Unterabfrage).",
+        "Die Unterabfrage berechnet den Durchschnitt der Artikel mit derselben ItemGroupId.",
+        "WHERE i.SalesPriceNet > (SELECT AVG(i2.SalesPriceNet) FROM Item i2 WHERE i2.ItemGroupId = i.ItemGroupId)"
+      ],
+      "solutionSql": "SELECT\n    i.Name,\n    i.SalesPriceNet,\n    g.Name AS GroupName\nFROM Item i\nINNER JOIN ItemGroup g ON g.Id = i.ItemGroupId\nWHERE i.SalesPriceNet > (\n    SELECT AVG(i2.SalesPriceNet)\n    FROM Item i2\n    WHERE i2.ItemGroupId = i.ItemGroupId\n)\nORDER BY g.Name, i.Name",
+      "orderMatters": true,
+      "expectedRowCount": 11
+    },
+    {
+      "id": "win-01",
+      "title": "Bestellungen nummerieren",
+      "description": "Nummeriere die Bestellungen jedes Kunden chronologisch (Seq). Zeige Bestellnummer, Kunden-Id, Bestelldatum und Seq. Sortiere nach Kunden-Id und Bestelldatum.",
+      "topic": "WindowFunctions",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Du brauchst eine laufende Nummer, die für jeden Kunden neu bei 1 beginnt.",
+        "ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)",
+        "ROW_NUMBER() OVER (PARTITION BY CustomerId ORDER BY OrderDate, Id) AS Seq"
+      ],
+      "solutionSql": "SELECT\n    OrderNo,\n    CustomerId,\n    OrderDate,\n    ROW_NUMBER() OVER (\n        PARTITION BY CustomerId\n        ORDER BY OrderDate, Id\n    ) AS Seq\nFROM Orders\nORDER BY CustomerId, OrderDate",
+      "orderMatters": true,
+      "expectedRowCount": 30
+    },
+    {
+      "id": "win-02",
+      "title": "Kumulierter Umsatz",
+      "description": "Zeige für alle Ausgangsrechnungen (keine Gutschriften, weder storniert noch Entwurf) Rechnungsnummer, Datum, Nettobetrag und den laufenden Gesamtumsatz (Running, auf 2 Stellen gerundet), sortiert nach Datum und Id.",
+      "topic": "WindowFunctions",
+      "difficulty": "Advanced",
+      "hints": [
+        "Ein laufender Wert ist eine Summe über alle Zeilen bis zur aktuellen.",
+        "SUM(...) OVER (ORDER BY ...) ohne PARTITION BY summiert fortlaufend.",
+        "ROUND(SUM(TotalNet) OVER (ORDER BY InvoiceDate, Id), 2) AS Running"
+      ],
+      "solutionSql": "SELECT\n    InvoiceNo,\n    InvoiceDate,\n    TotalNet,\n    ROUND(SUM(TotalNet) OVER (ORDER BY InvoiceDate, Id), 2) AS Running\nFROM Invoice\nWHERE IsCreditNote = 0\n    AND Status NOT IN ('Cancelled', 'Draft')\nORDER BY InvoiceDate, Id",
+      "orderMatters": true,
+      "expectedRowCount": 28
+    },
+    {
+      "id": "win-03",
+      "title": "Rangliste der Kunden",
+      "description": "Berechne den Rang (Rnk) der Kunden nach Netto-Umsatz aus Rechnungen (keine Gutschriften, weder storniert noch Entwurf). Zeige Firmenname, Umsatz (Net, gerundet auf 2 Stellen) und Rang, sortiert nach Rang.",
+      "topic": "WindowFunctions",
+      "difficulty": "Advanced",
+      "hints": [
+        "Gruppiere zuerst pro Kunde, vergib danach den Rang.",
+        "RANK() OVER (ORDER BY SUM(i.TotalNet) DESC) kann Aggregate verwenden.",
+        "GROUP BY c.Id, c.CompanyName, dann ORDER BY Rnk"
+      ],
+      "solutionSql": "SELECT\n    c.CompanyName,\n    ROUND(SUM(i.TotalNet), 2) AS Net,\n    RANK() OVER (ORDER BY SUM(i.TotalNet) DESC) AS Rnk\nFROM Invoice i\nINNER JOIN Customer c ON c.Id = i.CustomerId\nWHERE i.IsCreditNote = 0\n    AND i.Status NOT IN ('Cancelled', 'Draft')\nGROUP BY c.Id, c.CompanyName\nORDER BY Rnk, c.CompanyName",
+      "orderMatters": true,
+      "expectedRowCount": 12
+    },
+    {
+      "id": "win-04",
+      "title": "Vergleich mit der Vorgängerrechnung",
+      "description": "Zeige für jede Ausgangsrechnung (keine Gutschriften, weder storniert noch Entwurf) Rechnungsnummer, Kunden-Id, Nettobetrag und den Nettobetrag der vorherigen Rechnung desselben Kunden (Previous, NULL bei der ersten). Sortiere nach Kunden-Id, Datum und Id.",
+      "topic": "WindowFunctions",
+      "difficulty": "Advanced",
+      "hints": [
+        "Du suchst den Wert der vorherigen Zeile innerhalb einer Gruppe.",
+        "LAG(Spalte) OVER (PARTITION BY ... ORDER BY ...)",
+        "LAG(TotalNet) OVER (PARTITION BY CustomerId ORDER BY InvoiceDate, Id) AS Previous"
+      ],
+      "solutionSql": "SELECT\n    InvoiceNo,\n    CustomerId,\n    TotalNet,\n    LAG(TotalNet) OVER (\n        PARTITION BY CustomerId\n        ORDER BY InvoiceDate, Id\n    ) AS Previous\nFROM Invoice\nWHERE IsCreditNote = 0\n    AND Status NOT IN ('Cancelled', 'Draft')\nORDER BY CustomerId, InvoiceDate, Id",
+      "orderMatters": true,
+      "expectedRowCount": 28
+    }
+  ],
+  "guidedScenarios": [
+    {
+      "id": "invoices-and-payments",
+      "title": "Rechnungen und Zahlungen",
+      "description": "Du verfolgst den Weg vom Kunden über die Rechnung bis zur Zahlung. Dabei lernst du, Gutschriften zu erkennen, Rechnungen ohne Zahlung mit LEFT JOIN zu finden und offene Posten zu berechnen. Alle Schritte sind rein lesend.",
+      "topic": "Joins",
+      "requiresFreshDatabase": false,
+      "steps": [
+        {
+          "id": "invoices-and-payments-01",
+          "title": "Die neuesten Rechnungen mit Kundennamen",
+          "sql": "SELECT TOP 5\n    i.InvoiceNo,\n    c.CompanyName,\n    i.InvoiceDate,\n    i.TotalNet\nFROM Invoice i\nINNER JOIN Customer c ON c.Id = i.CustomerId\nORDER BY i.InvoiceDate DESC, i.InvoiceNo DESC;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Die Rechnung kennt nur die CustomerId. Ein INNER JOIN holt den Firmennamen, ORDER BY mit TOP zeigt die jüngsten Rechnungen.",
+            "parts": [
+              {
+                "fragment": "INNER JOIN Customer c ON c.Id = i.CustomerId",
+                "explanation": "Ordnet jeder Rechnung den Kunden zu."
+              },
+              {
+                "fragment": "ORDER BY i.InvoiceDate DESC, i.InvoiceNo DESC",
+                "explanation": "Neueste zuerst. Die Rechnungsnummer entscheidet bei gleichem Datum."
+              },
+              {
+                "fragment": "TOP 5",
+                "explanation": "Begrenzt auf fünf Zeilen."
+              }
+            ]
+          },
+          "resultExplanation": "Die jüngste Rechnung ist INV-2026-0013 vom 2026-11-03 für die Stadt Bremerhaven über 10.242,00 netto. Darunter folgen vier weitere Rechnungen bis zum 2026-07-31.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 5,
+          "expectsError": false
+        },
+        {
+          "id": "invoices-and-payments-02",
+          "title": "Gutschriften erkennen",
+          "sql": "SELECT\n    InvoiceNo,\n    TotalNet,\n    OriginalInvoiceId,\n    CreditNoteReason\nFROM Invoice\nWHERE IsCreditNote = 1;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Gutschriften liegen in derselben Tabelle wie Rechnungen. Das Flag IsCreditNote unterscheidet sie, und der Betrag ist negativ.",
+            "parts": [
+              {
+                "fragment": "WHERE IsCreditNote = 1",
+                "explanation": "Behält nur Gutschriften. IsCreditNote ist eine BIT-Spalte mit 0 oder 1."
+              },
+              {
+                "fragment": "OriginalInvoiceId",
+                "explanation": "Verweist auf die Rechnung, die korrigiert wird."
+              }
+            ]
+          },
+          "resultExplanation": "2 Gutschriften: CN-2025-0001 über -449,00 (Rechnung 10, defekter Monitor) und CN-2026-0001 über -1.708,20 (Rechnung 15, Transportschaden).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 2,
+          "expectsError": false
+        },
+        {
+          "id": "invoices-and-payments-03",
+          "title": "Rechnungen ohne Zahlung finden",
+          "sql": "SELECT\n    i.InvoiceNo,\n    i.Status\nFROM Invoice i\nLEFT JOIN Payment p ON p.InvoiceId = i.Id\nWHERE p.Id IS NULL\nORDER BY i.InvoiceNo;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "LEFT JOIN behält jede Rechnung, auch ohne Zahlung. Wo keine Zahlung existiert, sind die Spalten von Payment NULL.",
+            "parts": [
+              {
+                "fragment": "LEFT JOIN Payment p ON p.InvoiceId = i.Id",
+                "explanation": "Alle Rechnungen bleiben, passende Zahlungen werden angehängt."
+              },
+              {
+                "fragment": "WHERE p.Id IS NULL",
+                "explanation": "Nur Rechnungen ohne Zahlung bleiben übrig."
+              }
+            ]
+          },
+          "resultExplanation": "8 Rechnungen haben keine Zahlung. Darunter sind beide Gutschriften, die stornierte Rechnung INV-2026-0005, der Entwurf INV-2026-0013 und vier offene Rechnungen im Status Issued.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 8,
+          "expectsError": false
+        },
+        {
+          "id": "invoices-and-payments-04",
+          "title": "Zahlungen je Rechnung summieren",
+          "sql": "SELECT\n    i.InvoiceNo,\n    i.Status,\n    ROUND(COALESCE(SUM(p.Amount), 0), 2) AS Paid,\n    COUNT(p.Id) AS Payments\nFROM Invoice i\nLEFT JOIN Payment p ON p.InvoiceId = i.Id\nWHERE i.Status IN ('PartiallyPaid', 'Issued')\n    AND i.IsCreditNote = 0\nGROUP BY i.Id, i.InvoiceNo, i.Status\nORDER BY i.InvoiceNo;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Beim LEFT JOIN mit Gruppierung ergibt SUM bei fehlenden Zahlungen NULL. COALESCE macht daraus 0. COUNT(p.Id) zählt nur echte Zahlungen.",
+            "parts": [
+              {
+                "fragment": "SUM(p.Amount)",
+                "explanation": "Summe aller Zahlungen einer Rechnung. Ohne Zahlungen ist das Ergebnis NULL."
+              },
+              {
+                "fragment": "COALESCE(..., 0)",
+                "explanation": "Ersetzt NULL durch 0."
+              },
+              {
+                "fragment": "COUNT(p.Id)",
+                "explanation": "Zählt nur Zeilen, in denen p.Id nicht NULL ist. COUNT(*) würde auch bei fehlender Zahlung 1 liefern."
+              }
+            ]
+          },
+          "resultExplanation": "6 Rechnungen sind noch nicht vollständig bezahlt. Bei INV-2026-0008 sind 2.304,00 eingegangen, bei INV-2026-0015 1.326,00, die übrigen vier haben Paid 0 und Payments 0.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 6,
+          "expectsError": false
+        },
+        {
+          "id": "invoices-and-payments-05",
+          "title": "Offene Posten berechnen",
+          "sql": "SELECT\n    i.InvoiceNo,\n    i.TotalGross,\n    ROUND(COALESCE(SUM(p.Amount), 0), 2) AS Paid,\n    ROUND(i.TotalGross - COALESCE(SUM(p.Amount), 0), 2) AS Remaining\nFROM Invoice i\nLEFT JOIN Payment p ON p.InvoiceId = i.Id\nWHERE i.IsCreditNote = 0\n    AND i.Status IN ('Issued', 'PartiallyPaid')\nGROUP BY i.Id, i.InvoiceNo, i.TotalGross\nORDER BY Remaining DESC;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Der Restbetrag ist der Bruttobetrag minus die gezahlte Summe. Die Subtraktion steht außerhalb von SUM, weil sie erst nach dem Gruppieren gerechnet wird.",
+            "parts": [
+              {
+                "fragment": "i.TotalGross",
+                "explanation": "Eine berechnete Spalte der Tabelle Invoice (Netto plus Steuer). Sie muss im GROUP BY stehen, weil sie nicht aggregiert wird."
+              },
+              {
+                "fragment": "i.TotalGross - COALESCE(SUM(p.Amount), 0)",
+                "explanation": "Rest = Brutto minus Zahlungen."
+              },
+              {
+                "fragment": "ORDER BY Remaining DESC",
+                "explanation": "Der höchste offene Betrag steht oben."
+              }
+            ]
+          },
+          "resultExplanation": "Insgesamt 6 offene Posten. Der größte ist INV-2026-0010 (Maison Delacroix) mit 2.958,00, danach INV-2026-0007 (Vandermeer) mit 2.754,00 und INV-2026-0008 (Lumen, teilweise bezahlt) mit 2.304,00.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 6,
+          "expectsError": false
+        },
+        {
+          "id": "invoices-and-payments-06",
+          "title": "Umsatz je Kunde",
+          "sql": "SELECT TOP 5\n    c.CompanyName,\n    COUNT(*) AS Invoices,\n    ROUND(SUM(i.TotalNet), 2) AS NetTotal\nFROM Invoice i\nINNER JOIN Customer c ON c.Id = i.CustomerId\nWHERE i.Status <> 'Cancelled'\n    AND i.Status <> 'Draft'\nGROUP BY c.Id, c.CompanyName\nORDER BY NetTotal DESC;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Die Rechnungen werden je Kunde summiert und nach Umsatz sortiert. Stornierte Rechnungen und Entwürfe zählen nicht mit, Gutschriften mindern den Umsatz.",
+            "parts": [
+              {
+                "fragment": "WHERE i.Status <> 'Cancelled' AND i.Status <> 'Draft'",
+                "explanation": "Schließt stornierte Rechnungen und Entwürfe aus."
+              },
+              {
+                "fragment": "SUM(i.TotalNet)",
+                "explanation": "Netto-Umsatz je Kunde. Gutschriften haben negative Beträge und werden daher abgezogen."
+              }
+            ]
+          },
+          "resultExplanation": "Nordwind Energie GmbH führt mit 93.004,72 aus 5 Rechnungen, gefolgt von der Stadt Bremerhaven (45.552,20 nach Abzug der Gutschrift), Harbor Logistics (25.860,60), Redwood Analytics (20.966,04) und Brandt Maschinenbau (20.176,70).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 5,
+          "expectsError": false
+        }
+      ]
+    }
+  ]
+}

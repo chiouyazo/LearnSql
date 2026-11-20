@@ -1,0 +1,16 @@
+.error-text {
+    margin: 0.25rem 0 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.error-sql {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+::deep .mud-alert-message {
+    width: 100%;
+}

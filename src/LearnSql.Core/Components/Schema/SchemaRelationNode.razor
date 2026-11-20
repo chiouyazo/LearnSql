@@ -1,0 +1,50 @@
+<li role="treeitem" aria-expanded="@(Expanded ? "true" : "false")" class="schema-node">
+    <div class="schema-node-row">
+        <button type="button" class="schema-toggle" @onclick="() => OnToggle.InvokeAsync(Relation.Name)"
+                aria-label="@(Expanded ? L["Collapse", Relation.Name] : L["Expand", Relation.Name])">
+            <MudIcon Icon="@(Expanded ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.ChevronRight)" Size="Size.Small"/>
+        </button>
+        <button type="button" class="schema-name" @onclick="() => OnInsert.InvokeAsync(Quoted(Relation.Name))"
+                title="@L["InsertName", Relation.Name]">
+            <MudIcon Icon="@RelationIcon" Size="Size.Small" Class="schema-kind"/>
+            <span class="schema-name-text">@Relation.Name</span>
+        </button>
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Dense="true"
+                 aria-label="@L["RelationActions", Relation.Name]" AnchorOrigin="Origin.BottomRight"
+                 TransformOrigin="Origin.TopRight">
+            <MudMenuItem OnClick="() => OnInsert.InvokeAsync(Quoted(Relation.Name))">@L["InsertNameAction"]</MudMenuItem>
+            <MudMenuItem OnClick="() => OnInsert.InvokeAsync(SelectTop)">@L["InsertSelectTop"]</MudMenuItem>
+        </MudMenu>
+    </div>
+    @if (Expanded)
+    {
+        <ul role="group" class="schema-columns">
+            @foreach (ColumnSchema column in Relation.Columns)
+            {
+                ColumnSchema item = column;
+                ForeignKeySchema? key = ForeignKeyOf(item);
+                <li role="treeitem">
+                    <button type="button" class="schema-column" @onclick="() => OnInsert.InvokeAsync(Quoted(item.Name))"
+                            title="@ColumnTooltip(item, key)">
+                        @if (item.IsPrimaryKey)
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Key" Size="Size.Small" Color="Color.Warning"
+                                     title="@L["PrimaryKey"]"/>
+                        }
+                        else if (key is not null)
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" Color="Color.Info"
+                                     title="@L["ForeignKey"]"/>
+                        }
+                        else
+                        {
+                            <span class="schema-icon-gap"></span>
+                        }
+                        <span class="schema-column-name">@item.Name</span>
+                        <span class="schema-column-type">@item.DeclaredType@(item.IsNullable ? null : " " + L["NotNull"])</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    }
+</li>

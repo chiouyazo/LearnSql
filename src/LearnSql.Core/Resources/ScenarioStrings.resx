@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LabelTables" xml:space="preserve">
+    <value>Tabellen</value>
+  </data>
+  <data name="LabelViews" xml:space="preserve">
+    <value>Sichten</value>
+  </data>
+  <data name="LabelExercises" xml:space="preserve">
+    <value>Aufgaben</value>
+  </data>
+  <data name="LabelGuided" xml:space="preserve">
+    <value>Geführte Beispiele</value>
+  </data>
+  <data name="InfoDatabaseTitle" xml:space="preserve">
+    <value>Datenbank</value>
+  </data>
+  <data name="InfoLearningTitle" xml:space="preserve">
+    <value>Lernangebot</value>
+  </data>
+  <data name="InfoNoLearning" xml:space="preserve">
+    <value>Für dieses Szenario gibt es noch keine Aufgaben und keine geführten Beispiele.</value>
+  </data>
+  <data name="InfoLearningHint" xml:space="preserve">
+    <value>Die Aufgaben findest du im Reiter Aufgaben.</value>
+  </data>
+  <data name="InfoSchemaFailed" xml:space="preserve">
+    <value>Das Schema konnte nicht gelesen werden.</value>
+  </data>
+  <data name="TabScenario" xml:space="preserve">
+    <value>Szenario</value>
+  </data>
+  <data name="HidePanel" xml:space="preserve">
+    <value>Lernbereich ausblenden</value>
+  </data>
+  <data name="ShowPanel" xml:space="preserve">
+    <value>Lernbereich einblenden</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Szenario nicht gefunden</value>
+  </data>
+  <data name="NotFoundText" xml:space="preserve">
+    <value>Das Szenario "{0}" gibt es nicht. Wähle ein vorhandenes Szenario in der Seitenleiste.</value>
+  </data>
+  <data name="NotFoundBack" xml:space="preserve">
+    <value>Zur Startseite</value>
+  </data>
+  <data name="PanelRegion" xml:space="preserve">
+    <value>Lernbereich</value>
+  </data>
+</root>

@@ -1,0 +1,40 @@
+@using LearnSql.Core.Services.Scenarios
+@implements IDisposable
+@inject IAppSession Session
+@inject IScenarioTextProvider Texts
+@inject IStringLocalizer<WorkspaceStrings> L
+
+<div class="dataset-menu">
+    <span class="dataset-menu-label" id="dataset-menu-label">@L["DatasetLabel"]</span>
+    <MudMenu Disabled="@(Session.Phase == AppPhase.Loading)" Dense="true" AnchorOrigin="Origin.BottomLeft"
+             TransformOrigin="Origin.TopLeft" Variant="Variant.Text" Size="Size.Small"
+             StartIcon="@Icons.Material.Filled.Storage" EndIcon="@Icons.Material.Filled.ArrowDropDown"
+             Label="@Texts.GetTitle(Session.Scenario)" aria-labelledby="dataset-menu-label"
+             Class="dataset-menu-button">
+        @foreach (ScenarioDefinition scenario in Session.Scenarios)
+        {
+            ScenarioDefinition target = scenario;
+            <MudMenuItem OnClick="() => Session.SwitchScenarioAsync(target.Id)"
+                         Icon="@(target.Id == Session.Scenario.Id ? Icons.Material.Filled.Check : null)">
+                @Texts.GetTitle(target)
+            </MudMenuItem>
+        }
+    </MudMenu>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Session.StateChanged += OnStateChanged;
+    }
+
+    public void Dispose()
+    {
+        Session.StateChanged -= OnStateChanged;
+    }
+
+    private void OnStateChanged(object? sender, EventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

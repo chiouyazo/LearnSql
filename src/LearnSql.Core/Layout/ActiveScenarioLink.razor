@@ -1,0 +1,31 @@
+@using LearnSql.Core.Services.Navigation
+@using LearnSql.Core.Services.Scenarios
+@implements IDisposable
+@inject IAppSession Session
+@inject IScenarioTextProvider Texts
+@inject IStringLocalizer<AppStrings> L
+
+<div class="active-scenario-host">
+    <MudButton Href="@ScenarioRoutes.Path(Session.Scenario.Id)" Variant="Variant.Text" Color="Color.Inherit" Size="Size.Small"
+               StartIcon="@Icons.Material.Filled.Storage" Class="active-scenario ms-3"
+               aria-label="@L["ActiveScenarioLink", Texts.GetTitle(Session.Scenario)]">
+        <span class="active-scenario-text">@Texts.GetTitle(Session.Scenario)</span>
+    </MudButton>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Session.StateChanged += OnStateChanged;
+    }
+
+    public void Dispose()
+    {
+        Session.StateChanged -= OnStateChanged;
+    }
+
+    private void OnStateChanged(object? sender, EventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

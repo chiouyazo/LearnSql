@@ -1,0 +1,68 @@
+@using LearnSql.Core.Services.Results
+<div class="result-grid-wrapper">
+    <div class="result-grid-bar">
+        <MudText Class="text-muted" Typo="Typo.caption">
+            @L["GridSummary", ResultSet.Rows.Count, ResultSet.Columns.Count]
+        </MudText>
+        @if (ResultSet.Truncated)
+        {
+            <MudChip T="string" Size="Size.Small" Color="Color.Warning" Variant="Variant.Outlined"
+                     Icon="@Icons.Material.Filled.Info">
+                @L["GridTruncated", ResultSet.Rows.Count]
+            </MudChip>
+        }
+        <MudSpacer/>
+        <MudButton Size="Size.Small" Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Download"
+                   Disabled="@(ResultSet.Rows.Count == 0)" OnClick="ExportAsync">
+            @L["ExportCsv"]
+        </MudButton>
+    </div>
+
+    <div class="rg" role="grid" aria-rowcount="@(ResultSet.Rows.Count + 1)" aria-colcount="@(ResultSet.Columns.Count + 1)"
+         style="@GridStyle" tabindex="0" aria-label="@L["GridAriaLabel"]">
+        <div class="rg-inner">
+            <div class="rg-row rg-head" role="row">
+                <div class="rg-cell rg-index" role="columnheader">#</div>
+                @for (int column = 0; column < ResultSet.Columns.Count; column++)
+                {
+                    int index = column;
+                    ResultColumn definition = ResultSet.Columns[index];
+                    <div class="rg-cell rg-header-cell @(_numeric[index] ? "rg-num" : null)" role="columnheader"
+                         aria-sort="@AriaSort(index)">
+                        <button type="button" class="rg-sort" @onclick="() => ToggleSort(index)"
+                                title="@L["GridSortTooltip", definition.Name]">
+                            <span class="rg-column-name">@definition.Name</span>
+                            @if (_sortColumn == index)
+                            {
+                                <MudIcon Icon="@(_direction == ResultSortDirection.Ascending ? Icons.Material.Filled.ArrowUpward : Icons.Material.Filled.ArrowDownward)"
+                                         Size="Size.Small"/>
+                            }
+                        </button>
+                        @if (!string.IsNullOrEmpty(definition.TypeName))
+                        {
+                            <span class="rg-type">@definition.TypeName</span>
+                        }
+                    </div>
+                }
+            </div>
+            <Virtualize Items="_order" Context="rowIndex" ItemSize="28" OverscanCount="8">
+                <div class="rg-row" role="row" aria-rowindex="@(rowIndex + 2)">
+                    <div class="rg-cell rg-index" role="rowheader">@(rowIndex + 1)</div>
+                    @for (int column = 0; column < ResultSet.Columns.Count; column++)
+                    {
+                        object? value = ResultSet.Rows[rowIndex][column];
+                        @if (value is null)
+                        {
+                            <div class="rg-cell" role="gridcell"><span class="rg-null">@CellFormatter.NullText</span></div>
+                        }
+                        else
+                        {
+                            string text = CellFormatter.Format(value);
+                            <div class="rg-cell @(_numeric[column] ? "rg-num" : null)" role="gridcell" title="@text">@text</div>
+                        }
+                    }
+                </div>
+            </Virtualize>
+        </div>
+    </div>
+</div>

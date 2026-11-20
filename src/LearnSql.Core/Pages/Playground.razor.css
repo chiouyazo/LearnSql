@@ -1,0 +1,10 @@
+.playground {
+    height: calc(100vh - var(--mud-appbar-height) - 2rem);
+    min-height: 28rem;
+}
+
+@media (max-width: 900px) {
+    .playground {
+        height: auto;
+    }
+}

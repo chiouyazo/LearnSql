@@ -1,0 +1,20 @@
+.learning-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    background: var(--mud-palette-surface);
+}
+
+.learning-panel ::deep .learning-tabs {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.learning-panel ::deep .learning-tab-panel {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}

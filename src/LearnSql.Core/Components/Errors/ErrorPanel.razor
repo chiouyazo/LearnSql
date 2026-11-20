@@ -1,0 +1,64 @@
+@switch (Error.Kind)
+{
+    case ExecutionErrorKind.Cancelled:
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Cancel" role="status">
+            <MudText Typo="Typo.subtitle2">@L["ErrorCancelledTitle"]</MudText>
+            <MudText Typo="Typo.body2">@L["ErrorCancelledText"]</MudText>
+        </MudAlert>
+        break;
+    case ExecutionErrorKind.Timeout:
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Timer" role="alert">
+            <MudText Typo="Typo.subtitle2">@L["ErrorTimeoutTitle"]</MudText>
+            <MudText Typo="Typo.body2">@L["ErrorTimeoutText"]</MudText>
+            <pre class="error-text">@Error.Message</pre>
+        </MudAlert>
+        break;
+    case ExecutionErrorKind.Rejected:
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Block" role="alert">
+            <MudText Typo="Typo.subtitle2">@L["ErrorRejectedTitle"]</MudText>
+            <MudText Typo="Typo.body2">@L["ErrorRejectedText"]</MudText>
+            <pre class="error-text">@Error.Message</pre>
+        </MudAlert>
+        break;
+    case ExecutionErrorKind.LimitExceeded:
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.DataUsage" role="alert">
+            <MudText Typo="Typo.subtitle2">@L["ErrorLimitTitle"]</MudText>
+            <MudText Typo="Typo.body2">@L["ErrorLimitText"]</MudText>
+            <pre class="error-text">@Error.Message</pre>
+        </MudAlert>
+        break;
+    case ExecutionErrorKind.Internal:
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" role="alert">
+            <MudText Typo="Typo.subtitle2">@L["ErrorInternalTitle"]</MudText>
+            <MudText Typo="Typo.body2">@L["ErrorInternalText"]</MudText>
+            <pre class="error-text">@Error.Message</pre>
+        </MudAlert>
+        break;
+    case ExecutionErrorKind.Diagnostics:
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" role="alert">
+            <MudText Typo="Typo.subtitle2">@L["ErrorDiagnosticsTitle", Diagnostics.Count]</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">@L["ErrorDiagnosticsText"]</MudText>
+            <DiagnosticList Diagnostics="Diagnostics" Origin="Origin" OnNavigate="OnNavigate"/>
+        </MudAlert>
+        break;
+    default:
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" role="alert">
+            <pre class="error-text error-sql">@Error.Display</pre>
+            @if (Error.Origin is not null)
+            {
+                <MudButton Variant="Variant.Text" Size="Size.Small" Color="Color.Error"
+                           StartIcon="@Icons.Material.Filled.MyLocation" OnClick="NavigateToOriginAsync">
+                    @L["ErrorJumpToStatement"]
+                </MudButton>
+            }
+            @if (HasDetail)
+            {
+                <MudExpansionPanels Elevation="0" Class="mt-2">
+                    <MudExpansionPanel Text="@L["TechnicalDetails"]">
+                        <pre class="error-text">@Error.Detail</pre>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            }
+        </MudAlert>
+        break;
+}

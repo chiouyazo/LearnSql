@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ResultsRegion" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="RunQuery" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="CancelRun" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RunningHint" xml:space="preserve">
+    <value>Query is running, Escape cancels</value>
+  </data>
+  <data name="NotReadyHint" xml:space="preserve">
+    <value>The database is being prepared</value>
+  </data>
+  <data name="RollbackTooltip" xml:space="preserve">
+    <value>Roll back all changes of this run after it finished</value>
+  </data>
+  <data name="RollbackLabel" xml:space="preserve">
+    <value>Roll back changes</value>
+  </data>
+  <data name="EmptyNotRun" xml:space="preserve">
+    <value>Nothing has been run yet. Write a query and press Ctrl+Enter.</value>
+  </data>
+  <data name="EmptyNoResultSet" xml:space="preserve">
+    <value>The statement did not return a result set.</value>
+  </data>
+  <data name="ResultTab" xml:space="preserve">
+    <value>Result {0} ({1})</value>
+  </data>
+  <data name="MessagesTab" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="SummarySuccess" xml:space="preserve">
+    <value>Result sets: {0}, rows: {1}</value>
+  </data>
+  <data name="SummaryCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="SummaryTimeout" xml:space="preserve">
+    <value>Timed out</value>
+  </data>
+  <data name="SummaryFailed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="AnnounceRunning" xml:space="preserve">
+    <value>Query is running</value>
+  </data>
+  <data name="GridSummary" xml:space="preserve">
+    <value>Rows: {0}, columns: {1}</value>
+  </data>
+  <data name="GridTruncated" xml:space="preserve">
+    <value>Only the first {0} rows are shown</value>
+  </data>
+  <data name="ExportCsv" xml:space="preserve">
+    <value>Export CSV</value>
+  </data>
+  <data name="GridAriaLabel" xml:space="preserve">
+    <value>Result table</value>
+  </data>
+  <data name="GridSortTooltip" xml:space="preserve">
+    <value>Sort by {0}</value>
+  </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>The export failed.</value>
+  </data>
+  <data name="MessageTruncated" xml:space="preserve">
+    <value>The output is limited to {0} rows. More rows exist.</value>
+  </data>
+  <data name="MessageRolledBack" xml:space="preserve">
+    <value>The changes of this run were rolled back.</value>
+  </data>
+  <data name="MessageHints" xml:space="preserve">
+    <value>Notes on the query</value>
+  </data>
+  <data name="DiagnosticsAriaLabel" xml:space="preserve">
+    <value>Problems in the query</value>
+  </data>
+  <data name="DiagnosticJumpTooltip" xml:space="preserve">
+    <value>Jump to the location in the editor</value>
+  </data>
+  <data name="DiagnosticPosition" xml:space="preserve">
+    <value>Line {0}, column {1}</value>
+  </data>
+  <data name="ErrorCancelledTitle" xml:space="preserve">
+    <value>Execution cancelled</value>
+  </data>
+  <data name="ErrorCancelledText" xml:space="preserve">
+    <value>You cancelled the execution. The database remains usable.</value>
+  </data>
+  <data name="ErrorTimeoutTitle" xml:space="preserve">
+    <value>Time limit exceeded</value>
+  </data>
+  <data name="ErrorTimeoutText" xml:space="preserve">
+    <value>The query took too long and was stopped. Check JOIN conditions, recursive queries and missing filters.</value>
+  </data>
+  <data name="ErrorRejectedTitle" xml:space="preserve">
+    <value>Statement not allowed</value>
+  </data>
+  <data name="ErrorRejectedText" xml:space="preserve">
+    <value>This statement is not allowed in this environment and was not executed.</value>
+  </data>
+  <data name="ErrorLimitTitle" xml:space="preserve">
+    <value>Limit exceeded</value>
+  </data>
+  <data name="ErrorLimitText" xml:space="preserve">
+    <value>The query exceeded a limit of this environment, for example for data volume or value size.</value>
+  </data>
+  <data name="ErrorInternalTitle" xml:space="preserve">
+    <value>Internal error</value>
+  </data>
+  <data name="ErrorInternalText" xml:space="preserve">
+    <value>An unexpected error occurred during execution. Reset the database and try again.</value>
+  </data>
+  <data name="ErrorDiagnosticsTitle" xml:space="preserve">
+    <value>The query was not executed ({0} problem(s))</value>
+  </data>
+  <data name="ErrorDiagnosticsText" xml:space="preserve">
+    <value>Click an entry to jump to its location in the editor.</value>
+  </data>
+  <data name="ErrorJumpToStatement" xml:space="preserve">
+    <value>Jump to the location in the editor</value>
+  </data>
+  <data name="TechnicalDetails" xml:space="preserve">
+    <value>Technical details</value>
+  </data>
+  <data name="MessageHiddenResultSets" xml:space="preserve">
+    <value>{0} more result sets are not shown.</value>
+  </data>
+  <data name="SummaryNoResultSet" xml:space="preserve">
+    <value>No result set</value>
+  </data>
+</root>

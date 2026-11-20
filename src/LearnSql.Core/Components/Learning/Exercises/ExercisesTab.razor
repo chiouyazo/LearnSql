@@ -1,0 +1,40 @@
+@implements IDisposable
+
+<section class="exercises" aria-label="@L["TabExercises"]">
+    @if (!_loaded)
+    {
+        <MudProgressCircular Size="Size.Small" Indeterminate="true" aria-label="@L["Loading"]"/>
+    }
+    else if (_ordered.Count == 0)
+    {
+        <h2 class="exercises-heading" tabindex="-1" @ref="_heading">@L["TabExercises"]</h2>
+        <MudText Typo="Typo.body2">@L["EmptyScenario"]</MudText>
+    }
+    else if (SelectedExercise is ExerciseDefinition selected)
+    {
+        <ExerciseDetailView @key="selected.Id" Scenario="Session.Scenario" Exercise="selected"
+                            Progress="_book.Get(selected.Id)" HasNext="HasNext(selected)"
+                            OnBack="Back" OnNext="OpenNext"/>
+    }
+    else
+    {
+        <h2 class="exercises-heading" tabindex="-1" @ref="_heading">@L["TabExercises"]</h2>
+        <MudText Typo="Typo.body2" Class="mb-3 text-muted">@L["Intro"]</MudText>
+        <div class="exercises-overall">
+            <span class="exercises-overall-count">@L["ProgressOverall", _solved, _ordered.Count]</span>
+            <ExerciseProgressBar Value="_solved" Max="_ordered.Count"
+                                 Label="@L["ProgressOverallAria", _solved, _ordered.Count]"/>
+        </div>
+        <div class="exercises-toolbar">
+            <MudButton Variant="Variant.Text" Size="Size.Small" Color="Color.Error"
+                       StartIcon="@Icons.Material.Filled.RestartAlt" Disabled="_book.IsEmpty"
+                       OnClick="ConfirmResetAsync">
+                @L["ResetProgress"]
+            </MudButton>
+        </div>
+        @foreach (ExercisePath path in _paths)
+        {
+            <ExercisePathSection @key="path.Topic" Path="path" Book="_book" OnOpen="Open"/>
+        }
+    }
+</section>

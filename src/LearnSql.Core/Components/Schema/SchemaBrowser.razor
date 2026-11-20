@@ -1,0 +1,48 @@
+@implements IDisposable
+
+<nav class="schema-browser" aria-label="@L["SchemaRegion"]">
+    <div class="schema-header">
+        <MudText Typo="Typo.subtitle2">@L["SchemaTitle"]</MudText>
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Filled.Refresh" Size="Size.Small" aria-label="@L["SchemaRefresh"]"
+                       OnClick="RefreshAsync" Disabled="_loading"/>
+    </div>
+    <div class="schema-search">
+        <MudTextField T="string" Value="_filter" ValueChanged="OnFilterChanged" Immediate="true" Clearable="true"
+                      Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="@L["SchemaSearch"]"
+                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                      aria-label="@L["SchemaSearch"]" Class="schema-search-field"/>
+    </div>
+    <div class="schema-body">
+        @if (_loading && _schema is null)
+        {
+            <MudSkeleton Height="1.5rem" Class="mb-1"/>
+            <MudSkeleton Height="1.5rem" Class="mb-1"/>
+            <MudSkeleton Height="1.5rem"/>
+        }
+        else if (_failed)
+        {
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Text" Dense="true">@L["SchemaLoadFailed"]</MudAlert>
+        }
+        else if (_sections.Count == 0)
+        {
+            <MudText Typo="Typo.body2" Class="text-muted pa-2">
+                @(string.IsNullOrWhiteSpace(_filter) ? L["SchemaEmpty"] : L["SchemaNoMatch"])
+            </MudText>
+        }
+        else
+        {
+            @foreach (SchemaSection section in _sections)
+            {
+                <MudText Typo="Typo.overline" Class="schema-section-title">@L[section.TitleKey]</MudText>
+                <ul role="tree" aria-label="@L[section.TitleKey]" class="schema-tree">
+                    @foreach (RelationSchema relation in section.Relations)
+                    {
+                        <SchemaRelationNode Relation="relation" Expanded="IsExpanded(relation)"
+                                            OnToggle="Toggle" OnInsert="OnInsertText"/>
+                    }
+                </ul>
+            }
+        }
+    </div>
+</nav>

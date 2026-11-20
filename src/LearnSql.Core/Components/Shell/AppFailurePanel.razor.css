@@ -1,0 +1,17 @@
+.failure-panel {
+    display: flex;
+    justify-content: center;
+    padding-top: 4rem;
+}
+
+::deep .failure-card {
+    width: min(40rem, 100%);
+}
+
+.failure-detail {
+    margin: 0;
+    max-height: 14rem;
+    overflow: auto;
+    font-size: 0.8125rem;
+    white-space: pre-wrap;
+}

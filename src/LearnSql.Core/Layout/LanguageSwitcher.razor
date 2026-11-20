@@ -1,0 +1,18 @@
+@using LearnSql.Core.Services.Drafts
+@inject LocalizationState Localization
+@inject IDraftStore Drafts
+@inject NavigationManager Navigation
+@inject IStringLocalizer<AppStrings> L
+
+<MudMenu Color="Color.Inherit" Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Translate"
+         Label="@Localization.Current.TwoLetterISOLanguageName.ToUpperInvariant()"
+         aria-label="@L["Language"]" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+    @foreach (CultureInfo culture in Localization.Supported)
+    {
+        CultureInfo selected = culture;
+        <MudMenuItem OnClick="() => SelectAsync(selected)"
+                     Icon="@(selected.Name == Localization.Current.Name ? Icons.Material.Filled.Check : null)">
+            @selected.NativeName
+        </MudMenuItem>
+    }
+</MudMenu>

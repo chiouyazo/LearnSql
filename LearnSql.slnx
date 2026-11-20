@@ -1,5 +1,7 @@
 <Solution>
-  <Project Path="src/LearnSql.Sql/LearnSql.Sql.csproj" />
+  <Project Path="src/LearnSql.Core/LearnSql.Core.csproj" />
   <Project Path="src/LearnSql.Data/LearnSql.Data.csproj" />
-  <Project Path="src/LearnSql.Core/LearnSql.csproj" />
+  <Project Path="src/LearnSql.Sql/LearnSql.Sql.csproj" />
+  <Project Path="tests/LearnSql.Tests/LearnSql.Tests.csproj" />
+  <Project Path="tools/LearnSql.SqlFormat/LearnSql.SqlFormat.csproj" />
 </Solution>

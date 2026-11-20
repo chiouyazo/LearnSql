@@ -1,0 +1,50 @@
+@inject IStringLocalizer<ExerciseStrings> L
+
+<section class="exercise-path" aria-labelledby="@HeadingId">
+    <div class="exercise-path-head">
+        <MudText Typo="Typo.subtitle1" HtmlTag="h3" id="@HeadingId" Class="exercise-path-title">@TopicTitle</MudText>
+        <span class="exercise-path-count">@L["PathProgress", Solved, Path.Exercises.Count]</span>
+    </div>
+    <ExerciseProgressBar Value="Solved" Max="Path.Exercises.Count"
+                         Label="@L["PathProgressAria", TopicTitle, Solved, Path.Exercises.Count]"/>
+    <ul class="exercise-list">
+        @foreach (ExerciseDefinition exercise in Path.Exercises)
+        {
+            ExerciseProgress progress = Book.Get(exercise.Id);
+            <li>
+                <button type="button" class="exercise-row" @onclick="() => OnOpen.InvokeAsync(exercise.Id)"
+                        aria-label="@L["OpenExerciseAria", exercise.Title, L["Difficulty" + exercise.Difficulty], L["Status" + progress.Status]]">
+                    <span class="exercise-row-title">@exercise.Title</span>
+                    <span class="exercise-row-meta">
+                        <ExerciseDifficultyChip Difficulty="exercise.Difficulty"/>
+                        <ExerciseStatusBadge Status="progress.Status"/>
+                    </span>
+                </button>
+            </li>
+        }
+    </ul>
+</section>
+
+@code {
+    [Parameter, EditorRequired]
+    public ExercisePath Path { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public ExerciseProgressBook Book { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<string> OnOpen { get; set; }
+
+    private int Solved => Book.SolvedCount(Path.Exercises);
+
+    private string HeadingId => "exercise-path-" + Path.Topic.ToString().ToLowerInvariant();
+
+    private string TopicTitle
+    {
+        get
+        {
+            LocalizedString localized = L["Topic" + Path.Topic];
+            return localized.ResourceNotFound ? L["TopicOther"] : localized.Value;
+        }
+    }
+}

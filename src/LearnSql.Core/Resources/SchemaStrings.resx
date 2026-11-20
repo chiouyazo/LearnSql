@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SchemaRegion" xml:space="preserve">
+    <value>Schema-Browser</value>
+  </data>
+  <data name="SchemaTitle" xml:space="preserve">
+    <value>Schema</value>
+  </data>
+  <data name="SchemaRefresh" xml:space="preserve">
+    <value>Schema aktualisieren</value>
+  </data>
+  <data name="SchemaSearch" xml:space="preserve">
+    <value>Tabellen filtern</value>
+  </data>
+  <data name="SchemaLoadFailed" xml:space="preserve">
+    <value>Das Schema konnte nicht gelesen werden.</value>
+  </data>
+  <data name="SchemaEmpty" xml:space="preserve">
+    <value>Die Datenbank enthält noch keine Tabellen.</value>
+  </data>
+  <data name="SchemaNoMatch" xml:space="preserve">
+    <value>Keine Treffer.</value>
+  </data>
+  <data name="SectionTables" xml:space="preserve">
+    <value>Tabellen</value>
+  </data>
+  <data name="SectionViews" xml:space="preserve">
+    <value>Sichten</value>
+  </data>
+  <data name="SectionSystem" xml:space="preserve">
+    <value>Systemobjekte</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>{0} einklappen</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>{0} aufklappen</value>
+  </data>
+  <data name="InsertName" xml:space="preserve">
+    <value>{0} in den Editor einfügen</value>
+  </data>
+  <data name="RelationActions" xml:space="preserve">
+    <value>Aktionen für {0}</value>
+  </data>
+  <data name="InsertNameAction" xml:space="preserve">
+    <value>Namen einfügen</value>
+  </data>
+  <data name="InsertSelectTop" xml:space="preserve">
+    <value>SELECT TOP 100 * einfügen</value>
+  </data>
+  <data name="PrimaryKey" xml:space="preserve">
+    <value>Primärschlüssel</value>
+  </data>
+  <data name="ForeignKey" xml:space="preserve">
+    <value>Fremdschlüssel</value>
+  </data>
+  <data name="NotNull" xml:space="preserve">
+    <value>NOT NULL</value>
+  </data>
+  <data name="Nullable" xml:space="preserve">
+    <value>NULL erlaubt</value>
+  </data>
+  <data name="ForeignKeyTarget" xml:space="preserve">
+    <value>Verweist auf {0} ({1})</value>
+  </data>
+</root>

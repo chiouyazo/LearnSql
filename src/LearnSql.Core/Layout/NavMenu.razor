@@ -1,5 +1,46 @@
+@using LearnSql.Core.Services.Navigation
+@using LearnSql.Core.Services.Scenarios
+@implements IDisposable
+@inject IEnumerable<NavigationEntry> Entries
+@inject IAppSession Session
+@inject IScenarioTextProvider Texts
+@inject IStringLocalizer<AppStrings> L
+
 <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
+    @foreach (NavigationEntry entry in _ordered)
+    {
+        <MudNavLink Href="@entry.Href" Match="@entry.Match" Icon="@entry.Icon">@L[entry.TitleKey]</MudNavLink>
+    }
+    <MudNavGroup Title="@L["NavScenarios"]" Icon="@Icons.Material.Filled.School" @bind-Expanded="_scenariosExpanded">
+        @foreach (ScenarioNavigationItem item in _scenarios)
+        {
+            <MudNavLink @key="item.ScenarioId" Href="@item.Href" Match="NavLinkMatch.All"
+                        Icon="@(item.IsActive(Session.Scenario.Id) ? Icons.Material.Filled.RadioButtonChecked : Icons.Material.Filled.RadioButtonUnchecked)">
+                @item.Title
+            </MudNavLink>
+        }
+    </MudNavGroup>
 </MudNavMenu>
+
+@code {
+    private IReadOnlyList<NavigationEntry> _ordered = [];
+    private IReadOnlyList<ScenarioNavigationItem> _scenarios = [];
+    private bool _scenariosExpanded = true;
+
+    protected override void OnInitialized()
+    {
+        _ordered = [.. Entries.OrderBy((NavigationEntry entry) => entry.Order)];
+        _scenarios = ScenarioNavigationItem.Create(Session.Scenarios, Texts);
+        Session.StateChanged += OnStateChanged;
+    }
+
+    public void Dispose()
+    {
+        Session.StateChanged -= OnStateChanged;
+    }
+
+    private void OnStateChanged(object? sender, EventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

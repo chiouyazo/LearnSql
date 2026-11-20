@@ -1,0 +1,30 @@
+<div class="messages-view">
+    @foreach (string message in Messages)
+    {
+        <div class="message-line">@message</div>
+    }
+    @if (HiddenResultSets > 0)
+    {
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Dense="true" Class="mt-2">
+            @L["MessageHiddenResultSets", HiddenResultSets]
+        </MudAlert>
+    }
+    @if (Result.Truncated)
+    {
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Dense="true" Class="mt-2">
+            @L["MessageTruncated", Options.MaxRowsPerResultSet]
+        </MudAlert>
+    }
+    @if (Result.RolledBack)
+    {
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Dense="true" Class="mt-2"
+                  Icon="@Icons.Material.Filled.Undo">
+            @L["MessageRolledBack"]
+        </MudAlert>
+    }
+    @if (Hints.Count > 0)
+    {
+        <MudText Typo="Typo.subtitle2" Class="mt-3">@L["MessageHints"]</MudText>
+        <DiagnosticList Diagnostics="Hints" Origin="Origin" OnNavigate="OnNavigate"/>
+    }
+</div>

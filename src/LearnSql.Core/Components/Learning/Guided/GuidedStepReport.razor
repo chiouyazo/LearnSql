@@ -1,0 +1,48 @@
+@using LearnSql.Core.Services.Guided
+
+<div class="guided-report">
+    @if (Check is { IsExpected: false })
+    {
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true" Class="mb-3">
+            @CheckText(Check)
+        </MudAlert>
+    }
+
+    <section aria-labelledby="@IdOf("query")" class="guided-report-section">
+        <MudText Typo="Typo.subtitle2" HtmlTag="h5" id="@IdOf("query")">@L["ExplainQueryTitle"]</MudText>
+        <MudText Typo="Typo.body2" Class="guided-report-text">@Step.QueryExplanation.Summary</MudText>
+        @if (Step.QueryExplanation.Parts.Count > 0)
+        {
+            <div class="guided-parts-scroll">
+                <table class="guided-parts">
+                    <caption class="visually-hidden">@L["ExplainPartsTitle"]</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">@L["PartFragment"]</th>
+                            <th scope="col">@L["PartMeaning"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (SqlPartExplanation part in Step.QueryExplanation.Parts)
+                        {
+                            <tr>
+                                <td><code>@part.Fragment</code></td>
+                                <td>@part.Explanation</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    <section aria-labelledby="@IdOf("result")" class="guided-report-section">
+        <MudText Typo="Typo.subtitle2" HtmlTag="h5" id="@IdOf("result")">@L["ExplainResultTitle"]</MudText>
+        <MudText Typo="Typo.body2" Class="guided-report-text">@Step.ResultExplanation</MudText>
+    </section>
+
+    <section aria-labelledby="@IdOf("effect")" class="guided-report-section">
+        <MudText Typo="Typo.subtitle2" HtmlTag="h5" id="@IdOf("effect")">@L["ExplainEffectTitle"]</MudText>
+        <MudText Typo="Typo.body2" Class="guided-report-text">@Step.DatabaseEffect</MudText>
+    </section>
+</div>

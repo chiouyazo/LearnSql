@@ -1,0 +1,20 @@
+@implements IDisposable
+
+@if (Session.Phase == AppPhase.Failed && Session.Failure is not null)
+{
+    <AppFailurePanel Failure="Session.Failure" OnRetry="Session.RetryAsync"/>
+}
+else if (!Session.IsReady && IsStartup)
+{
+    <AppLoadingPanel Operation="AppOperation.Startup" Progress="Session.Progress"/>
+}
+else
+{
+    @ChildContent
+    @if (Session.Phase == AppPhase.Loading)
+    {
+        <div class="gate-overlay">
+            <AppLoadingPanel Operation="Session.Operation ?? AppOperation.Startup" Progress="Session.Progress"/>
+        </div>
+    }
+}

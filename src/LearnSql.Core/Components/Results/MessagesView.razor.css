@@ -1,0 +1,8 @@
+.messages-view {
+    padding: 0.5rem 0.75rem;
+}
+
+.message-line {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+}

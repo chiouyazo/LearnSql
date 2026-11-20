@@ -1,0 +1,35 @@
+@using LearnSql.Core.Services.Guided
+
+<section class="guided-list" aria-labelledby="guided-list-title">
+    <MudText Typo="Typo.subtitle1" HtmlTag="h3" id="guided-list-title">@L["ListTitle"]</MudText>
+    <MudText Typo="Typo.body2" Class="text-muted mb-3">@L["ListIntro"]</MudText>
+
+    <ul class="guided-cards">
+        @foreach (GuidedScenarioDefinition definition in Definitions)
+        {
+            <li @key="definition.Id">
+                <MudPaper Outlined="true" Class="guided-card" Elevation="0">
+                    <MudText Typo="Typo.subtitle2" HtmlTag="h4">@definition.Title</MudText>
+                    <div class="guided-card-chips">
+                        <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">@L["Topic_" + definition.Topic]</MudChip>
+                        <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">@L["StepCount", definition.Steps.Count]</MudChip>
+                        @if (definition.RequiresFreshDatabase)
+                        {
+                            <MudTooltip Text="@L["FreshDatabaseHint"]">
+                                <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Warning">@L["FreshDatabaseBadge"]</MudChip>
+                            </MudTooltip>
+                        }
+                    </div>
+                    <MudText Typo="Typo.body2" Class="guided-card-text">@definition.Description</MudText>
+                    <div class="guided-card-footer">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium"
+                                   Disabled="Disabled" StartIcon="@Icons.Material.Filled.PlayArrow"
+                                   OnClick="@(() => OnStart.InvokeAsync(definition))">
+                            @L["ShowMeHow"]
+                        </MudButton>
+                    </div>
+                </MudPaper>
+            </li>
+        }
+    </ul>
+</section>

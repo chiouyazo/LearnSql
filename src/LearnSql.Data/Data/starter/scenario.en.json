@@ -1,0 +1,926 @@
+{
+  "title": "Beginner: Coffee Shop",
+  "description": "A small online shop with customers, products, orders and order items. Each table has only a few rows. Some customers have no city or email address, and some have not ordered anything yet.",
+  "exercises": [
+    {
+      "id": "select-01",
+      "title": "Show all customers",
+      "description": "Return all columns and all rows of the Customer table.",
+      "hints": [
+        "You only need two keywords: one to select and one to name the table.",
+        "An asterisk after SELECT selects all columns.",
+        "The query starts with SELECT * and then names the table Customer."
+      ]
+    },
+    {
+      "id": "select-02",
+      "title": "Names and cities",
+      "description": "For every customer, show only first name, last name and city.",
+      "hints": [
+        "Instead of the asterisk, list the columns you want.",
+        "Separate multiple columns with commas.",
+        "The columns are called FirstName, LastName and City."
+      ]
+    },
+    {
+      "id": "select-03",
+      "title": "The three most expensive products",
+      "description": "Show name and price of the three most expensive products, the most expensive first.",
+      "hints": [
+        "You first have to sort, then limit the number of rows.",
+        "ORDER BY ... DESC sorts in descending order, and TOP n limits the number of rows right after SELECT.",
+        "SELECT TOP 3 Name, Price FROM Product, followed by ORDER BY Price DESC."
+      ]
+    },
+    {
+      "id": "filter-01",
+      "title": "Customers from Hamburg",
+      "description": "Which customers live in Hamburg? Show all columns.",
+      "hints": [
+        "You filter rows with a keyword that comes after FROM.",
+        "Text values go in single quotes.",
+        "WHERE City = 'Hamburg'"
+      ]
+    },
+    {
+      "id": "filter-02",
+      "title": "Cheap coffee",
+      "description": "Show name and price of all products in the category Kaffee that cost less than 10 euros.",
+      "hints": [
+        "You need two conditions that must both hold at the same time.",
+        "Combine the conditions with AND.",
+        "WHERE Category = 'Kaffee' AND Price < 10"
+      ]
+    },
+    {
+      "id": "filter-03",
+      "title": "Customers without an email address",
+      "description": "Find all customers who have no email address stored.",
+      "hints": [
+        "Missing values are NULL in SQL. A comparison with = does not work for NULL.",
+        "NULL has its own operator: IS NULL.",
+        "WHERE Email IS NULL"
+      ]
+    },
+    {
+      "id": "filter-04",
+      "title": "Products that are not available",
+      "description": "Show name and stock of all products whose stock is 0 or unknown (NULL).",
+      "hints": [
+        "There are two cases, and it is enough if one of them applies.",
+        "Use OR and treat NULL separately from the number 0.",
+        "WHERE Stock = 0 OR Stock IS NULL"
+      ]
+    },
+    {
+      "id": "filter-05",
+      "title": "Products with Espresso in the name",
+      "description": "Show all products whose name starts with the word Espresso.",
+      "hints": [
+        "For text patterns there is a dedicated operator instead of =.",
+        "LIKE supports the wildcard %, which stands for any number of characters.",
+        "WHERE Name LIKE 'Espresso%'"
+      ]
+    },
+    {
+      "id": "filter-06",
+      "title": "Orders not shipped yet",
+      "description": "Show Id, status and order date of all orders that have no shipping date yet, sorted by order date.",
+      "hints": [
+        "A missing shipping date is a NULL value.",
+        "Filter with IS NULL and sort with ORDER BY.",
+        "SELECT Id, Status, OrderDate FROM Orders WHERE ShippedOn IS NULL ORDER BY OrderDate"
+      ]
+    },
+    {
+      "id": "join-01",
+      "title": "Orders with customer names",
+      "description": "For every order, show the order Id, the order date, and the customer's first and last name, sorted by order Id.",
+      "hints": [
+        "The customer data is in a different table than the orders.",
+        "Join Orders and Customer with INNER JOIN. The condition compares the foreign key with the primary key.",
+        "FROM Orders o INNER JOIN Customer c ON c.Id = o.CustomerId"
+      ]
+    },
+    {
+      "id": "join-02",
+      "title": "Order items with product names",
+      "description": "For every order item, show the order Id, the product name and the quantity, sorted by order Id and product name.",
+      "hints": [
+        "The items are in OrderItem, the names in Product.",
+        "Join OrderItem with Product on ProductId.",
+        "FROM OrderItem i INNER JOIN Product p ON p.Id = i.ProductId"
+      ]
+    },
+    {
+      "id": "join-03",
+      "title": "Customers without orders",
+      "description": "Which customers have never ordered? Show first name and last name.",
+      "hints": [
+        "A plain INNER JOIN would lose these customers. You need a join that keeps all customers.",
+        "LEFT JOIN keeps all customers. Customers without an order have only NULL on the Orders side.",
+        "Join with LEFT JOIN Orders and filter WHERE o.Id IS NULL."
+      ]
+    },
+    {
+      "id": "join-04",
+      "title": "Products never ordered",
+      "description": "Which products have not been used in any order yet? Show the product name.",
+      "hints": [
+        "You are looking for products with no matching row in OrderItem.",
+        "LEFT JOIN from Product to OrderItem, then filter for missing matches.",
+        "WHERE i.Id IS NULL"
+      ]
+    },
+    {
+      "id": "join-05",
+      "title": "Customer, product and line value",
+      "description": "For all order items, show the customer's last name, the product name and the line value (quantity times price) as LineTotal. Sort by last name, order Id and product name.",
+      "hints": [
+        "You have to join four tables: Customer, Orders, OrderItem and Product.",
+        "Follow the chain from Customer through Orders and OrderItem to Product, one step at a time.",
+        "The line value is i.Quantity * p.Price AS LineTotal."
+      ]
+    },
+    {
+      "id": "agg-01",
+      "title": "Number of orders",
+      "description": "How many orders are there in total? Name the column OrderCount.",
+      "hints": [
+        "You want to count rows, not return them.",
+        "The function COUNT(*) counts rows.",
+        "SELECT COUNT(*) AS OrderCount FROM Orders"
+      ]
+    },
+    {
+      "id": "agg-02",
+      "title": "Orders per status",
+      "description": "Count how many orders there are for each status. Sort by count in descending order, and by status when the counts are equal.",
+      "hints": [
+        "You need groups: one row per status.",
+        "GROUP BY Status forms the groups, and COUNT(*) counts within each group.",
+        "ORDER BY COUNT(*) DESC, Status"
+      ]
+    },
+    {
+      "id": "agg-03",
+      "title": "Average price per category",
+      "description": "Calculate the average price per product category, rounded to two decimal places (column AveragePrice). Sort by category.",
+      "hints": [
+        "Group by category and use an aggregate function on the price.",
+        "AVG calculates the mean, and ROUND rounds the result.",
+        "ROUND(AVG(Price), 2) AS AveragePrice with GROUP BY Category"
+      ]
+    },
+    {
+      "id": "agg-04",
+      "title": "Loyal customers",
+      "description": "Which customers have placed at least 3 orders? Show the last name and the count (OrderCount), sorted by last name.",
+      "hints": [
+        "You cannot test conditions on group results with WHERE.",
+        "HAVING filters groups after aggregation.",
+        "GROUP BY c.Id, c.LastName HAVING COUNT(*) >= 3"
+      ]
+    },
+    {
+      "id": "agg-05",
+      "title": "Revenue from delivered orders",
+      "description": "For each customer (last name), calculate the revenue of orders with status Delivered, rounded to two decimal places (Revenue). Show only customers with more than 50 euros in revenue, highest revenue first.",
+      "hints": [
+        "First restrict rows with WHERE, then group, then filter groups with HAVING.",
+        "The revenue is SUM(i.Quantity * p.Price). You need four tables.",
+        "HAVING SUM(i.Quantity * p.Price) > 50 and ORDER BY Revenue DESC"
+      ]
+    },
+    {
+      "id": "sub-01",
+      "title": "More expensive than average",
+      "description": "Show name and price of all products that cost more than the average price of all products.",
+      "hints": [
+        "You can calculate the average with a query of its own.",
+        "Put that query in parentheses inside the WHERE condition.",
+        "WHERE Price > (SELECT AVG(Price) FROM Product)"
+      ]
+    },
+    {
+      "id": "sub-02",
+      "title": "Customers with an order",
+      "description": "Show first and last name of all customers who have at least one order, without using a join.",
+      "hints": [
+        "You are looking for customers whose Id appears in the list of customers who ordered.",
+        "IN checks whether a value is in the result list of a subquery.",
+        "WHERE Id IN (SELECT CustomerId FROM Orders)"
+      ]
+    },
+    {
+      "id": "sub-03",
+      "title": "Products with the largest order quantity",
+      "description": "Which products were ordered with a quantity of 5 or more in at least one order item? Show the product name, sorted alphabetically.",
+      "hints": [
+        "First find the ProductIds with a large quantity, then the matching names.",
+        "A subquery on OrderItem with WHERE Quantity >= 5, and IN in the outer query.",
+        "WHERE Id IN (SELECT ProductId FROM OrderItem WHERE Quantity >= 5) and ORDER BY Name"
+      ]
+    }
+  ],
+  "guidedScenarios": [
+    {
+      "id": "first-queries",
+      "title": "First queries",
+      "description": "Read, filter and sort data from a single table, from SELECT * to TOP 5. All steps are read-only.",
+      "steps": [
+        {
+          "id": "first-queries-01",
+          "title": "View all customers",
+          "queryExplanation": {
+            "summary": "SELECT * reads all columns, and FROM names the table. Without a condition, all rows come back.",
+            "parts": [
+              {
+                "fragment": "SELECT *",
+                "explanation": "The asterisk stands for all columns of the table."
+              },
+              {
+                "fragment": "FROM Customer",
+                "explanation": "The data is read from the table Customer."
+              }
+            ]
+          },
+          "resultExplanation": "You get 11 rows, one per customer, with all 6 columns. City and Email are NULL in some rows: no value is stored there.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-02",
+          "title": "Only specific columns",
+          "queryExplanation": {
+            "summary": "Instead of all columns, you pick only the ones you need. The number of rows does not change.",
+            "parts": [
+              {
+                "fragment": "SELECT FirstName, LastName, City",
+                "explanation": "The columns are listed separated by commas. The result contains them in exactly this order."
+              },
+              {
+                "fragment": "FROM Customer",
+                "explanation": "The source is still the table Customer."
+              }
+            ]
+          },
+          "resultExplanation": "Again 11 rows, but only 3 columns. The result is easier to read.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-03",
+          "title": "Filter rows with WHERE",
+          "queryExplanation": {
+            "summary": "WHERE keeps only the rows for which the condition is true. Here, those are the customers from Hamburg.",
+            "parts": [
+              {
+                "fragment": "SELECT FirstName, LastName",
+                "explanation": "Only first and last name are returned."
+              },
+              {
+                "fragment": "WHERE City = 'Hamburg'",
+                "explanation": "The condition compares the column City with the text Hamburg. Text goes in single quotes."
+              }
+            ]
+          },
+          "resultExplanation": "3 rows remain: Anna Berger, David Roth and Ida Sommer. Customers with a different city or no city (NULL) do not appear.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-04",
+          "title": "Find missing values with IS NULL",
+          "queryExplanation": {
+            "summary": "NULL means unknown and cannot be compared with =. Use IS NULL to test for it.",
+            "parts": [
+              {
+                "fragment": "WHERE Email IS NULL",
+                "explanation": "True for every row that has no email address stored. Email = NULL would never return a row, because a comparison with NULL is neither true nor false but unknown."
+              }
+            ]
+          },
+          "resultExplanation": "3 customers have no email address: Clara Lenz, Hans Maier and Jan Winter.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-05",
+          "title": "Combine conditions",
+          "queryExplanation": {
+            "summary": "With AND, both conditions must hold at the same time. With OR, one of them would be enough.",
+            "parts": [
+              {
+                "fragment": "Category = 'Kaffee'",
+                "explanation": "First condition: only products in the category Kaffee."
+              },
+              {
+                "fragment": "AND",
+                "explanation": "Both sides must be true."
+              },
+              {
+                "fragment": "Price < 10",
+                "explanation": "Second condition: the price is below 10."
+              }
+            ]
+          },
+          "resultExplanation": "3 products meet both: Espresso Classico 250g (7.90), Espresso Entkoffeiniert 250g (8.40) and Cold Brew Konzentrat (9.90). Filterkaffee Mild 500g costs 11.50 and drops out.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-06",
+          "title": "Sort with ORDER BY",
+          "queryExplanation": {
+            "summary": "Without ORDER BY, the order of the rows is not guaranteed. DESC sorts in descending order, ASC (the default) in ascending order.",
+            "parts": [
+              {
+                "fragment": "ORDER BY Price",
+                "explanation": "Sorts the result by the column Price."
+              },
+              {
+                "fragment": "DESC",
+                "explanation": "Descending: the highest price comes first."
+              }
+            ]
+          },
+          "resultExplanation": "All 12 products, the most expensive first: Handmühle Keramik (39.00), then Espressokanne Alu (24.90), and last Bio-Schokolade 70% (2.90).",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-07",
+          "title": "Only the first rows with TOP",
+          "queryExplanation": {
+            "summary": "TOP 5 limits the result to the first 5 rows. Together with ORDER BY, you get a ranking.",
+            "parts": [
+              {
+                "fragment": "SELECT TOP 5",
+                "explanation": "Returns at most 5 rows. In T-SQL, TOP goes directly after SELECT."
+              },
+              {
+                "fragment": "ORDER BY Price DESC",
+                "explanation": "Determines which rows come first: here, the most expensive ones."
+              }
+            ]
+          },
+          "resultExplanation": "The 5 most expensive products, from the most expensive (Handmühle Keramik) to the fifth (Cold Brew Konzentrat, 9.90).",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-08",
+          "title": "Text patterns with LIKE",
+          "queryExplanation": {
+            "summary": "LIKE compares text against a pattern. The percent sign stands for any number of arbitrary characters.",
+            "parts": [
+              {
+                "fragment": "LIKE 'Espresso%'",
+                "explanation": "True for all names that start with Espresso. What follows does not matter."
+              }
+            ]
+          },
+          "resultExplanation": "3 matches: Espresso Classico 250g, Espresso Entkoffeiniert 250g and Espressokanne Alu. The pot matches because the pattern only checks the beginning.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "first-queries-09",
+          "title": "Calculate values with LEN and COALESCE",
+          "queryExplanation": {
+            "summary": "Functions calculate new values per row. LEN counts characters, and COALESCE replaces NULL with a fallback value. T-SQL also has ISNULL, but COALESCE is standard SQL and works everywhere.",
+            "parts": [
+              {
+                "fragment": "LEN(LastName) AS NameLength",
+                "explanation": "Number of characters in the last name, in a new column NameLength."
+              },
+              {
+                "fragment": "COALESCE(City, 'unbekannt')",
+                "explanation": "Returns the first value that is not NULL: City, or, if City is NULL, the text unbekannt."
+              },
+              {
+                "fragment": "AS",
+                "explanation": "Sets the name of the calculated column."
+              }
+            ]
+          },
+          "resultExplanation": "11 rows. For Felix Braun and Jan Winter, CityOrDefault contains the text unbekannt, and for everyone else the actual city. The table itself stays unchanged, only the result contains the calculation.",
+          "databaseEffect": "Nothing. The query only reads. Calculated columns exist only in the result."
+        }
+      ]
+    },
+    {
+      "id": "joining-data",
+      "title": "Joining data",
+      "description": "Customers, orders, items and products live in separate tables. With JOIN you put them back together, from INNER JOIN to LEFT JOIN, which makes missing partners visible.",
+      "steps": [
+        {
+          "id": "joining-data-01",
+          "title": "Join two tables",
+          "queryExplanation": {
+            "summary": "Each order contains only the CustomerId. The JOIN fetches the matching customer for every order.",
+            "parts": [
+              {
+                "fragment": "FROM Orders o",
+                "explanation": "The starting table. The alias o is an abbreviation for Orders."
+              },
+              {
+                "fragment": "INNER JOIN Customer c",
+                "explanation": "Joins the table Customer, alias c. INNER JOIN keeps only rows that have a partner on both sides."
+              },
+              {
+                "fragment": "ON c.Id = o.CustomerId",
+                "explanation": "The join condition: the customer's primary key must equal the order's foreign key."
+              }
+            ]
+          },
+          "resultExplanation": "There are 20 rows, one per order. The customer name now sits next to the order date. Order 1 belongs to Anna Berger.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "joining-data-02",
+          "title": "Join with a filter",
+          "queryExplanation": {
+            "summary": "WHERE is applied after the join and can use columns from both tables.",
+            "parts": [
+              {
+                "fragment": "WHERE o.Status = 'Open'",
+                "explanation": "Only open orders remain."
+              },
+              {
+                "fragment": "c.LastName",
+                "explanation": "The column comes from Customer, the filter from Orders. That is only possible because of the JOIN."
+              }
+            ]
+          },
+          "resultExplanation": "3 open orders: number 18 (Berger), 19 (Roth) and 20 (Sommer).",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "joining-data-03",
+          "title": "Join three tables",
+          "queryExplanation": {
+            "summary": "OrderItem links orders to products (an n:m relationship). You need two joins in a row.",
+            "parts": [
+              {
+                "fragment": "INNER JOIN OrderItem i ON i.OrderId = o.Id",
+                "explanation": "Fetches the items of the order."
+              },
+              {
+                "fragment": "INNER JOIN Product p ON p.Id = i.ProductId",
+                "explanation": "Fetches the product name for each item."
+              },
+              {
+                "fragment": "WHERE o.Id = 10",
+                "explanation": "Restricts the result to a single order."
+              }
+            ]
+          },
+          "resultExplanation": "Order 10 has 3 items: Filterkaffee Mild 500g (3 units), Haferkekse 6er (1 unit) and Handmühle Keramik (2 units).",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "joining-data-04",
+          "title": "Four tables and a calculation",
+          "queryExplanation": {
+            "summary": "The chain Customer, Orders, OrderItem, Product puts customer, product and quantity in one row. From that you can calculate the line value.",
+            "parts": [
+              {
+                "fragment": "i.Quantity * p.Price AS LineTotal",
+                "explanation": "Quantity from the item times price from the product. The two values come from different tables."
+              },
+              {
+                "fragment": "WHERE c.LastName = 'Berger'",
+                "explanation": "Only the orders of customers with the last name Berger."
+              }
+            ]
+          },
+          "resultExplanation": "Berger has 4 orders with a total of 6 items. The largest item is the Handmühle Keramik (2 units, 78.00). Order 10 contributes three of these items, orders 1, 3 and 18 one each.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "joining-data-05",
+          "title": "LEFT JOIN: customers without orders",
+          "queryExplanation": {
+            "summary": "LEFT JOIN keeps all rows of the left table. Without a partner, the right side contains NULL values. If you filter for those NULLs, you find the customers without orders.",
+            "parts": [
+              {
+                "fragment": "LEFT JOIN Orders o",
+                "explanation": "All customers are kept, even if no matching order exists."
+              },
+              {
+                "fragment": "WHERE o.Id IS NULL",
+                "explanation": "Keeps only customers for whom the join found no partner."
+              }
+            ]
+          },
+          "resultExplanation": "2 customers have never ordered: Jan Winter and Karla Nolte. The column OrderId contains NULL. With an INNER JOIN, they would be missing from the result.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "joining-data-06",
+          "title": "LEFT JOIN: products never sold",
+          "queryExplanation": {
+            "summary": "The pattern fits any 1:n relationship: it finds all rows on the left side that have no partner on the right.",
+            "parts": [
+              {
+                "fragment": "FROM Product p LEFT JOIN OrderItem i",
+                "explanation": "All products are kept, whether or not they were ordered."
+              },
+              {
+                "fragment": "WHERE i.Id IS NULL",
+                "explanation": "Filters out the products that have no order item."
+              }
+            ]
+          },
+          "resultExplanation": "Exactly one product was never ordered: the Kamillentee 50g in the category Tee.",
+          "databaseEffect": "Nothing. The query only reads."
+        }
+      ]
+    },
+    {
+      "id": "grouping-and-aggregating",
+      "title": "Grouping and aggregating",
+      "description": "Count, sum and calculate averages: GROUP BY, WHERE versus HAVING, and COUNT(*) versus COUNT(column).",
+      "steps": [
+        {
+          "id": "grouping-and-aggregating-01",
+          "title": "Count rows",
+          "queryExplanation": {
+            "summary": "Aggregate functions combine many rows into one value. COUNT(*) counts rows.",
+            "parts": [
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "Counts all rows, regardless of their values."
+              },
+              {
+                "fragment": "AS OrderCount",
+                "explanation": "Names the result column."
+              }
+            ]
+          },
+          "resultExplanation": "A single row with the value 20: that is how many orders the table contains.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "grouping-and-aggregating-02",
+          "title": "COUNT(*) versus COUNT(column)",
+          "queryExplanation": {
+            "summary": "COUNT(*) counts rows, while COUNT(column) counts only rows in which the column is not NULL.",
+            "parts": [
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "All customers."
+              },
+              {
+                "fragment": "COUNT(Email)",
+                "explanation": "Only customers with a stored email address."
+              },
+              {
+                "fragment": "COUNT(City)",
+                "explanation": "Only customers with a stored city."
+              }
+            ]
+          },
+          "resultExplanation": "The row reads 11, 8, 9: of 11 customers, 8 have an email address and 9 have a city. Aggregate functions other than COUNT(*) ignore NULL.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "grouping-and-aggregating-03",
+          "title": "Lowest, highest and average price",
+          "queryExplanation": {
+            "summary": "MIN, MAX and AVG each return one value across all rows. ROUND limits the decimal places.",
+            "parts": [
+              {
+                "fragment": "MIN(Price)",
+                "explanation": "Lowest price."
+              },
+              {
+                "fragment": "MAX(Price)",
+                "explanation": "Highest price."
+              },
+              {
+                "fragment": "ROUND(AVG(Price), 2)",
+                "explanation": "Mean, rounded to two decimal places."
+              }
+            ]
+          },
+          "resultExplanation": "The cheapest item costs 2.90 (Bio-Schokolade), the most expensive 39.00 (Handmühle Keramik), and the average is 11.57.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "grouping-and-aggregating-04",
+          "title": "Group with GROUP BY",
+          "queryExplanation": {
+            "summary": "GROUP BY forms one group per value of the column. The aggregate function is calculated separately for each group.",
+            "parts": [
+              {
+                "fragment": "GROUP BY Status",
+                "explanation": "One row per status: Open, Shipped, Delivered and Cancelled."
+              },
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "Counts within each group."
+              },
+              {
+                "fragment": "ORDER BY OrderCount DESC, Status",
+                "explanation": "Largest group first, alphabetical on ties."
+              }
+            ]
+          },
+          "resultExplanation": "4 rows: Delivered 13, Open 3, Shipped 3, Cancelled 1. Together, that is the 20 orders.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "grouping-and-aggregating-05",
+          "title": "Average per category",
+          "queryExplanation": {
+            "summary": "You can combine several aggregate functions in one query. Every column in the SELECT is either grouped or aggregated.",
+            "parts": [
+              {
+                "fragment": "GROUP BY Category",
+                "explanation": "One row per product category."
+              },
+              {
+                "fragment": "COUNT(*) AS Products",
+                "explanation": "Number of products per category."
+              }
+            ]
+          },
+          "resultExplanation": "4 categories: Kaffee (4 products, average 9.43), Snacks (2, 3.20), Tee (3, 5.30) and Zubehör (3, 26.27). Zubehör is the most expensive on average.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "grouping-and-aggregating-06",
+          "title": "Revenue per order",
+          "queryExplanation": {
+            "summary": "You can combine grouping and joining: the rows are joined first, then summed per order.",
+            "parts": [
+              {
+                "fragment": "SUM(i.Quantity * p.Price)",
+                "explanation": "Sum of the line values within each order."
+              },
+              {
+                "fragment": "GROUP BY o.Id",
+                "explanation": "One group per order."
+              },
+              {
+                "fragment": "TOP 5 ... ORDER BY Revenue DESC",
+                "explanation": "Shows only the five orders with the highest revenue."
+              }
+            ]
+          },
+          "resultExplanation": "The largest order is number 10 with 116.00, followed by number 20 (85.50), 14 (73.00), 13 (64.70) and 19 (62.00).",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "grouping-and-aggregating-07",
+          "title": "Filter groups with HAVING",
+          "queryExplanation": {
+            "summary": "WHERE filters individual rows before grouping, and HAVING filters whole groups afterwards. A condition on COUNT(*) therefore belongs in HAVING.",
+            "parts": [
+              {
+                "fragment": "HAVING COUNT(*) >= 3",
+                "explanation": "Keeps only groups with at least three rows, that is, customers with at least three orders."
+              },
+              {
+                "fragment": "GROUP BY c.Id, c.LastName",
+                "explanation": "Groups per customer. The Id keeps the group unique in case two customers have the same last name."
+              }
+            ]
+          },
+          "resultExplanation": "3 customers order frequently: Berger (4 orders), Köhler (3) and Roth (3).",
+          "databaseEffect": "Nothing. The query only reads."
+        }
+      ]
+    },
+    {
+      "id": "changing-data",
+      "title": "Changing data",
+      "description": "Create a table of your own with constraints, insert data, then change and delete it. Along the way you trigger errors on purpose and see how the database enforces the rules. This scenario resets the database when it starts.",
+      "steps": [
+        {
+          "id": "changing-data-01",
+          "title": "Create a table with constraints",
+          "queryExplanation": {
+            "summary": "CREATE TABLE defines a new table together with its rules. Constraints make sure that no invalid data is stored.",
+            "parts": [
+              {
+                "fragment": "Id INT NOT NULL PRIMARY KEY",
+                "explanation": "Unique key of each review. It must never be missing."
+              },
+              {
+                "fragment": "Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5)",
+                "explanation": "Required field that may only hold values from 1 to 5."
+              },
+              {
+                "fragment": "ReviewText NVARCHAR(200) NULL",
+                "explanation": "Optional free text. NULL is allowed."
+              },
+              {
+                "fragment": "FOREIGN KEY (CustomerId) REFERENCES Customer (Id)",
+                "explanation": "A review must belong to an existing customer. The same applies to the product."
+              },
+              {
+                "fragment": "UNIQUE (CustomerId, ProductId)",
+                "explanation": "A customer may review the same product only once."
+              }
+            ]
+          },
+          "resultExplanation": "There is no result with rows. The query only reports that the table was created.",
+          "databaseEffect": "A new, still empty table Review with 5 columns, a primary key, a CHECK rule, two foreign keys and a UNIQUE rule."
+        },
+        {
+          "id": "changing-data-02",
+          "title": "Insert one row",
+          "queryExplanation": {
+            "summary": "INSERT adds a new row. You name the columns and the values in the same order.",
+            "parts": [
+              {
+                "fragment": "INSERT INTO Review (...)",
+                "explanation": "The target is the table Review, with the list of columns you fill."
+              },
+              {
+                "fragment": "VALUES (1, 1, 1, 5, ...)",
+                "explanation": "The values in the order of the column list: Id 1, customer 1 (Anna Berger), product 1 (Espresso Classico), rating 5, text."
+              }
+            ]
+          },
+          "resultExplanation": "The database reports 1 affected row. There is no result with rows.",
+          "databaseEffect": "The table Review now contains 1 row."
+        },
+        {
+          "id": "changing-data-03",
+          "title": "Several rows at once",
+          "queryExplanation": {
+            "summary": "After VALUES, you can give several rows in parentheses, separated by commas. This is a single statement.",
+            "parts": [
+              {
+                "fragment": "VALUES (...), (...), (...)",
+                "explanation": "Three rows in one call."
+              },
+              {
+                "fragment": "NULL",
+                "explanation": "The row with Id 3 has no text. That is allowed because ReviewText accepts NULL."
+              }
+            ]
+          },
+          "resultExplanation": "The database reports 3 affected rows.",
+          "databaseEffect": "The table Review now contains 4 rows."
+        },
+        {
+          "id": "changing-data-04",
+          "title": "View your own data",
+          "queryExplanation": {
+            "summary": "The new table can be queried like any other and joined with the existing tables.",
+            "parts": [
+              {
+                "fragment": "FROM Review r",
+                "explanation": "The starting point is the new table."
+              },
+              {
+                "fragment": "INNER JOIN Customer c ... INNER JOIN Product p",
+                "explanation": "Resolves the foreign keys into readable names."
+              }
+            ]
+          },
+          "resultExplanation": "4 rows: Anna rates the Espresso Classico 5, Ben the Cold Brew 3, David the Handmühle 5 (without text, so NULL) and Elif the Sencha 2.",
+          "databaseEffect": "Nothing. The query only reads."
+        },
+        {
+          "id": "changing-data-05",
+          "title": "Change rows with UPDATE",
+          "queryExplanation": {
+            "summary": "UPDATE changes existing rows. The WHERE condition determines which ones. Without WHERE, all rows in the table would be changed.",
+            "parts": [
+              {
+                "fragment": "UPDATE Review",
+                "explanation": "The table whose rows are changed."
+              },
+              {
+                "fragment": "SET Rating = 4, ReviewText = ...",
+                "explanation": "New values for two columns."
+              },
+              {
+                "fragment": "WHERE Id = 2",
+                "explanation": "Only the row with Id 2, which is Ben's review."
+              }
+            ]
+          },
+          "resultExplanation": "The database reports 1 affected row. Check the result with a SELECT on Review: Ben's rating is now 4 stars.",
+          "databaseEffect": "One row of the table Review was changed (Rating and ReviewText). No new rows are added."
+        },
+        {
+          "id": "changing-data-06",
+          "title": "Error: CHECK rule violated",
+          "queryExplanation": {
+            "summary": "The rating 6 violates the CHECK rule Rating BETWEEN 1 AND 5. The database rejects the row.",
+            "parts": [
+              {
+                "fragment": "2, 6, 'Zu gut für die Skala'",
+                "explanation": "The 6 is the value for Rating. It is outside the allowed range of 1 to 5."
+              }
+            ]
+          },
+          "resultExplanation": "You get an error message about a CHECK constraint violation. Nothing was inserted: a failed INSERT does not change the table.",
+          "databaseEffect": "Nothing. The statement failed, and the table is unchanged."
+        },
+        {
+          "id": "changing-data-07",
+          "title": "Error: customer does not exist",
+          "queryExplanation": {
+            "summary": "The foreign key requires that a customer with Id 99 exists. There is none.",
+            "parts": [
+              {
+                "fragment": "5, 99, 2",
+                "explanation": "The 99 is the value for CustomerId. It points to a customer that does not exist in the table Customer."
+              }
+            ]
+          },
+          "resultExplanation": "You get an error message about a FOREIGN KEY violation. The row is not stored.",
+          "databaseEffect": "Nothing. The statement failed, and the table is unchanged."
+        },
+        {
+          "id": "changing-data-08",
+          "title": "Error: duplicate review",
+          "queryExplanation": {
+            "summary": "Anna has already reviewed the Espresso Classico. The combination (CustomerId, ProductId) must be unique.",
+            "parts": [
+              {
+                "fragment": "(5, 1, 1, ...)",
+                "explanation": "Customer 1 and product 1 already exist in row 1."
+              }
+            ]
+          },
+          "resultExplanation": "You get an error message about a UNIQUE constraint violation. This INSERT does not change the table either.",
+          "databaseEffect": "Nothing. The statement failed, and the table is unchanged."
+        },
+        {
+          "id": "changing-data-09",
+          "title": "Error: deleting a parent row",
+          "queryExplanation": {
+            "summary": "Customer 1 is referenced by orders and reviews. The database does not let you delete a row as long as other rows point to it.",
+            "parts": [
+              {
+                "fragment": "DELETE FROM Customer WHERE Id = 1",
+                "explanation": "Tries to delete Anna Berger, although Orders and Review refer to her."
+              }
+            ]
+          },
+          "resultExplanation": "You get an error message about a FOREIGN KEY violation. Anna Berger is kept.",
+          "databaseEffect": "Nothing. The statement failed, and the table is unchanged."
+        },
+        {
+          "id": "changing-data-10",
+          "title": "Delete rows with DELETE",
+          "queryExplanation": {
+            "summary": "DELETE removes all rows that match the WHERE condition. Here too: without WHERE, all rows disappear.",
+            "parts": [
+              {
+                "fragment": "DELETE FROM Review",
+                "explanation": "Rows are removed from Review."
+              },
+              {
+                "fragment": "WHERE Rating < 3",
+                "explanation": "Only bad reviews: Elif's 2-star review."
+              }
+            ]
+          },
+          "resultExplanation": "The database reports 1 affected row. SELECT COUNT(*) FROM Review returns 3 afterwards.",
+          "databaseEffect": "The row with Id 4 was deleted. Review still contains 3 rows."
+        },
+        {
+          "id": "changing-data-11",
+          "title": "Increase stock",
+          "queryExplanation": {
+            "summary": "UPDATE can use the old value to calculate the new one. Here, the stock is increased by 50.",
+            "parts": [
+              {
+                "fragment": "SET Stock = Stock + 50",
+                "explanation": "The new stock is the old stock plus 50. If Stock is NULL, the result stays NULL."
+              },
+              {
+                "fragment": "WHERE Id = 4",
+                "explanation": "Product 4 is the Espresso Entkoffeiniert, whose stock was 0."
+              }
+            ]
+          },
+          "resultExplanation": "The database reports 1 affected row. The Espresso Entkoffeiniert now has 50 units in stock instead of 0.",
+          "databaseEffect": "One row of the existing table Product was changed (Stock: from 0 to 50)."
+        },
+        {
+          "id": "changing-data-12",
+          "title": "Check the final result",
+          "queryExplanation": {
+            "summary": "Finally, check the state of the table: three reviews are left.",
+            "parts": [
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "Number of remaining reviews."
+              },
+              {
+                "fragment": "AVG(Rating)",
+                "explanation": "Mean of the ratings."
+              }
+            ]
+          },
+          "resultExplanation": "One row with 3 reviews and an average of 4.67 (ratings 5, 4 and 5). The average is a decimal value, even though Rating is an integer.",
+          "databaseEffect": "Nothing. The query only reads."
+        }
+      ]
+    }
+  ]
+}

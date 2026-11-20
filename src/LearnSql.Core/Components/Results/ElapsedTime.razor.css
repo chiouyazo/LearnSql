@@ -1,0 +1,6 @@
+.elapsed-time {
+    min-width: 4.5rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--mud-palette-text-secondary);
+    font-size: 0.875rem;
+}

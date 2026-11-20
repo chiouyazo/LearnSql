@@ -1,0 +1,476 @@
+{
+  "title": "Analytics: Revenue over 24 Months",
+  "description": "Sales data from November 2024 to October 2026 with 24 customers, 15 products, 241 orders and 498 order lines. Some values are missing in Segment, Channel and discount, and a few customers have never ordered.",
+  "exercises": [
+    {
+      "id": "select-01",
+      "title": "Hardware by price",
+      "description": "Show the name and list price of all products in the Hardware category, most expensive first.",
+      "hints": [
+        "Filter by category and sort by price.",
+        "ORDER BY ListPrice DESC",
+        "SELECT Name, ListPrice FROM Product WHERE Category = 'Hardware' ORDER BY ListPrice DESC"
+      ]
+    },
+    {
+      "id": "select-02",
+      "title": "Customer countries",
+      "description": "Which countries appear in the customer table? Show each country exactly once, sorted alphabetically.",
+      "hints": [
+        "Without anything extra, each country would appear once per customer.",
+        "DISTINCT removes duplicate rows.",
+        "SELECT DISTINCT Country FROM Customer ORDER BY Country"
+      ]
+    },
+    {
+      "id": "filter-01",
+      "title": "Customers without a segment",
+      "description": "Which customers don't have a segment yet? Show name and country, sorted by name.",
+      "hints": [
+        "A missing segment is NULL.",
+        "Use IS NULL.",
+        "WHERE Segment IS NULL ORDER BY Name"
+      ]
+    },
+    {
+      "id": "filter-02",
+      "title": "Open and shipped orders",
+      "description": "Show the id, order date and status of all orders that are not yet completed (status Open or Shipped). Sort by order date and id.",
+      "hints": [
+        "It is enough if one of two values matches.",
+        "IN checks several values in a short form.",
+        "WHERE Status IN ('Open', 'Shipped')"
+      ]
+    },
+    {
+      "id": "filter-03",
+      "title": "Orders without a sales channel",
+      "description": "How many orders have no sales channel (Channel)? Name the column WithoutChannel.",
+      "hints": [
+        "You need to count NULL values.",
+        "Count with COUNT(*) and filter on Channel in WHERE.",
+        "SELECT COUNT(*) AS WithoutChannel FROM Orders WHERE Channel IS NULL"
+      ]
+    },
+    {
+      "id": "join-01",
+      "title": "Customers without orders",
+      "description": "Which customers have never placed an order? Show name, country and sign-up date, sorted by name.",
+      "hints": [
+        "Customers without orders disappear with an INNER JOIN.",
+        "LEFT JOIN from Customer to Orders, then check for the missing partner.",
+        "WHERE o.Id IS NULL"
+      ]
+    },
+    {
+      "id": "join-02",
+      "title": "Order lines with product and customer",
+      "description": "For all order lines of the orders with ids 1 to 5, show the customer name, the product name and the quantity. Sort by order id and product name.",
+      "hints": [
+        "You need Orders, Customer, OrderLine and Product.",
+        "Start from Orders and join the three other tables.",
+        "WHERE o.Id BETWEEN 1 AND 5"
+      ]
+    },
+    {
+      "id": "agg-01",
+      "title": "Orders per channel",
+      "description": "Count the orders per sales channel. Orders without a channel should appear as Unknown. Sort by count, descending (columns Channel and OrderCount).",
+      "hints": [
+        "NULL forms its own group when grouping.",
+        "COALESCE(Channel, 'Unknown') replaces NULL. Group by the same expression.",
+        "GROUP BY COALESCE(Channel, 'Unknown')"
+      ]
+    },
+    {
+      "id": "agg-02",
+      "title": "Revenue per product category",
+      "description": "Calculate the revenue per product category (Revenue, rounded to 2 decimal places). The revenue of an order line is Quantity * UnitPrice * (1 - discount percent / 100). A missing discount (NULL) means 0 percent. Cancelled orders don't count. Sort by revenue, descending.",
+      "hints": [
+        "The discount can be NULL. Use COALESCE, otherwise the whole row becomes NULL.",
+        "Join OrderLine to Orders (for the status) and to Product (for the category).",
+        "SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)) with GROUP BY p.Category"
+      ]
+    },
+    {
+      "id": "agg-03",
+      "title": "Revenue per month",
+      "description": "Calculate the revenue per month (Month as text in the format YYYY-MM, Revenue rounded to 2 decimal places, excluding cancelled orders), sorted chronologically.",
+      "hints": [
+        "The month is the first 7 characters of the date.",
+        "SUBSTRING(o.OrderDate, 1, 7) gives the format YYYY-MM. Group by it.",
+        "GROUP BY SUBSTRING(o.OrderDate, 1, 7) and ORDER BY Month"
+      ]
+    },
+    {
+      "id": "agg-04",
+      "title": "High-revenue customers",
+      "description": "Show customers (Name) with a total revenue above 10000 (Revenue, rounded, excluding cancelled orders), highest revenue first.",
+      "hints": [
+        "Calculate the revenue per customer first, then filter the groups.",
+        "The condition on SUM belongs in HAVING.",
+        "HAVING SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)) > 10000"
+      ]
+    },
+    {
+      "id": "sub-01",
+      "title": "Products sold with a high discount",
+      "description": "Show all products (Name) that were sold on at least one order line with a discount of more than 10 percent, sorted alphabetically.",
+      "hints": [
+        "Find the ProductIds of the order lines with a discount above 10.",
+        "IN with a subquery on OrderLine.",
+        "WHERE Id IN (SELECT ProductId FROM OrderLine WHERE DiscountPercent > 10)"
+      ]
+    },
+    {
+      "id": "sub-02",
+      "title": "Orders above average",
+      "description": "Show the ids of the orders whose revenue (Revenue, excluding cancelled) is above the average revenue of all non-cancelled orders. Sort by id.",
+      "hints": [
+        "First calculate the revenue per order in a derived table.",
+        "The average over these revenues is a second subquery.",
+        "WHERE Revenue > (SELECT AVG(Revenue) FROM (...) x)"
+      ]
+    },
+    {
+      "id": "win-01",
+      "title": "First order per customer",
+      "description": "For each customer with orders, find the first order (order id and date). If the date is the same, the smaller id wins. Sort by customer id.",
+      "hints": [
+        "Number each customer's orders and keep number 1.",
+        "ROW_NUMBER() OVER (PARTITION BY CustomerId ORDER BY OrderDate, Id) in a derived table, then WHERE rn = 1 on the outside.",
+        "Window functions can't be used directly in WHERE. Put them in a subquery."
+      ]
+    },
+    {
+      "id": "win-02",
+      "title": "Cumulative monthly revenue",
+      "description": "For each month, show the revenue and the running total since the start (Running, rounded to 2 decimal places). Use the monthly revenues excluding cancelled orders, sorted chronologically.",
+      "hints": [
+        "First calculate the monthly revenue as a derived table.",
+        "SUM(Revenue) OVER (ORDER BY Month) adds up continuously.",
+        "ROUND(SUM(Revenue) OVER (ORDER BY Month), 2) AS Running"
+      ]
+    },
+    {
+      "id": "win-03",
+      "title": "Change from the previous month",
+      "description": "For each month, show the revenue, the revenue of the previous month (Previous) and the change (Change, rounded to 2 decimal places). For the first month, both are NULL. Sorted chronologically.",
+      "hints": [
+        "You need the value of the previous row.",
+        "LAG(Revenue) OVER (ORDER BY Month) returns the previous month, NULL in the first month.",
+        "ROUND(Revenue - LAG(Revenue) OVER (ORDER BY Month), 2) AS Change"
+      ]
+    },
+    {
+      "id": "win-04",
+      "title": "Moving three-month average",
+      "description": "For each month, calculate the average revenue of the current and the two previous months (Avg3, rounded to 2 decimal places). At the start, fewer months are available. Sorted chronologically.",
+      "hints": [
+        "You need a window frame of three rows.",
+        "AVG(...) OVER (ORDER BY ... ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+        "ROUND(AVG(m.Revenue) OVER (ORDER BY m.Month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS Avg3"
+      ]
+    },
+    {
+      "id": "win-05",
+      "title": "Customer rank per country",
+      "description": "Assign a rank within each country by total revenue (CountryRank, highest revenue = 1). Show country, name, revenue and rank. Sort by country and rank.",
+      "hints": [
+        "The rank should start again at 1 in every country.",
+        "RANK() OVER (PARTITION BY Country ORDER BY Revenue DESC)",
+        "First calculate the revenue per customer in a derived table."
+      ]
+    },
+    {
+      "id": "win-06",
+      "title": "Share of total revenue",
+      "description": "For each customer with revenue, show the share of total revenue in percent (SharePercent, rounded to one decimal place). Sort by share, descending, then by name.",
+      "hints": [
+        "You need the sum over all customers in every row.",
+        "SUM(Revenue) OVER () is a sum over the whole result.",
+        "ROUND(Revenue * 100.0 / SUM(Revenue) OVER (), 1) AS SharePercent"
+      ]
+    }
+  ],
+  "guidedScenarios": [
+    {
+      "id": "window-basics",
+      "title": "Window functions: comparing months",
+      "description": "You build a view with monthly revenues and apply window functions to it: rankings, running totals, comparison with the previous month and moving averages. The scenario creates a view and resets the database at the start.",
+      "steps": [
+        {
+          "id": "window-basics-01",
+          "title": "Create monthly revenues as a view",
+          "queryExplanation": {
+            "summary": "A view (VIEW) stores a query under a name. The following steps use MonthlyRevenue like a table.",
+            "parts": [
+              {
+                "fragment": "CREATE VIEW MonthlyRevenue AS",
+                "explanation": "Creates the view. It stores no data itself, but runs the underlying query each time it is accessed."
+              },
+              {
+                "fragment": "SUBSTRING(o.OrderDate, 1, 7)",
+                "explanation": "Cuts the first 7 characters out of the date YYYY-MM-DD, which is the month."
+              },
+              {
+                "fragment": "COUNT(DISTINCT o.Id)",
+                "explanation": "Counts orders, not order lines. One order has several lines."
+              },
+              {
+                "fragment": "SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0))",
+                "explanation": "Revenue of an order line including the discount. If the discount is missing (NULL), 0 percent applies."
+              },
+              {
+                "fragment": "WHERE o.Status <> 'Cancelled'",
+                "explanation": "Cancelled orders don't count."
+              }
+            ]
+          },
+          "resultExplanation": "The query returns no rows. The view has been created.",
+          "databaseEffect": "New view MonthlyRevenue with the columns Month, OrderCount and Revenue. No data is copied."
+        },
+        {
+          "id": "window-basics-02",
+          "title": "Look at the monthly revenues",
+          "queryExplanation": {
+            "summary": "The view returns one row per month. The following steps build on it.",
+            "parts": [
+              {
+                "fragment": "FROM MonthlyRevenue",
+                "explanation": "The view is queried like a table."
+              },
+              {
+                "fragment": "ORDER BY Month",
+                "explanation": "Chronological, because YYYY-MM sorts correctly as text."
+              }
+            ]
+          },
+          "resultExplanation": "24 rows from 2024-11 to 2026-10. Revenue fluctuates strongly: in August 2025 it was only 980.50, in March 2026 it was 19,756.38.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "window-basics-03",
+          "title": "Rankings and ties",
+          "queryExplanation": {
+            "summary": "Window functions calculate a value for every row without collapsing rows. Three ranking functions differ in how they handle ties.",
+            "parts": [
+              {
+                "fragment": "OVER (ORDER BY OrderCount DESC)",
+                "explanation": "The window: all rows, sorted by order count in descending order."
+              },
+              {
+                "fragment": "ROW_NUMBER()",
+                "explanation": "Consecutive number without gaps and without ties. With the same count, the month decides here."
+              },
+              {
+                "fragment": "RANK()",
+                "explanation": "A tie gets the same rank, followed by a gap."
+              },
+              {
+                "fragment": "DENSE_RANK()",
+                "explanation": "A tie gets the same rank, and numbering continues without a gap."
+              }
+            ]
+          },
+          "resultExplanation": "October 2026 (15 orders) and September 2026 (14) are in the lead. After that, November 2025, March 2026 and May 2026 have 12 orders each: RANK gives rank 3 three times and then jumps to 6, DENSE_RANK gives 3 three times and then 4. ROW_NUMBER numbers them 3, 4 and 5 instead.",
+          "databaseEffect": "Nothing, the query only reads. The window functions only add columns to the result."
+        },
+        {
+          "id": "window-basics-04",
+          "title": "Running total",
+          "queryExplanation": {
+            "summary": "SUM as a window function adds up all rows from the start to the current row. This produces a cumulative value.",
+            "parts": [
+              {
+                "fragment": "SUM(Revenue) OVER (ORDER BY Month)",
+                "explanation": "Sum of all months up to and including the current row."
+              },
+              {
+                "fragment": "ROUND(..., 2)",
+                "explanation": "Rounds to avoid floating-point residue from the addition."
+              }
+            ]
+          },
+          "resultExplanation": "The last row (2026-10) shows 223,002.75: the total revenue of the 24 months. At the turn of the year 2025/2026, the total stood at 107,693.25.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "window-basics-05",
+          "title": "Comparison with the previous month",
+          "queryExplanation": {
+            "summary": "LAG reads the value of an earlier row. The first month has no predecessor, so LAG returns NULL there.",
+            "parts": [
+              {
+                "fragment": "LAG(Revenue) OVER (ORDER BY Month)",
+                "explanation": "The revenue of the row before, in chronological order."
+              },
+              {
+                "fragment": "Revenue - LAG(...)",
+                "explanation": "Change from the previous month. NULL minus a number stays NULL."
+              }
+            ]
+          },
+          "resultExplanation": "The first row (2024-11) has NULL in PreviousRevenue and Change. The largest increase was May 2025 (+13,203.88), the largest decrease June 2025 (-14,364.23).",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "window-basics-06",
+          "title": "Moving average",
+          "queryExplanation": {
+            "summary": "A window frame (ROWS BETWEEN) limits which rows go into the calculation. Here it is the current row and the two previous rows.",
+            "parts": [
+              {
+                "fragment": "ROWS BETWEEN 2 PRECEDING AND CURRENT ROW",
+                "explanation": "Frame of at most three rows: two before and the current one."
+              },
+              {
+                "fragment": "AVG(Revenue) OVER (...)",
+                "explanation": "Average over the frame only, hence a moving average."
+              }
+            ]
+          },
+          "resultExplanation": "The curve is smoother than the monthly values. The first two rows average only 1 and 2 months (9,698.88 and 7,952.37), after that always three. The last value (2026-10) is 13,505.22.",
+          "databaseEffect": "Nothing, the query only reads."
+        }
+      ]
+    },
+    {
+      "id": "window-partitions",
+      "title": "Window functions: comparing customers by group",
+      "description": "With PARTITION BY you split the window into groups. You determine a customer's rank within their country, the best customer per country, the share of total revenue and each customer's first order. At the end you see why 3 customers are missing. The scenario creates a view and resets the database at the start.",
+      "steps": [
+        {
+          "id": "window-partitions-01",
+          "title": "Create customer revenues as a view",
+          "queryExplanation": {
+            "summary": "The view summarizes the revenue per customer. It contains only customers with at least one non-cancelled order, because the INNER JOIN filters out the others.",
+            "parts": [
+              {
+                "fragment": "CREATE VIEW CustomerRevenue AS",
+                "explanation": "Creates the view."
+              },
+              {
+                "fragment": "INNER JOIN Orders ... INNER JOIN OrderLine",
+                "explanation": "Joins each customer with their orders and order lines."
+              },
+              {
+                "fragment": "GROUP BY c.Id, c.Name, c.Country",
+                "explanation": "One row per customer."
+              }
+            ]
+          },
+          "resultExplanation": "The query returns no rows. The view has been created.",
+          "databaseEffect": "New view CustomerRevenue with the columns CustomerId, Name, Country and Revenue."
+        },
+        {
+          "id": "window-partitions-02",
+          "title": "Rank overall and per country",
+          "queryExplanation": {
+            "summary": "PARTITION BY splits the rows into groups. The window function is calculated separately for each group, so the rank starts again at 1 in every country.",
+            "parts": [
+              {
+                "fragment": "RANK() OVER (ORDER BY Revenue DESC)",
+                "explanation": "Rank across all customers."
+              },
+              {
+                "fragment": "RANK() OVER (PARTITION BY Country ORDER BY Revenue DESC)",
+                "explanation": "Rank within the country only."
+              }
+            ]
+          },
+          "resultExplanation": "21 rows. Rheinwerk Systems GmbH is at rank 1 overall with 25,839.03 and also at rank 1 in Deutschland. Brouwer Techniek BV is at rank 2 overall and at rank 1 in the Niederlande. Pierre Martin is at rank 21 overall and at rank 4 in Frankreich.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "window-partitions-03",
+          "title": "The best customer per country",
+          "queryExplanation": {
+            "summary": "Window functions can't be used in WHERE. So you calculate the number in a subquery and filter on it on the outside.",
+            "parts": [
+              {
+                "fragment": "ROW_NUMBER() OVER (PARTITION BY Country ORDER BY Revenue DESC)",
+                "explanation": "Numbers the customers of each country by revenue."
+              },
+              {
+                "fragment": "FROM (...) t",
+                "explanation": "Derived table: the subquery behaves like a table with the alias t."
+              },
+              {
+                "fragment": "WHERE t.RowNo = 1",
+                "explanation": "Keeps only the first customer of each country."
+              }
+            ]
+          },
+          "resultExplanation": "5 rows, one per country: Lukas Brandner (Österreich), Atelier Rivage SAS (Frankreich), Rheinwerk Systems GmbH (Deutschland), Brouwer Techniek BV (Niederlande) and Alpen Outdoor AG (Schweiz).",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "window-partitions-04",
+          "title": "Share of total revenue",
+          "queryExplanation": {
+            "summary": "OVER () with nothing inside means the window is the entire result. This makes the grand total available in every row.",
+            "parts": [
+              {
+                "fragment": "SUM(Revenue) OVER ()",
+                "explanation": "Total revenue of all customers, repeated in every row."
+              },
+              {
+                "fragment": "Revenue * 100.0 / ...",
+                "explanation": "Share in percent. The 100.0 with a decimal point prevents integer division."
+              },
+              {
+                "fragment": "TOP 5",
+                "explanation": "Shows only the five largest shares."
+              }
+            ]
+          },
+          "resultExplanation": "Rheinwerk Systems GmbH accounts for 11.6 percent of revenue, Brouwer Techniek BV for 8.7 and Atelier Rivage SAS for 8.2. The five largest customers together reach about 42 percent.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "window-partitions-05",
+          "title": "Each customer's first order",
+          "queryExplanation": {
+            "summary": "The same pattern returns the first row per group, here the oldest order of each customer.",
+            "parts": [
+              {
+                "fragment": "PARTITION BY o.CustomerId ORDER BY o.OrderDate, o.Id",
+                "explanation": "Number chronologically per customer. The id resolves ties in the date."
+              },
+              {
+                "fragment": "WHERE t.RowNo = 1",
+                "explanation": "Only the first order."
+              }
+            ]
+          },
+          "resultExplanation": "21 rows for 21 customers. Customer 1 has their first order (no. 19) on 2024-12-28, customer 5 (no. 1) on 2024-11-04. Customers 12, 23 and 24 don't appear because they have never ordered.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "window-partitions-06",
+          "title": "Why are 3 customers missing?",
+          "queryExplanation": {
+            "summary": "Window functions only see the rows the join leaves over. To find customers without orders, you need a LEFT JOIN and a check for NULL.",
+            "parts": [
+              {
+                "fragment": "LEFT JOIN Orders o",
+                "explanation": "Keeps all customers, even those without orders."
+              },
+              {
+                "fragment": "WHERE o.Id IS NULL",
+                "explanation": "Only customers without orders."
+              },
+              {
+                "fragment": "COALESCE(c.Segment, 'unbekannt')",
+                "explanation": "Replaces a missing segment with a text."
+              }
+            ]
+          },
+          "resultExplanation": "3 customers have never ordered: Helga Moser and Lena Hofmann (both without a segment, hence unbekannt) and Katharina Auer (segment Consumer). They are the reason why the view contains 21 instead of 24 customers.",
+          "databaseEffect": "Nothing, the query only reads."
+        }
+      ]
+    }
+  ]
+}

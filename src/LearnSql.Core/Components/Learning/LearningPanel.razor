@@ -1,0 +1,14 @@
+<section class="learning-panel" aria-label="@L["PanelRegion"]">
+    @if (_tabs.Count > 0)
+    {
+        <MudTabs ActivePanelIndex="_active" ActivePanelIndexChanged="OnActiveChangedAsync" KeepPanelsAlive="true"
+                 Elevation="0" Rounded="false" Class="learning-tabs" TabPanelsClass="learning-tab-panel">
+            @foreach (LearningPanelTab tab in _tabs)
+            {
+                <MudTabPanel @key="tab.Id" ID="@tab.Id" Text="@TitleOf(tab)" Icon="@tab.Icon">
+                    @tab.Content
+                </MudTabPanel>
+            }
+        </MudTabs>
+    }
+</section>

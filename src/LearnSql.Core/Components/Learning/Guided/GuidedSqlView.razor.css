@@ -1,0 +1,36 @@
+.guided-sql {
+    margin: 0;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: var(--mud-default-borderradius);
+    background: var(--mud-palette-surface);
+    color: var(--mud-palette-text-primary);
+    font-family: ui-monospace, "Cascadia Code", Consolas, "Liberation Mono", monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    tab-size: 4;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.guided-sql ::deep .tok-keyword {
+    color: var(--mud-palette-primary);
+    font-weight: 700;
+}
+
+.guided-sql ::deep .tok-function {
+    color: var(--mud-palette-info-darken);
+}
+
+.guided-sql ::deep .tok-string {
+    color: var(--mud-palette-success-darken);
+}
+
+.guided-sql ::deep .tok-number {
+    color: var(--mud-palette-warning-darken);
+}
+
+.guided-sql ::deep .tok-identifier {
+    color: var(--mud-palette-text-primary);
+    text-decoration: underline dotted;
+}

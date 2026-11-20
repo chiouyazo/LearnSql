@@ -1,0 +1,18 @@
+<div class="failure-panel">
+    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" role="alert" Class="failure-card">
+        <MudText Typo="Typo.subtitle1">@Title</MudText>
+        <MudText Typo="Typo.body2" Class="mb-2">@Explanation</MudText>
+        @if (!string.IsNullOrWhiteSpace(Failure.Detail))
+        {
+            <MudExpansionPanels Class="mb-3" Elevation="0">
+                <MudExpansionPanel Text="@L["TechnicalDetails"]">
+                    <pre class="failure-detail">@Failure.Detail</pre>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        }
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Refresh"
+                   OnClick="OnRetry">
+            @L["TryAgain"]
+        </MudButton>
+    </MudAlert>
+</div>

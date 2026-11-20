@@ -1,0 +1,47 @@
+@implements IDisposable
+
+@if (_initialized)
+{
+    <div class="workspace">
+        <div class="workspace-toolbar" role="toolbar" aria-label="@L["ToolbarLabel"]">
+            @ToolbarLeading
+            @if (ShowDatasetMenu)
+            {
+                <DatasetMenu/>
+            }
+            <TemplateMenu OnTemplateSelected="ApplyTemplateAsync"/>
+            <MudButton Variant="Variant.Text" Size="Size.Small" StartIcon="@Icons.Material.Filled.Clear"
+                       OnClick="ClearAsync">
+                @L["ClearEditor"]
+            </MudButton>
+            <MudSpacer/>
+            <span class="workspace-hint"><MudText Typo="Typo.caption" Class="text-muted">@L["ShortcutHint"]</MudText></span>
+            <MudButton Variant="@(_schemaOpen ? Variant.Outlined : Variant.Text)" Size="Size.Small"
+                       Color="@(_schemaOpen ? Color.Primary : Color.Default)"
+                       StartIcon="@Icons.Material.Filled.AccountTree" aria-expanded="@(_schemaOpen ? "true" : "false")"
+                       aria-controls="workspace-schema" OnClick="ToggleSchemaAsync">
+                @(_schemaOpen ? L["HideSchema"] : L["ShowSchema"])
+            </MudButton>
+        </div>
+        <div class="workspace-body">
+            <div class="workspace-main">
+                <MudSplitPanel Horizontal="true" Class="workspace-split" Elevation="0" FirstPanelInitialSize="300"
+                               MinPanelSize="120" ResetOnDoubleClick="true" ClassDivider="workspace-divider">
+                    <FirstPanel>
+                        <SqlEditor @ref="_editor" Value="@_text" ValueChanged="OnTextChanged" OnRunRequested="RunAsync"
+                                   OnReady="OnEditorReadyAsync"/>
+                    </FirstPanel>
+                    <SecondPanel>
+                        <ResultPanel OnRunRequested="RunAsync" OnNavigate="NavigateToAsync"/>
+                    </SecondPanel>
+                </MudSplitPanel>
+            </div>
+            @if (_schemaOpen)
+            {
+                <div id="workspace-schema" class="workspace-schema">
+                    <SchemaBrowser OnInsertText="InsertTextAsync"/>
+                </div>
+            }
+        </div>
+    </div>
+}

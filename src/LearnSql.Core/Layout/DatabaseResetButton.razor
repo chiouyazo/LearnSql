@@ -1,0 +1,40 @@
+@implements IDisposable
+@inject IAppSession Session
+@inject IDialogService Dialogs
+@inject IStringLocalizer<AppStrings> L
+
+<MudTooltip Text="@L["ResetDatabase"]">
+    <MudIconButton Icon="@Icons.Material.Filled.RestartAlt" Color="Color.Inherit"
+                   Disabled="@(Session.Phase == AppPhase.Loading)" aria-label="@L["ResetDatabase"]"
+                   OnClick="ConfirmResetAsync"/>
+</MudTooltip>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Session.StateChanged += OnStateChanged;
+    }
+
+    public void Dispose()
+    {
+        Session.StateChanged -= OnStateChanged;
+    }
+
+    private async Task ConfirmResetAsync()
+    {
+        bool? confirmed = await Dialogs.ShowMessageBoxAsync(
+            L["ResetDialogTitle"],
+            L["ResetDialogMessage"],
+            yesText: L["ResetDialogConfirm"],
+            cancelText: L["Cancel"]);
+        if (confirmed == true)
+        {
+            await Session.ResetDatabaseAsync();
+        }
+    }
+
+    private void OnStateChanged(object? sender, EventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

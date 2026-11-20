@@ -1,0 +1,72 @@
+.scenario-workspace {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--mud-appbar-height) - 2rem);
+    min-height: 28rem;
+}
+
+.scenario-body {
+    flex: 1;
+    min-height: 0;
+}
+
+.scenario-workspace ::deep .scenario-outer {
+    width: 100%;
+    height: 100%;
+}
+
+.scenario-workspace ::deep .scenario-second {
+    padding-left: 0.25rem;
+    min-width: 0;
+}
+
+.scenario-workspace ::deep .scenario-divider {
+    background: var(--mud-palette-divider);
+    border-radius: 4px;
+}
+
+.scenario-workspace ::deep .scenario-divider:hover {
+    background: var(--mud-palette-primary);
+}
+
+.scenario-learning {
+    height: 100%;
+    min-height: 0;
+}
+
+.scenario-collapsed ::deep .scenario-first,
+.scenario-collapsed ::deep .scenario-divider {
+    display: none;
+}
+
+.scenario-missing {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+    .scenario-workspace {
+        height: auto;
+    }
+
+    .scenario-workspace ::deep .scenario-outer {
+        flex-direction: column;
+    }
+
+    .scenario-workspace ::deep .scenario-first {
+        flex: none;
+        width: 100% !important;
+        height: clamp(16rem, 60vh, 32rem) !important;
+    }
+
+    .scenario-workspace ::deep .scenario-second {
+        flex: none;
+        width: 100% !important;
+        height: auto !important;
+        padding: 0.5rem 0 0;
+    }
+
+    .scenario-workspace ::deep .scenario-divider {
+        display: none;
+    }
+}

@@ -1,0 +1,94 @@
+@using LearnSql.Core.Services.Guided
+@implements IDisposable
+
+@if (Machine is not null)
+{
+    <section class="guided-player" aria-labelledby="guided-player-title" @ref="_root">
+        <div class="guided-sticky">
+        <header class="guided-player-head">
+            <div class="guided-player-heading">
+                <MudText Typo="Typo.overline" Class="text-muted">@L["PlayerLabel"]</MudText>
+                <MudText Typo="Typo.subtitle1" HtmlTag="h3" id="guided-player-title">@Machine.Definition.Title</MudText>
+            </div>
+            <MudButton Variant="Variant.Text" Size="Size.Small" StartIcon="@Icons.Material.Filled.Close"
+                       OnClick="EndAsync">@L["End"]</MudButton>
+        </header>
+
+        <div class="guided-progress">
+            <MudText Typo="Typo.caption" Class="text-muted">@L["StepOf", Machine.CurrentIndex + 1, Machine.StepCount]</MudText>
+            <MudProgressLinear Value="@(Machine.Fraction * 100)" Color="Color.Primary" Rounded="true" Size="Size.Small"
+                               aria-label="@L["ProgressLabel", Machine.CompletedCount, Machine.StepCount]"/>
+        </div>
+
+        <div class="guided-controls" role="group" aria-label="@L["ControlsLabel"]">
+            <MudButton Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Filled.ArrowBack"
+                       Disabled="@(!Machine.CanMoveBack || Coordinator.IsBusy)" OnClick="PreviousAsync">@L["Back"]</MudButton>
+            @if (Coordinator.IsPlaying)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                           StartIcon="@Icons.Material.Filled.Pause" OnClick="Coordinator.Pause">@L["Pause"]</MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                           StartIcon="@Icons.Material.Filled.PlayArrow" Disabled="@ResumeDisabled"
+                           OnClick="ResumeAsync">@L["Resume"]</MudButton>
+            }
+            <MudButton Variant="Variant.Outlined" Size="Size.Small" EndIcon="@Icons.Material.Filled.ArrowForward"
+                       Disabled="@(!Machine.CanMoveNext || Coordinator.IsBusy)" OnClick="NextAsync">@L["Next"]</MudButton>
+        </div>
+
+        @if (Coordinator.IsCountingDown)
+        {
+            <div class="guided-countdown" @key="Machine.CurrentIndex">
+                <div class="guided-countdown-track" aria-hidden="true">
+                    <div class="guided-countdown-fill" style="animation-duration: @(Coordinator.CountdownSeconds)s"></div>
+                </div>
+                <MudText Typo="Typo.caption" Class="text-muted">@L["AutoNext"]</MudText>
+            </div>
+        }
+        </div>
+
+        <div class="guided-step" role="status" aria-live="polite">
+            <div class="guided-step-meta">
+                <MudText Typo="Typo.subtitle2" HtmlTag="h4" Class="guided-step-title">@Machine.CurrentStep.Title</MudText>
+                @if (Machine.CurrentStep.Kind == GuidedStepKind.ChangesData)
+                {
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Warning">@L["KindChangesData"]</MudChip>
+                }
+            </div>
+            <GuidedSqlView Sql="@Machine.CurrentStep.Sql"/>
+
+            @if (Coordinator.IsBusy && !Machine.CurrentCompleted)
+            {
+                <div class="guided-busy">
+                    <MudProgressLinear Indeterminate="true" Color="Color.Primary" Size="Size.Small" aria-label="@L["Running"]"/>
+                    <MudText Typo="Typo.caption" Class="text-muted">@L["Running"]</MudText>
+                </div>
+            }
+            else if (Machine.CurrentCompleted || Machine.CurrentCheck is not null)
+            {
+                @if (Coordinator.ShowsEarlierRun)
+                {
+                    <MudText Typo="Typo.caption" Class="text-muted">@L["EarlierRun"]</MudText>
+                }
+
+                <GuidedStepReport Step="Machine.CurrentStep" Check="Machine.CurrentCheck"/>
+            }
+        </div>
+
+        @if (Machine.IsFinished && Machine.IsLast)
+        {
+            <MudAlert Severity="Severity.Success" Variant="Variant.Filled" Class="mt-2" role="status">
+                <MudText Typo="Typo.subtitle2">@L["FinishedTitle"]</MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">@L["FinishedText", Machine.StepCount, Machine.Definition.Title]</MudText>
+                <div class="guided-finished-actions">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" Size="Size.Small"
+                               Disabled="Coordinator.IsBusy" OnClick="RestartAsync">@L["Restart"]</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" Size="Size.Small"
+                               Disabled="Coordinator.IsBusy" OnClick="EndAsync">@L["End"]</MudButton>
+                </div>
+            </MudAlert>
+        }
+    </section>
+}

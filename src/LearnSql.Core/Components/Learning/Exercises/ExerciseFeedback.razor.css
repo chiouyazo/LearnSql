@@ -1,0 +1,61 @@
+.exercise-feedback {
+    margin-top: 0.75rem;
+}
+
+.feedback {
+    display: flex;
+    gap: 0.625rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--feedback-color);
+    border-radius: var(--mud-default-borderradius);
+    background: color-mix(in srgb, var(--feedback-color) 10%, transparent);
+    font-size: 0.875rem;
+}
+
+.feedback-success {
+    --feedback-color: var(--mud-palette-success);
+}
+
+.feedback-warning {
+    --feedback-color: var(--mud-palette-warning);
+}
+
+.feedback-error {
+    --feedback-color: var(--mud-palette-error);
+}
+
+.feedback-info {
+    --feedback-color: var(--mud-palette-info);
+}
+
+.feedback ::deep .feedback-icon {
+    flex: none;
+    color: var(--feedback-color);
+}
+
+.feedback-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.feedback-list {
+    margin: 0;
+    padding-left: 1.125rem;
+}
+
+.feedback-error-text {
+    max-width: 100%;
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+    white-space: pre-wrap;
+}
+
+.feedback-body ::deep .mud-button-root {
+    flex: none;
+    white-space: nowrap;
+}

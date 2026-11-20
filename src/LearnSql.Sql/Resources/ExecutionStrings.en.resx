@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cancelled" xml:space="preserve">
+    <value>The execution was cancelled.</value>
+  </data>
+  <data name="UnexpectedExecutionError" xml:space="preserve">
+    <value>An unexpected internal error occurred during execution. The error was logged.</value>
+  </data>
+  <data name="DatabaseInitializationFailed" xml:space="preserve">
+    <value>The database could not be initialized.</value>
+  </data>
+  <data name="StorageLimitReached" xml:space="preserve">
+    <value>The memory limit of this environment was reached. Limit the amount of data, for example with TOP or a termination condition in the recursive CTE.</value>
+  </data>
+  <data name="TransactionRolledBack" xml:space="preserve">
+    <value>SQLite rolled back the open transaction.</value>
+  </data>
+  <data name="TimeLimitExceeded" xml:space="preserve">
+    <value>The execution was cancelled after reaching the time limit of {0:0.##} s. Check the query for infinite loops, for example a recursive CTE without a termination condition.</value>
+  </data>
+  <data name="ProvisioningCancelled" xml:space="preserve">
+    <value>Loading the scenario was cancelled.</value>
+  </data>
+  <data name="ScriptFailed" xml:space="preserve">
+    <value>The script {0} could not be run: {1}</value>
+  </data>
+  <data name="UnknownScenario" xml:space="preserve">
+    <value>The scenario "{0}" is unknown. Available scenarios: {1}.</value>
+  </data>
+  <data name="InvalidScenario" xml:space="preserve">
+    <value>The scenario "{0}" is defined incorrectly: {1}</value>
+  </data>
+  <data name="UnexpectedProvisioningError" xml:space="preserve">
+    <value>An unexpected internal error occurred while loading the scenario. The error was logged.</value>
+  </data>
+  <data name="ProgressInitializingEngine" xml:space="preserve">
+    <value>Initializing SQLite</value>
+  </data>
+  <data name="ProgressReadingSchema" xml:space="preserve">
+    <value>Reading the database schema</value>
+  </data>
+  <data name="ProgressResettingDatabase" xml:space="preserve">
+    <value>Resetting the database</value>
+  </data>
+  <data name="ProgressRunningScript" xml:space="preserve">
+    <value>Running {0}</value>
+  </data>
+  <data name="ProgressReady" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="ProtectedInternalObject" xml:space="preserve">
+    <value>The object "{0}" is an internal system object of this environment. It cannot be modified, but you can read from it.</value>
+  </data>
+  <data name="ProtectedInformationSchemaView" xml:space="preserve">
+    <value>The view "{0}" belongs to INFORMATION_SCHEMA and is managed by this environment. It cannot be modified, dropped or recreated, but you can read from it.</value>
+  </data>
+  <data name="ProtectedVariableTable" xml:space="preserve">
+    <value>The table "{0}" internally stores the values of T-SQL variables. It cannot be modified, but you can read from it.</value>
+  </data>
+</root>

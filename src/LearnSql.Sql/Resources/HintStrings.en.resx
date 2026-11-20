@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DataTypes_Title" xml:space="preserve">
+    <value>Data types and dynamic typing</value>
+  </data>
+  <data name="DataTypes_Summary" xml:space="preserve">
+    <value>SQLite checks types less strictly than MSSQL. A column has only a type affinity, and the stored value keeps its own type.</value>
+  </data>
+  <data name="DataTypes_Point1" xml:space="preserve">
+    <value>Type names such as INT, NVARCHAR(50) or DATETIME are accepted but only evaluated as an affinity (text, integer, floating point or numeric).</value>
+  </data>
+  <data name="DataTypes_Point2" xml:space="preserve">
+    <value>The length in VARCHAR(n) is not enforced. Texts that are too long are stored, while MSSQL rejects them with error 8152.</value>
+  </data>
+  <data name="DataTypes_Point3" xml:space="preserve">
+    <value>A value that cannot be converted to the column type is stored anyway. MSSQL reports error 245 in this case.</value>
+  </data>
+  <data name="DataTypes_Point4" xml:space="preserve">
+    <value>INT and BIGINT are always 64 bits wide in SQLite. The overflow at 2147483647 (error 8115) does not occur in calculations or when storing values. CAST and CONVERT check the range like MSSQL, though.</value>
+  </data>
+  <data name="DataTypes_Point5" xml:space="preserve">
+    <value>CAST and CONVERT to INT, SMALLINT, TINYINT, BIGINT, DECIMAL, FLOAT and BIT convert strictly. Text that cannot be converted causes error 245 (or 8114 for DECIMAL and FLOAT), and a value that is too large causes error 8115 or 248. CAST('1.5' AS INT) fails as in MSSQL, while CAST(1.5 AS INT) returns 1.</value>
+  </data>
+  <data name="DataTypes_Point6" xml:space="preserve">
+    <value>CAST and CONVERT to CHAR(n) and NCHAR(n) pad with spaces to length n, while VARCHAR(n) and NVARCHAR(n) truncate. Without a length, CAST and CONVERT use length 30.</value>
+  </data>
+  <data name="DataTypes_Point7" xml:space="preserve">
+    <value>BIT is a number (0 or 1). A text value such as 'true' is not converted in comparisons, but CAST('true' AS BIT) works.</value>
+  </data>
+  <data name="Numbers_Title" xml:space="preserve">
+    <value>Numbers, decimals and division</value>
+  </data>
+  <data name="Numbers_Summary" xml:space="preserve">
+    <value>DECIMAL, NUMERIC and MONEY are ordinary numbers in SQLite, so calculations and output differ in some details.</value>
+  </data>
+  <data name="Numbers_Point1" xml:space="preserve">
+    <value>Decimal values are stored as integers or floating-point numbers. Calculations are not exact as in MSSQL.</value>
+  </data>
+  <data name="Numbers_Point2" xml:space="preserve">
+    <value>The output has no fixed number of decimal places. MSSQL shows 5.00 for DECIMAL(10,2), while this environment shows 5 or 5.0.</value>
+  </data>
+  <data name="Numbers_Point3" xml:space="preserve">
+    <value>CAST(x AS DECIMAL(p, s)) rounds to s decimal places, but the result remains a floating-point number.</value>
+  </data>
+  <data name="Numbers_Point4" xml:space="preserve">
+    <value>Integer divided by integer returns an integer as in MSSQL (7 / 2 is 3). With a decimal operand the result is fractional (7 / 2.0 is 3.5, MSSQL shows 3.500000).</value>
+  </data>
+  <data name="Numbers_Point5" xml:space="preserve">
+    <value>Division and modulo by 0 raise error 8134 (Divide by zero error) as in MSSQL, including with decimals. A NULL divisor returns NULL.</value>
+  </data>
+  <data name="Numbers_Point6" xml:space="preserve">
+    <value>The % operator also works with decimals as in MSSQL (7.5 % 2 is 1.5).</value>
+  </data>
+  <data name="Numbers_Point7" xml:space="preserve">
+    <value>AVG over an integer column returns an integer in MSSQL (the average of 1 and 2 is 1) but a decimal in this environment (1.5).</value>
+  </data>
+  <data name="Numbers_Point8" xml:space="preserve">
+    <value>ROUND, CEILING, FLOOR, POWER, SQRT, SQUARE, SIGN, LOG, LOG10, EXP and PI are available as in MSSQL. ROUND also accepts negative lengths and the third parameter for truncating.</value>
+  </data>
+  <data name="DatesAndTimes_Title" xml:space="preserve">
+    <value>Date and time</value>
+  </data>
+  <data name="DatesAndTimes_Summary" xml:space="preserve">
+    <value>SQLite has no date types. This environment stores dates as ISO text and reproduces the most important MSSQL functions.</value>
+  </data>
+  <data name="DatesAndTimes_Point1" xml:space="preserve">
+    <value>DATE, DATETIME and DATETIME2 are stored as ISO text, for example 2024-03-01 or 2024-03-01 10:00:00.000. Comparisons and sorting work as long as all values use this format.</value>
+  </data>
+  <data name="DatesAndTimes_Point2" xml:space="preserve">
+    <value>GETDATE, GETUTCDATE, SYSDATETIME, SYSUTCDATETIME, DATEADD, DATEDIFF, DATEPART, DATENAME, YEAR, MONTH, DAY, EOMONTH, DATEFROMPARTS and ISDATE are reproduced.</value>
+  </data>
+  <data name="DatesAndTimes_Point3" xml:space="preserve">
+    <value>DATEDIFF counts crossed boundaries as in MSSQL, not complete intervals. DATEDIFF(year, '2023-12-31', '2024-01-01') is 1.</value>
+  </data>
+  <data name="DatesAndTimes_Point4" xml:space="preserve">
+    <value>Week numbering follows the MSSQL default with weeks starting on Sunday (DATEFIRST 7). DATENAME returns English month and weekday names.</value>
+  </data>
+  <data name="DatesAndTimes_Point5" xml:space="preserve">
+    <value>A value without a time stays a date after DATEADD. MSSQL always returns DATETIME with a time for a text literal.</value>
+  </data>
+  <data name="DatesAndTimes_Point6" xml:space="preserve">
+    <value>Date plus or minus a number (for example OrderDate + 7) is only converted when the date type is recognized, for example for a column of type DATE or for GETDATE().</value>
+  </data>
+  <data name="DatesAndTimes_Point7" xml:space="preserve">
+    <value>CAST(date AS VARCHAR) returns the stored ISO text. For other formats, use CONVERT(VARCHAR, value, style) with the styles 0, 1, 3, 4, 5, 8, 11, 12, 20, 21, 23, 100, 101, 103, 104, 105, 108, 111, 112, 120, 121 and 126, or use FORMAT.</value>
+  </data>
+  <data name="DatesAndTimes_Point8" xml:space="preserve">
+    <value>GETDATE returns the local time of the device if the runtime knows the time zone, and UTC otherwise.</value>
+  </data>
+  <data name="DatesAndTimes_Point9" xml:space="preserve">
+    <value>DATETRUNC, AT TIME ZONE, DATETIMEOFFSET and SWITCHOFFSET are not available.</value>
+  </data>
+  <data name="Collation_Title" xml:space="preserve">
+    <value>Case sensitivity, collation and trailing spaces</value>
+  </data>
+  <data name="Collation_Summary" xml:space="preserve">
+    <value>MSSQL compares text case-insensitively by default. SQLite compares it in binary.</value>
+  </data>
+  <data name="Collation_Point1" xml:space="preserve">
+    <value>The text columns of the tables in this environment are created with COLLATE NOCASE. Comparisons, sorting and GROUP BY on these columns therefore behave as in MSSQL.</value>
+  </data>
+  <data name="Collation_Point2" xml:space="preserve">
+    <value>String literals and computed expressions do not have this collation. 'a' = 'A' is false in this environment and true in MSSQL.</value>
+  </data>
+  <data name="Collation_Point3" xml:space="preserve">
+    <value>In SQLite, LIKE ignores case only for ASCII letters. For umlauts it is case-sensitive: 'Ä' LIKE 'ä' is false. UPPER and LOWER also handle umlauts in this environment.</value>
+  </data>
+  <data name="Collation_Point4" xml:space="preserve">
+    <value>MSSQL ignores trailing spaces in comparisons ('a' = 'a ' is true), SQLite does not. LEN ignores them like MSSQL.</value>
+  </data>
+  <data name="Collation_Point5" xml:space="preserve">
+    <value>CHARINDEX and REPLACE ignore case like MSSQL with the default collation.</value>
+  </data>
+  <data name="Collation_Point6" xml:space="preserve">
+    <value>LIKE supports only the wildcards % and _. Character classes such as [a-c] are not available.</value>
+  </data>
+  <data name="Collation_Point7" xml:space="preserve">
+    <value>COLLATE with SQL Server collations such as Latin1_General_CI_AS is not available. Use COLLATE NOCASE or COLLATE BINARY.</value>
+  </data>
+  <data name="NullBehavior_Title" xml:space="preserve">
+    <value>NULL and sorting</value>
+  </data>
+  <data name="NullBehavior_Summary" xml:space="preserve">
+    <value>MSSQL and this environment agree on the most important points of NULL handling.</value>
+  </data>
+  <data name="NullBehavior_Point1" xml:space="preserve">
+    <value>NULL sorts as the lowest value: it comes first with ASC and last with DESC. This matches MSSQL.</value>
+  </data>
+  <data name="NullBehavior_Point2" xml:space="preserve">
+    <value>Concatenation with NULL returns NULL ('a' + NULL is NULL), as in the MSSQL default.</value>
+  </data>
+  <data name="NullBehavior_Point3" xml:space="preserve">
+    <value>An empty string ('') is not NULL.</value>
+  </data>
+  <data name="NullBehavior_Point4" xml:space="preserve">
+    <value>Aggregate functions ignore NULL as in MSSQL. The warning 'Null value is eliminated by an aggregate' does not appear.</value>
+  </data>
+  <data name="RowLimiting_Title" xml:space="preserve">
+    <value>Limiting rows and paging</value>
+  </data>
+  <data name="RowLimiting_Summary" xml:space="preserve">
+    <value>TOP and OFFSET ... FETCH are translated to LIMIT and OFFSET.</value>
+  </data>
+  <data name="RowLimiting_Point1" xml:space="preserve">
+    <value>TOP n, TOP (n) and TOP (@variable) are placed as LIMIT after the respective query, including in subqueries, CTEs and parts of a UNION.</value>
+  </data>
+  <data name="RowLimiting_Point2" xml:space="preserve">
+    <value>OFFSET n ROWS FETCH NEXT m ROWS ONLY becomes LIMIT m OFFSET n. Without FETCH, all remaining rows are returned.</value>
+  </data>
+  <data name="RowLimiting_Point3" xml:space="preserve">
+    <value>TOP n PERCENT and TOP n WITH TIES are not available yet. Use ROW_NUMBER or RANK instead.</value>
+  </data>
+  <data name="RowLimiting_Point4" xml:space="preserve">
+    <value>TOP in INSERT, UPDATE and DELETE is not available yet.</value>
+  </data>
+  <data name="RowLimiting_Point5" xml:space="preserve">
+    <value>Without ORDER BY, the order of the rows is not defined, as in MSSQL.</value>
+  </data>
+  <data name="RowLimiting_Point6" xml:space="preserve">
+    <value>INTERSECT binds more tightly than UNION and EXCEPT, as in MSSQL.</value>
+  </data>
+  <data name="Strings_Title" xml:space="preserve">
+    <value>Strings</value>
+  </data>
+  <data name="Strings_Summary" xml:space="preserve">
+    <value>The + operator is translated to addition or concatenation based on the detected types.</value>
+  </data>
+  <data name="Strings_Point1" xml:space="preserve">
+    <value>The + operator becomes the SQLite concatenation || if one operand is detected as text and the other is not a numeric type. The types come from literals, CAST, functions and the columns of the tables.</value>
+  </data>
+  <data name="Strings_Point2" xml:space="preserve">
+    <value>Number + number stays an addition. '1' + 1 returns the number 2 as in MSSQL, and '2' + '3' returns the text 23.</value>
+  </data>
+  <data name="Strings_Point3" xml:space="preserve">
+    <value>For an expression of unknown type without a text operand, + stays an addition.</value>
+  </data>
+  <data name="Strings_Point4" xml:space="preserve">
+    <value>The prefix N in N'text' is removed. All texts are Unicode.</value>
+  </data>
+  <data name="Strings_Point5" xml:space="preserve">
+    <value>ISNULL returns the type of the first argument as in MSSQL. A replacement value of another type is converted accordingly.</value>
+  </data>
+  <data name="Strings_Point6" xml:space="preserve">
+    <value>STRING_AGG with WITHIN GROUP (ORDER BY ...) is available.</value>
+  </data>
+  <data name="Strings_Point7" xml:space="preserve">
+    <value>FORMAT uses .NET format strings as MSSQL does. Without a culture, en-US applies, and an empty culture means the invariant culture.</value>
+  </data>
+  <data name="Strings_Point8" xml:space="preserve">
+    <value>FORMAT knows the cultures en-US, en-GB, de-DE, fr-FR, es-ES and it-IT and the short forms en, de, fr, es and it. Any other culture raises error 9818 (The culture parameter is not supported), even if MSSQL knows it.</value>
+  </data>
+  <data name="VariablesAndBatches_Title" xml:space="preserve">
+    <value>Variables, batches and GO</value>
+  </data>
+  <data name="VariablesAndBatches_Summary" xml:space="preserve">
+    <value>GO is not a T-SQL command but a separator of the editor. Variables are valid only within their batch.</value>
+  </data>
+  <data name="VariablesAndBatches_Point1" xml:space="preserve">
+    <value>GO must be alone on a line, optionally with a repeat count (GO 3). GO is not recognized as a separator in strings and comments.</value>
+  </data>
+  <data name="VariablesAndBatches_Point2" xml:space="preserve">
+    <value>DECLARE, SET, SET with += and the use of @variables are available. After GO, all variables are unknown again (error 137).</value>
+  </data>
+  <data name="VariablesAndBatches_Point3" xml:space="preserve">
+    <value>Variables are kept internally in the temporary table __learnsql_variables. Do not use this name.</value>
+  </data>
+  <data name="VariablesAndBatches_Point4" xml:space="preserve">
+    <value>An assignment converts the value to the declared type. For VARCHAR(n) the text is truncated to n characters, and without a length the length is 1, as in MSSQL.</value>
+  </data>
+  <data name="VariablesAndBatches_Point5" xml:space="preserve">
+    <value>Variables of the same DECLARE statement cannot use each other. DECLARE @a INT = 1, @b INT = @a raises error 137 as in MSSQL, and only a separate DECLARE statement may read @a.</value>
+  </data>
+  <data name="VariablesAndBatches_Point6" xml:space="preserve">
+    <value>The output column of SELECT @x is named (No column name) as in MSSQL.</value>
+  </data>
+  <data name="VariablesAndBatches_Point7" xml:space="preserve">
+    <value>SELECT @x = ... is not available yet. Use SET @x = (SELECT ...).</value>
+  </data>
+  <data name="VariablesAndBatches_Point8" xml:space="preserve">
+    <value>Table variables and system variables such as @@ROWCOUNT are not available yet. @@IDENTITY and SCOPE_IDENTITY() return the most recently assigned ID.</value>
+  </data>
+  <data name="SchemaObjects_Title" xml:space="preserve">
+    <value>Tables, keys and temporary objects</value>
+  </data>
+  <data name="SchemaObjects_Summary" xml:space="preserve">
+    <value>The common DDL statements are translated. Some MSSQL properties have no equivalent in SQLite.</value>
+  </data>
+  <data name="SchemaObjects_Point1" xml:space="preserve">
+    <value>The schema dbo and INFORMATION_SCHEMA are omitted. There is only one schema, and other schema names are not available yet.</value>
+  </data>
+  <data name="SchemaObjects_Point2" xml:space="preserve">
+    <value>A column INT IDENTITY(1,1) PRIMARY KEY becomes INTEGER PRIMARY KEY AUTOINCREMENT. Seed and increment are ignored, and the values start at 1.</value>
+  </data>
+  <data name="SchemaObjects_Point3" xml:space="preserve">
+    <value>SCOPE_IDENTITY() and @@IDENTITY return the most recently assigned ID. If nothing has been inserted yet, they return 0 instead of NULL.</value>
+  </data>
+  <data name="SchemaObjects_Point4" xml:space="preserve">
+    <value>Tables named #Name are temporary tables. SELECT ... INTO table becomes CREATE TABLE ... AS SELECT. TRUNCATE TABLE becomes DELETE FROM.</value>
+  </data>
+  <data name="SchemaObjects_Point5" xml:space="preserve">
+    <value>BEGIN TRAN, COMMIT, ROLLBACK and SAVE TRAN with savepoints are available. Nested transactions and @@TRANCOUNT do not exist.</value>
+  </data>
+  <data name="SchemaObjects_Point6" xml:space="preserve">
+    <value>CLUSTERED and NONCLUSTERED on indexes and keys are ignored. Table hints such as WITH (NOLOCK) and statements such as SET NOCOUNT ON are skipped.</value>
+  </data>
+  <data name="SchemaObjects_Point7" xml:space="preserve">
+    <value>ALTER TABLE supports adding one column and DROP COLUMN per statement. Create constraints in CREATE TABLE.</value>
+  </data>
+  <data name="SchemaObjects_Point8" xml:space="preserve">
+    <value>Foreign keys, UNIQUE, CHECK and NOT NULL are enforced as in MSSQL.</value>
+  </data>
+  <data name="NotYetAvailable_Title" xml:space="preserve">
+    <value>T-SQL constructs that are not available yet</value>
+  </data>
+  <data name="NotYetAvailable_Summary" xml:space="preserve">
+    <value>This environment recognizes these constructs but does not run them yet. They will be added step by step.</value>
+  </data>
+  <data name="DataTypes_Example1_MsSql" xml:space="preserve">
+    <value>Error 245 (Conversion failed)</value>
+  </data>
+  <data name="DataTypes_Example1_Sandbox" xml:space="preserve">
+    <value>The text abc is stored without an error</value>
+  </data>
+  <data name="DataTypes_Example2_MsSql" xml:space="preserve">
+    <value>Error 8115 (Arithmetic overflow)</value>
+  </data>
+</root>

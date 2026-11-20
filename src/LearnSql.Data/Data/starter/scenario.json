@@ -1,0 +1,1187 @@
+{
+  "id": "starter",
+  "sortOrder": 1,
+  "title": "Einsteiger: Kaffeeshop",
+  "description": "Ein kleiner Online-Shop mit Kunden, Produkten, Bestellungen und Bestellpositionen. Jede Tabelle hat nur wenige Zeilen. Manchen Kunden fehlen Stadt oder E-Mail-Adresse, und einige haben noch nichts bestellt.",
+  "schemaResources": [
+    "Data/starter/Schema/01.Tables.sql"
+  ],
+  "viewResources": [
+    "Base/Views/ColumnsView.sql",
+    "Base/Views/TablesView.sql"
+  ],
+  "seedResources": [
+    "Data/starter/Seed/01.ShopData.sql"
+  ],
+  "exercises": [
+    {
+      "id": "select-01",
+      "title": "Alle Kunden anzeigen",
+      "description": "Gib alle Spalten und alle Zeilen der Tabelle Customer aus.",
+      "topic": "Select",
+      "difficulty": "Beginner",
+      "hints": [
+        "Du brauchst nur zwei Schlüsselwörter: eines zum Auswählen und eines zum Nennen der Tabelle.",
+        "Mit einem Stern hinter SELECT wählst du alle Spalten aus.",
+        "Die Abfrage beginnt mit SELECT * und nennt danach die Tabelle Customer."
+      ],
+      "solutionSql": "SELECT * FROM Customer",
+      "orderMatters": false,
+      "expectedRowCount": 11
+    },
+    {
+      "id": "select-02",
+      "title": "Namen und Städte",
+      "description": "Zeige von allen Kunden nur Vorname, Nachname und Stadt an.",
+      "topic": "Select",
+      "difficulty": "Beginner",
+      "hints": [
+        "Statt des Sterns zählst du die gewünschten Spalten auf.",
+        "Mehrere Spalten werden durch Kommas getrennt.",
+        "Die Spalten heißen FirstName, LastName und City."
+      ],
+      "solutionSql": "SELECT FirstName, LastName, City FROM Customer",
+      "orderMatters": false,
+      "expectedRowCount": 11
+    },
+    {
+      "id": "select-03",
+      "title": "Die drei teuersten Produkte",
+      "description": "Zeige Name und Preis der drei teuersten Produkte, das teuerste zuerst.",
+      "topic": "Select",
+      "difficulty": "Beginner",
+      "hints": [
+        "Du musst zuerst sortieren und danach die Anzahl der Zeilen begrenzen.",
+        "ORDER BY ... DESC sortiert absteigend, TOP n begrenzt die Zeilenzahl direkt nach SELECT.",
+        "SELECT TOP 3 Name, Price FROM Product und dann ORDER BY Price DESC."
+      ],
+      "solutionSql": "SELECT TOP 3 Name, Price FROM Product ORDER BY Price DESC",
+      "orderMatters": true,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "filter-01",
+      "title": "Kunden aus Hamburg",
+      "description": "Welche Kunden wohnen in Hamburg? Zeige alle Spalten.",
+      "topic": "Filtering",
+      "difficulty": "Beginner",
+      "hints": [
+        "Zeilen filterst du mit einem Schlüsselwort, das nach FROM steht.",
+        "Textwerte stehen in einfachen Anführungszeichen.",
+        "WHERE City = 'Hamburg'"
+      ],
+      "solutionSql": "SELECT * FROM Customer WHERE City = 'Hamburg'",
+      "orderMatters": false,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "filter-02",
+      "title": "Günstiger Kaffee",
+      "description": "Zeige Name und Preis aller Produkte der Kategorie Kaffee, die weniger als 10 Euro kosten.",
+      "topic": "Filtering",
+      "difficulty": "Beginner",
+      "hints": [
+        "Du brauchst zwei Bedingungen, die gleichzeitig gelten müssen.",
+        "Verknüpfe die Bedingungen mit AND.",
+        "WHERE Category = 'Kaffee' AND Price < 10"
+      ],
+      "solutionSql": "SELECT\n    Name,\n    Price\nFROM Product\nWHERE Category = 'Kaffee'\n    AND Price < 10",
+      "orderMatters": false,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "filter-03",
+      "title": "Kunden ohne E-Mail-Adresse",
+      "description": "Finde alle Kunden, für die keine E-Mail-Adresse gespeichert ist.",
+      "topic": "Filtering",
+      "difficulty": "Beginner",
+      "hints": [
+        "Fehlende Werte sind in SQL NULL. Ein Vergleich mit = funktioniert bei NULL nicht.",
+        "Für NULL gibt es einen eigenen Operator: IS NULL.",
+        "WHERE Email IS NULL"
+      ],
+      "solutionSql": "SELECT * FROM Customer WHERE Email IS NULL",
+      "orderMatters": false,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "filter-04",
+      "title": "Produkte, die nicht lieferbar sind",
+      "description": "Zeige Name und Lagerbestand aller Produkte, deren Bestand 0 ist oder unbekannt (NULL).",
+      "topic": "Filtering",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Es gibt zwei Fälle, und es reicht, wenn einer davon zutrifft.",
+        "Verwende OR und behandle NULL getrennt von der Zahl 0.",
+        "WHERE Stock = 0 OR Stock IS NULL"
+      ],
+      "solutionSql": "SELECT\n    Name,\n    Stock\nFROM Product\nWHERE Stock = 0\n    OR Stock IS NULL",
+      "orderMatters": false,
+      "expectedRowCount": 2
+    },
+    {
+      "id": "filter-05",
+      "title": "Produkte mit Espresso im Namen",
+      "description": "Zeige alle Produkte, deren Name mit dem Wort Espresso beginnt.",
+      "topic": "Filtering",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Für Textmuster gibt es einen eigenen Operator statt =.",
+        "LIKE kennt den Platzhalter %, der für beliebig viele Zeichen steht.",
+        "WHERE Name LIKE 'Espresso%'"
+      ],
+      "solutionSql": "SELECT * FROM Product WHERE Name LIKE 'Espresso%'",
+      "orderMatters": false,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "filter-06",
+      "title": "Noch nicht versendete Bestellungen",
+      "description": "Zeige Id, Status und Bestelldatum aller Bestellungen, für die noch kein Versanddatum eingetragen ist, sortiert nach Bestelldatum.",
+      "topic": "Filtering",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Ein fehlendes Versanddatum ist ein NULL-Wert.",
+        "Filtere mit IS NULL und sortiere mit ORDER BY.",
+        "SELECT Id, Status, OrderDate FROM Orders WHERE ShippedOn IS NULL ORDER BY OrderDate"
+      ],
+      "solutionSql": "SELECT\n    Id,\n    Status,\n    OrderDate\nFROM Orders\nWHERE ShippedOn IS NULL\nORDER BY OrderDate",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "join-01",
+      "title": "Bestellungen mit Kundennamen",
+      "description": "Zeige für jede Bestellung die Bestell-Id, das Bestelldatum sowie Vor- und Nachname des Kunden, sortiert nach Bestell-Id.",
+      "topic": "Joins",
+      "difficulty": "Beginner",
+      "hints": [
+        "Die Kundendaten stehen in einer anderen Tabelle als die Bestellungen.",
+        "Verbinde Orders und Customer mit INNER JOIN. Die Bedingung vergleicht den Fremdschlüssel mit dem Primärschlüssel.",
+        "FROM Orders o INNER JOIN Customer c ON c.Id = o.CustomerId"
+      ],
+      "solutionSql": "SELECT\n    o.Id,\n    o.OrderDate,\n    c.FirstName,\n    c.LastName\nFROM Orders o\nINNER JOIN Customer c ON c.Id = o.CustomerId\nORDER BY o.Id",
+      "orderMatters": true,
+      "expectedRowCount": 20
+    },
+    {
+      "id": "join-02",
+      "title": "Bestellpositionen mit Produktnamen",
+      "description": "Zeige zu jeder Bestellposition die Bestell-Id, den Produktnamen und die Menge, sortiert nach Bestell-Id und Produktname.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Die Positionen stehen in OrderItem, die Namen in Product.",
+        "Verbinde OrderItem mit Product über ProductId.",
+        "FROM OrderItem i INNER JOIN Product p ON p.Id = i.ProductId"
+      ],
+      "solutionSql": "SELECT\n    i.OrderId,\n    p.Name,\n    i.Quantity\nFROM OrderItem i\nINNER JOIN Product p ON p.Id = i.ProductId\nORDER BY i.OrderId, p.Name",
+      "orderMatters": true,
+      "expectedRowCount": 35
+    },
+    {
+      "id": "join-03",
+      "title": "Kunden ohne Bestellung",
+      "description": "Welche Kunden haben noch nie bestellt? Zeige Vorname und Nachname.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Ein normaler INNER JOIN würde diese Kunden verlieren. Du brauchst eine Verbindung, die alle Kunden behält.",
+        "LEFT JOIN behält alle Kunden. Kunden ohne Bestellung haben auf der Seite von Orders nur NULL.",
+        "Verbinde mit LEFT JOIN Orders und filtere WHERE o.Id IS NULL."
+      ],
+      "solutionSql": "SELECT\n    c.FirstName,\n    c.LastName\nFROM Customer c\nLEFT JOIN Orders o ON o.CustomerId = c.Id\nWHERE o.Id IS NULL",
+      "orderMatters": false,
+      "expectedRowCount": 2
+    },
+    {
+      "id": "join-04",
+      "title": "Nie bestellte Produkte",
+      "description": "Welche Produkte wurden noch in keiner Bestellung verwendet? Zeige den Produktnamen.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Gesucht sind Produkte ohne passende Zeile in OrderItem.",
+        "LEFT JOIN von Product auf OrderItem und danach nach fehlenden Treffern filtern.",
+        "WHERE i.Id IS NULL"
+      ],
+      "solutionSql": "SELECT p.Name\nFROM Product p\nLEFT JOIN OrderItem i ON i.ProductId = p.Id\nWHERE i.Id IS NULL",
+      "orderMatters": false,
+      "expectedRowCount": 1
+    },
+    {
+      "id": "join-05",
+      "title": "Kunde, Produkt und Zeilenwert",
+      "description": "Zeige für alle Bestellpositionen den Nachnamen des Kunden, den Produktnamen und den Zeilenwert (Menge mal Preis) als LineTotal. Sortiere nach Nachname, Bestell-Id und Produktname.",
+      "topic": "Joins",
+      "difficulty": "Advanced",
+      "hints": [
+        "Du musst vier Tabellen verbinden: Customer, Orders, OrderItem und Product.",
+        "Gehe die Kette von Customer über Orders und OrderItem bis Product Schritt für Schritt durch.",
+        "Der Zeilenwert ist i.Quantity * p.Price AS LineTotal."
+      ],
+      "solutionSql": "SELECT\n    c.LastName,\n    p.Name,\n    i.Quantity * p.Price AS LineTotal\nFROM Customer c\nINNER JOIN Orders o ON o.CustomerId = c.Id\nINNER JOIN OrderItem i ON i.OrderId = o.Id\nINNER JOIN Product p ON p.Id = i.ProductId\nORDER BY c.LastName, o.Id, p.Name",
+      "orderMatters": true,
+      "expectedRowCount": 35
+    },
+    {
+      "id": "agg-01",
+      "title": "Anzahl der Bestellungen",
+      "description": "Wie viele Bestellungen gibt es insgesamt? Nenne die Spalte OrderCount.",
+      "topic": "Aggregation",
+      "difficulty": "Beginner",
+      "hints": [
+        "Du willst Zeilen zählen, nicht ausgeben.",
+        "Die Funktion COUNT(*) zählt Zeilen.",
+        "SELECT COUNT(*) AS OrderCount FROM Orders"
+      ],
+      "solutionSql": "SELECT COUNT(*) AS OrderCount FROM Orders",
+      "orderMatters": false,
+      "expectedRowCount": 1
+    },
+    {
+      "id": "agg-02",
+      "title": "Bestellungen pro Status",
+      "description": "Zähle, wie viele Bestellungen es je Status gibt. Sortiere nach Anzahl absteigend, bei gleicher Anzahl nach Status.",
+      "topic": "Aggregation",
+      "difficulty": "Beginner",
+      "hints": [
+        "Du brauchst Gruppen: eine Zeile pro Status.",
+        "GROUP BY Status bildet die Gruppen, COUNT(*) zählt je Gruppe.",
+        "ORDER BY COUNT(*) DESC, Status"
+      ],
+      "solutionSql": "SELECT\n    Status,\n    COUNT(*) AS OrderCount\nFROM Orders\nGROUP BY Status\nORDER BY COUNT(*) DESC, Status",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "agg-03",
+      "title": "Durchschnittspreis je Kategorie",
+      "description": "Berechne je Produktkategorie den Durchschnittspreis, gerundet auf zwei Nachkommastellen (Spalte AveragePrice). Sortiere nach Kategorie.",
+      "topic": "Aggregation",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Gruppiere nach der Kategorie und verwende eine Aggregatfunktion für den Preis.",
+        "AVG berechnet den Mittelwert, ROUND rundet das Ergebnis.",
+        "ROUND(AVG(Price), 2) AS AveragePrice mit GROUP BY Category"
+      ],
+      "solutionSql": "SELECT\n    Category,\n    ROUND(AVG(Price), 2) AS AveragePrice\nFROM Product\nGROUP BY Category\nORDER BY Category",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "agg-04",
+      "title": "Treue Kunden",
+      "description": "Welche Kunden haben mindestens 3 Bestellungen aufgegeben? Zeige den Nachnamen und die Anzahl (OrderCount), sortiert nach Nachname.",
+      "topic": "Aggregation",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Mit WHERE kannst du keine Bedingung auf Gruppenergebnisse prüfen.",
+        "HAVING filtert Gruppen nach der Aggregation.",
+        "GROUP BY c.Id, c.LastName HAVING COUNT(*) >= 3"
+      ],
+      "solutionSql": "SELECT\n    c.LastName,\n    COUNT(*) AS OrderCount\nFROM Customer c\nINNER JOIN Orders o ON o.CustomerId = c.Id\nGROUP BY c.Id, c.LastName\nHAVING COUNT(*) >= 3\nORDER BY c.LastName",
+      "orderMatters": true,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "agg-05",
+      "title": "Umsatz der zugestellten Bestellungen",
+      "description": "Berechne je Kunde (Nachname) den Umsatz der Bestellungen mit Status Delivered, gerundet auf zwei Stellen (Revenue). Zeige nur Kunden mit mehr als 50 Euro Umsatz, höchster Umsatz zuerst.",
+      "topic": "Aggregation",
+      "difficulty": "Advanced",
+      "hints": [
+        "Zuerst Zeilen mit WHERE einschränken, dann gruppieren, dann Gruppen mit HAVING filtern.",
+        "Der Umsatz ist SUM(i.Quantity * p.Price). Du brauchst vier Tabellen.",
+        "HAVING SUM(i.Quantity * p.Price) > 50 und ORDER BY Revenue DESC"
+      ],
+      "solutionSql": "SELECT\n    c.LastName,\n    ROUND(SUM(i.Quantity * p.Price), 2) AS Revenue\nFROM Customer c\nINNER JOIN Orders o ON o.CustomerId = c.Id\nINNER JOIN OrderItem i ON i.OrderId = o.Id\nINNER JOIN Product p ON p.Id = i.ProductId\nWHERE o.Status = 'Delivered'\nGROUP BY c.Id, c.LastName\nHAVING SUM(i.Quantity * p.Price) > 50\nORDER BY Revenue DESC",
+      "orderMatters": true,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "sub-01",
+      "title": "Teurer als der Durchschnitt",
+      "description": "Zeige Name und Preis aller Produkte, die teurer sind als der Durchschnittspreis aller Produkte.",
+      "topic": "Subqueries",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Den Durchschnitt kannst du mit einer eigenen Abfrage berechnen.",
+        "Setze diese Abfrage in Klammern in die WHERE-Bedingung ein.",
+        "WHERE Price > (SELECT AVG(Price) FROM Product)"
+      ],
+      "solutionSql": "SELECT\n    Name,\n    Price\nFROM Product\nWHERE Price > (\n    SELECT AVG(Price)\n    FROM Product\n)",
+      "orderMatters": false,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "sub-02",
+      "title": "Kunden mit Bestellung",
+      "description": "Zeige Vor- und Nachname aller Kunden, die mindestens eine Bestellung haben, ohne einen Join zu verwenden.",
+      "topic": "Subqueries",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Du suchst Kunden, deren Id in der Liste der bestellenden Kunden vorkommt.",
+        "IN prüft, ob ein Wert in der Ergebnisliste einer Unterabfrage steht.",
+        "WHERE Id IN (SELECT CustomerId FROM Orders)"
+      ],
+      "solutionSql": "SELECT\n    FirstName,\n    LastName\nFROM Customer\nWHERE Id IN (\n    SELECT CustomerId\n    FROM Orders\n)",
+      "orderMatters": false,
+      "expectedRowCount": 9
+    },
+    {
+      "id": "sub-03",
+      "title": "Produkte mit größter Bestellmenge",
+      "description": "Welche Produkte wurden in mindestens einer Bestellposition mit einer Menge von 5 oder mehr bestellt? Zeige den Produktnamen, sortiert alphabetisch.",
+      "topic": "Subqueries",
+      "difficulty": "Advanced",
+      "hints": [
+        "Suche zuerst die ProductIds mit großer Menge, dann die zugehörigen Namen.",
+        "Unterabfrage auf OrderItem mit WHERE Quantity >= 5, außen mit IN.",
+        "WHERE Id IN (SELECT ProductId FROM OrderItem WHERE Quantity >= 5) und ORDER BY Name"
+      ],
+      "solutionSql": "SELECT Name\nFROM Product\nWHERE Id IN (\n    SELECT ProductId\n    FROM OrderItem\n    WHERE Quantity >= 5\n)\nORDER BY Name",
+      "orderMatters": true,
+      "expectedRowCount": 6
+    }
+  ],
+  "guidedScenarios": [
+    {
+      "id": "first-queries",
+      "title": "Erste Abfragen",
+      "description": "Daten aus einer Tabelle lesen, filtern und sortieren, von SELECT * bis TOP 5. Alle Schritte lesen nur.",
+      "topic": "Select",
+      "requiresFreshDatabase": false,
+      "steps": [
+        {
+          "id": "first-queries-01",
+          "title": "Alle Kunden ansehen",
+          "sql": "SELECT * FROM Customer;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "SELECT * liest alle Spalten, FROM nennt die Tabelle. Ohne Bedingung kommen alle Zeilen zurück.",
+            "parts": [
+              {
+                "fragment": "SELECT *",
+                "explanation": "Der Stern steht für alle Spalten der Tabelle."
+              },
+              {
+                "fragment": "FROM Customer",
+                "explanation": "Die Daten werden aus der Tabelle Customer gelesen."
+              }
+            ]
+          },
+          "resultExplanation": "Du erhältst 11 Zeilen, eine pro Kunde, mit allen 6 Spalten. In den Spalten City und Email siehst du teilweise NULL: Dort ist kein Wert gespeichert.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 11,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-02",
+          "title": "Nur bestimmte Spalten",
+          "sql": "SELECT FirstName, LastName, City FROM Customer;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Statt aller Spalten wählst du nur die aus, die du brauchst. Die Zeilenzahl ändert sich dadurch nicht.",
+            "parts": [
+              {
+                "fragment": "SELECT FirstName, LastName, City",
+                "explanation": "Die Spalten werden mit Komma getrennt aufgezählt. Das Ergebnis enthält sie in genau dieser Reihenfolge."
+              },
+              {
+                "fragment": "FROM Customer",
+                "explanation": "Quelle ist weiterhin die Tabelle Customer."
+              }
+            ]
+          },
+          "resultExplanation": "Wieder 11 Zeilen, aber nur noch 3 Spalten. Das Ergebnis ist übersichtlicher.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 11,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-03",
+          "title": "Zeilen filtern mit WHERE",
+          "sql": "SELECT\n    FirstName,\n    LastName\nFROM Customer\nWHERE City = 'Hamburg';",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "WHERE behält nur die Zeilen, für die die Bedingung wahr ist. Hier sind das die Kunden aus Hamburg.",
+            "parts": [
+              {
+                "fragment": "SELECT FirstName, LastName",
+                "explanation": "Es werden nur Vor- und Nachname ausgegeben."
+              },
+              {
+                "fragment": "WHERE City = 'Hamburg'",
+                "explanation": "Die Bedingung vergleicht die Spalte City mit dem Text Hamburg. Text steht in einfachen Anführungszeichen."
+              }
+            ]
+          },
+          "resultExplanation": "Es bleiben 3 Zeilen: Anna Berger, David Roth und Ida Sommer. Kunden mit anderer Stadt oder ohne Stadt (NULL) erscheinen nicht.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-04",
+          "title": "Fehlende Werte mit IS NULL finden",
+          "sql": "SELECT FirstName, LastName FROM Customer WHERE Email IS NULL;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "NULL bedeutet unbekannt und lässt sich nicht mit = vergleichen. Für die Prüfung gibt es IS NULL.",
+            "parts": [
+              {
+                "fragment": "WHERE Email IS NULL",
+                "explanation": "Wahr für alle Zeilen, bei denen keine E-Mail-Adresse gespeichert ist. Email = NULL würde nie eine Zeile liefern, weil ein Vergleich mit NULL weder wahr noch falsch, sondern unbekannt ist."
+              }
+            ]
+          },
+          "resultExplanation": "3 Kunden haben keine E-Mail-Adresse: Clara Lenz, Hans Maier und Jan Winter.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-05",
+          "title": "Bedingungen kombinieren",
+          "sql": "SELECT\n    Name,\n    Price\nFROM Product\nWHERE Category = 'Kaffee'\n    AND Price < 10;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Mit AND müssen beide Bedingungen gleichzeitig erfüllt sein. Mit OR würde eine von beiden genügen.",
+            "parts": [
+              {
+                "fragment": "Category = 'Kaffee'",
+                "explanation": "Erste Bedingung: nur Produkte der Kategorie Kaffee."
+              },
+              {
+                "fragment": "AND",
+                "explanation": "Beide Seiten müssen wahr sein."
+              },
+              {
+                "fragment": "Price < 10",
+                "explanation": "Zweite Bedingung: der Preis liegt unter 10."
+              }
+            ]
+          },
+          "resultExplanation": "3 Produkte erfüllen beides: Espresso Classico 250g (7,90), Espresso Entkoffeiniert 250g (8,40) und Cold Brew Konzentrat (9,90). Der Filterkaffee Mild 500g kostet 11,50 und fällt heraus.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-06",
+          "title": "Sortieren mit ORDER BY",
+          "sql": "SELECT Name, Price FROM Product ORDER BY Price DESC;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Ohne ORDER BY ist die Reihenfolge der Zeilen nicht garantiert. DESC sortiert absteigend, ASC (Standard) aufsteigend.",
+            "parts": [
+              {
+                "fragment": "ORDER BY Price",
+                "explanation": "Sortiert das Ergebnis nach der Spalte Price."
+              },
+              {
+                "fragment": "DESC",
+                "explanation": "Absteigend: der höchste Preis steht oben."
+              }
+            ]
+          },
+          "resultExplanation": "Alle 12 Produkte, das teuerste zuerst: Handmühle Keramik (39,00), dann Espressokanne Alu (24,90), am Ende Bio-Schokolade 70% (2,90).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 12,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-07",
+          "title": "Nur die ersten Zeilen mit TOP",
+          "sql": "SELECT TOP 5 Name, Price FROM Product ORDER BY Price DESC;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "TOP 5 begrenzt das Ergebnis auf die ersten 5 Zeilen. Zusammen mit ORDER BY erhältst du eine Rangliste.",
+            "parts": [
+              {
+                "fragment": "SELECT TOP 5",
+                "explanation": "Liefert höchstens 5 Zeilen. TOP gehört in T-SQL direkt hinter SELECT."
+              },
+              {
+                "fragment": "ORDER BY Price DESC",
+                "explanation": "Legt fest, welche Zeilen die ersten sind: hier die teuersten."
+              }
+            ]
+          },
+          "resultExplanation": "Die 5 teuersten Produkte, vom teuersten (Handmühle Keramik) bis zum fünften (Cold Brew Konzentrat, 9,90).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 5,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-08",
+          "title": "Textmuster mit LIKE",
+          "sql": "SELECT Name FROM Product WHERE Name LIKE 'Espresso%';",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "LIKE vergleicht Text mit einem Muster. Das Prozentzeichen steht für beliebig viele beliebige Zeichen.",
+            "parts": [
+              {
+                "fragment": "LIKE 'Espresso%'",
+                "explanation": "Wahr für alle Namen, die mit Espresso beginnen. Was danach kommt, ist egal."
+              }
+            ]
+          },
+          "resultExplanation": "3 Treffer: Espresso Classico 250g, Espresso Entkoffeiniert 250g und Espressokanne Alu. Die Kanne passt, weil das Muster nur den Anfang prüft.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        },
+        {
+          "id": "first-queries-09",
+          "title": "Werte berechnen mit LEN und COALESCE",
+          "sql": "SELECT\n    LastName,\n    LEN(LastName) AS NameLength,\n    COALESCE(City, 'unbekannt') AS CityOrDefault\nFROM Customer;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Funktionen berechnen pro Zeile neue Werte. LEN zählt Zeichen, COALESCE ersetzt NULL durch einen Ersatzwert. In T-SQL gibt es auch ISNULL. COALESCE ist Standard-SQL und läuft überall.",
+            "parts": [
+              {
+                "fragment": "LEN(LastName) AS NameLength",
+                "explanation": "Anzahl der Zeichen des Nachnamens, in einer neuen Spalte NameLength."
+              },
+              {
+                "fragment": "COALESCE(City, 'unbekannt')",
+                "explanation": "Gibt den ersten Wert zurück, der nicht NULL ist: City, oder, falls City NULL ist, den Text unbekannt."
+              },
+              {
+                "fragment": "AS",
+                "explanation": "Legt den Namen der berechneten Spalte fest."
+              }
+            ]
+          },
+          "resultExplanation": "11 Zeilen. Bei Felix Braun und Jan Winter steht in CityOrDefault der Text unbekannt, bei allen anderen die echte Stadt. Die Tabelle selbst bleibt unverändert, nur das Ergebnis enthält die Berechnung.",
+          "databaseEffect": "Nichts, die Abfrage liest nur. Berechnete Spalten gibt es nur im Ergebnis.",
+          "expectedResultRows": 11,
+          "expectsError": false
+        }
+      ]
+    },
+    {
+      "id": "joining-data",
+      "title": "Daten verknüpfen",
+      "description": "Kunden, Bestellungen, Positionen und Produkte stehen in getrennten Tabellen. Mit JOIN führst du sie wieder zusammen, vom INNER JOIN bis zum LEFT JOIN, der fehlende Partner sichtbar macht.",
+      "topic": "Joins",
+      "requiresFreshDatabase": false,
+      "steps": [
+        {
+          "id": "joining-data-01",
+          "title": "Zwei Tabellen verbinden",
+          "sql": "SELECT\n    o.Id AS OrderId,\n    c.FirstName,\n    c.LastName,\n    o.OrderDate\nFROM Orders o\nINNER JOIN Customer c ON c.Id = o.CustomerId\nORDER BY o.Id;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Jede Bestellung enthält nur die CustomerId. Der JOIN holt zu jeder Bestellung den passenden Kunden dazu.",
+            "parts": [
+              {
+                "fragment": "FROM Orders o",
+                "explanation": "Ausgangstabelle. Der Alias o ist eine Abkürzung für Orders."
+              },
+              {
+                "fragment": "INNER JOIN Customer c",
+                "explanation": "Verbindet mit der Tabelle Customer, Alias c. INNER JOIN behält nur Zeilen mit Partner auf beiden Seiten."
+              },
+              {
+                "fragment": "ON c.Id = o.CustomerId",
+                "explanation": "Die Verbindungsbedingung: der Primärschlüssel des Kunden muss dem Fremdschlüssel der Bestellung entsprechen."
+              }
+            ]
+          },
+          "resultExplanation": "Es gibt 20 Zeilen, für jede Bestellung eine. Der Kundenname steht jetzt neben dem Bestelldatum. Bestellung 1 gehört zu Anna Berger.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 20,
+          "expectsError": false
+        },
+        {
+          "id": "joining-data-02",
+          "title": "Join mit Filter",
+          "sql": "SELECT\n    o.Id AS OrderId,\n    c.LastName,\n    o.OrderDate\nFROM Orders o\nINNER JOIN Customer c ON c.Id = o.CustomerId\nWHERE o.Status = 'Open'\nORDER BY o.Id;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "WHERE wird nach dem Verbinden angewendet und kann Spalten beider Tabellen verwenden.",
+            "parts": [
+              {
+                "fragment": "WHERE o.Status = 'Open'",
+                "explanation": "Es bleiben nur offene Bestellungen übrig."
+              },
+              {
+                "fragment": "c.LastName",
+                "explanation": "Die Spalte kommt aus Customer, der Filter aus Orders. Das ist erst durch den JOIN möglich."
+              }
+            ]
+          },
+          "resultExplanation": "3 offene Bestellungen: Nummer 18 (Berger), 19 (Roth) und 20 (Sommer).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        },
+        {
+          "id": "joining-data-03",
+          "title": "Drei Tabellen verbinden",
+          "sql": "SELECT\n    o.Id AS OrderId,\n    p.Name AS Product,\n    i.Quantity\nFROM Orders o\nINNER JOIN OrderItem i ON i.OrderId = o.Id\nINNER JOIN Product p ON p.Id = i.ProductId\nWHERE o.Id = 10\nORDER BY p.Name;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "OrderItem verbindet Bestellungen mit Produkten (n:m-Beziehung). Du brauchst zwei Joins hintereinander.",
+            "parts": [
+              {
+                "fragment": "INNER JOIN OrderItem i ON i.OrderId = o.Id",
+                "explanation": "Holt die Positionen der Bestellung."
+              },
+              {
+                "fragment": "INNER JOIN Product p ON p.Id = i.ProductId",
+                "explanation": "Holt zu jeder Position den Produktnamen."
+              },
+              {
+                "fragment": "WHERE o.Id = 10",
+                "explanation": "Beschränkt das Ergebnis auf eine einzelne Bestellung."
+              }
+            ]
+          },
+          "resultExplanation": "Bestellung 10 hat 3 Positionen: Filterkaffee Mild 500g (3 Stück), Haferkekse 6er (1 Stück) und Handmühle Keramik (2 Stück).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        },
+        {
+          "id": "joining-data-04",
+          "title": "Vier Tabellen und eine Berechnung",
+          "sql": "SELECT\n    o.Id AS OrderId,\n    c.LastName,\n    p.Name AS Product,\n    i.Quantity * p.Price AS LineTotal\nFROM Customer c\nINNER JOIN Orders o ON o.CustomerId = c.Id\nINNER JOIN OrderItem i ON i.OrderId = o.Id\nINNER JOIN Product p ON p.Id = i.ProductId\nWHERE c.LastName = 'Berger'\nORDER BY o.Id, p.Name;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Die Kette Customer, Orders, OrderItem, Product ergibt Kunde, Produkt und Menge in einer Zeile. Daraus lässt sich der Zeilenwert berechnen.",
+            "parts": [
+              {
+                "fragment": "i.Quantity * p.Price AS LineTotal",
+                "explanation": "Menge aus der Position mal Preis aus dem Produkt. Beide Werte stammen aus verschiedenen Tabellen."
+              },
+              {
+                "fragment": "WHERE c.LastName = 'Berger'",
+                "explanation": "Nur die Bestellungen von Kunden mit dem Nachnamen Berger."
+              }
+            ]
+          },
+          "resultExplanation": "Berger hat 4 Bestellungen mit zusammen 6 Positionen. Die größte Position ist die Handmühle Keramik (2 Stück, 78,00). Bestellung 10 steuert drei dieser Positionen bei, die Bestellungen 1, 3 und 18 jeweils eine.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 6,
+          "expectsError": false
+        },
+        {
+          "id": "joining-data-05",
+          "title": "LEFT JOIN: Kunden ohne Bestellung",
+          "sql": "SELECT\n    c.FirstName,\n    c.LastName,\n    o.Id AS OrderId\nFROM Customer c\nLEFT JOIN Orders o ON o.CustomerId = c.Id\nWHERE o.Id IS NULL;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "LEFT JOIN behält alle Zeilen der linken Tabelle. Ohne Partner stehen rechts NULL-Werte. Wer diese NULLs herausfiltert, findet die Kunden ohne Bestellung.",
+            "parts": [
+              {
+                "fragment": "LEFT JOIN Orders o",
+                "explanation": "Alle Kunden bleiben erhalten, auch wenn keine passende Bestellung existiert."
+              },
+              {
+                "fragment": "WHERE o.Id IS NULL",
+                "explanation": "Behält nur Kunden, bei denen der Join keinen Partner fand."
+              }
+            ]
+          },
+          "resultExplanation": "2 Kunden haben noch nie bestellt: Jan Winter und Karla Nolte. In der Spalte OrderId steht NULL. Mit INNER JOIN würden sie im Ergebnis fehlen.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 2,
+          "expectsError": false
+        },
+        {
+          "id": "joining-data-06",
+          "title": "LEFT JOIN: Produkte ohne Verkauf",
+          "sql": "SELECT\n    p.Name,\n    p.Category\nFROM Product p\nLEFT JOIN OrderItem i ON i.ProductId = p.Id\nWHERE i.Id IS NULL;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Das Muster passt auf jede 1:n-Beziehung: Es findet alle Zeilen der linken Seite, die rechts keinen Partner haben.",
+            "parts": [
+              {
+                "fragment": "FROM Product p LEFT JOIN OrderItem i",
+                "explanation": "Alle Produkte bleiben erhalten, unabhängig davon, ob sie bestellt wurden."
+              },
+              {
+                "fragment": "WHERE i.Id IS NULL",
+                "explanation": "Filtert die Produkte ohne Bestellposition heraus."
+              }
+            ]
+          },
+          "resultExplanation": "Genau ein Produkt wurde nie bestellt: der Kamillentee 50g aus der Kategorie Tee.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 1,
+          "expectsError": false
+        }
+      ]
+    },
+    {
+      "id": "grouping-and-aggregating",
+      "title": "Gruppieren und Aggregieren",
+      "description": "Zählen, summieren, Durchschnitte bilden: GROUP BY, WHERE gegen HAVING und COUNT(*) gegen COUNT(Spalte).",
+      "topic": "Aggregation",
+      "requiresFreshDatabase": false,
+      "steps": [
+        {
+          "id": "grouping-and-aggregating-01",
+          "title": "Zeilen zählen",
+          "sql": "SELECT COUNT(*) AS OrderCount FROM Orders;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Aggregatfunktionen fassen viele Zeilen zu einem Wert zusammen. COUNT(*) zählt Zeilen.",
+            "parts": [
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "Zählt alle Zeilen, unabhängig von ihren Werten."
+              },
+              {
+                "fragment": "AS OrderCount",
+                "explanation": "Benennt die Ergebnisspalte."
+              }
+            ]
+          },
+          "resultExplanation": "Eine einzige Zeile mit dem Wert 20: So viele Bestellungen enthält die Tabelle.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 1,
+          "expectsError": false
+        },
+        {
+          "id": "grouping-and-aggregating-02",
+          "title": "COUNT(*) gegen COUNT(Spalte)",
+          "sql": "SELECT\n    COUNT(*) AS Customers,\n    COUNT(Email) AS WithEmail,\n    COUNT(City) AS WithCity\nFROM Customer;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "COUNT(*) zählt Zeilen, COUNT(Spalte) zählt nur Zeilen, in denen die Spalte nicht NULL ist.",
+            "parts": [
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "Alle Kunden."
+              },
+              {
+                "fragment": "COUNT(Email)",
+                "explanation": "Nur Kunden mit gespeicherter E-Mail-Adresse."
+              },
+              {
+                "fragment": "COUNT(City)",
+                "explanation": "Nur Kunden mit gespeicherter Stadt."
+              }
+            ]
+          },
+          "resultExplanation": "Die Zeile lautet 11, 8, 9: Von 11 Kunden haben 8 eine E-Mail-Adresse und 9 eine Stadt. Aggregatfunktionen außer COUNT(*) ignorieren NULL.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 1,
+          "expectsError": false
+        },
+        {
+          "id": "grouping-and-aggregating-03",
+          "title": "Kleinster, größter und mittlerer Preis",
+          "sql": "SELECT\n    MIN(Price) AS Cheapest,\n    MAX(Price) AS MostExpensive,\n    ROUND(AVG(Price), 2) AS AveragePrice\nFROM Product;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "MIN, MAX und AVG liefern jeweils einen Wert über alle Zeilen. ROUND begrenzt die Nachkommastellen.",
+            "parts": [
+              {
+                "fragment": "MIN(Price)",
+                "explanation": "Kleinster Preis."
+              },
+              {
+                "fragment": "MAX(Price)",
+                "explanation": "Größter Preis."
+              },
+              {
+                "fragment": "ROUND(AVG(Price), 2)",
+                "explanation": "Mittelwert, gerundet auf zwei Stellen."
+              }
+            ]
+          },
+          "resultExplanation": "Der günstigste Artikel kostet 2,90 (Bio-Schokolade), der teuerste 39,00 (Handmühle Keramik), der Durchschnitt liegt bei 11,57.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 1,
+          "expectsError": false
+        },
+        {
+          "id": "grouping-and-aggregating-04",
+          "title": "Gruppieren mit GROUP BY",
+          "sql": "SELECT\n    Status,\n    COUNT(*) AS OrderCount\nFROM Orders\nGROUP BY Status\nORDER BY OrderCount DESC, Status;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "GROUP BY bildet pro Wert der Spalte eine Gruppe. Die Aggregatfunktion wird für jede Gruppe einzeln berechnet.",
+            "parts": [
+              {
+                "fragment": "GROUP BY Status",
+                "explanation": "Eine Zeile pro Status: Open, Shipped, Delivered und Cancelled."
+              },
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "Zählt innerhalb jeder Gruppe."
+              },
+              {
+                "fragment": "ORDER BY OrderCount DESC, Status",
+                "explanation": "Größte Gruppe zuerst, bei Gleichstand alphabetisch."
+              }
+            ]
+          },
+          "resultExplanation": "4 Zeilen: Delivered 13, Open 3, Shipped 3, Cancelled 1. Zusammen sind das die 20 Bestellungen.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 4,
+          "expectsError": false
+        },
+        {
+          "id": "grouping-and-aggregating-05",
+          "title": "Durchschnitt je Kategorie",
+          "sql": "SELECT\n    Category,\n    COUNT(*) AS Products,\n    ROUND(AVG(Price), 2) AS AveragePrice\nFROM Product\nGROUP BY Category\nORDER BY Category;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Mehrere Aggregatfunktionen lassen sich in einer Abfrage kombinieren. Jede Spalte im SELECT ist entweder gruppiert oder aggregiert.",
+            "parts": [
+              {
+                "fragment": "GROUP BY Category",
+                "explanation": "Eine Zeile je Produktkategorie."
+              },
+              {
+                "fragment": "COUNT(*) AS Products",
+                "explanation": "Anzahl der Produkte je Kategorie."
+              }
+            ]
+          },
+          "resultExplanation": "4 Kategorien: Kaffee (4 Produkte, Durchschnitt 9,43), Snacks (2, 3,20), Tee (3, 5,30) und Zubehör (3, 26,27). Zubehör ist im Mittel am teuersten.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 4,
+          "expectsError": false
+        },
+        {
+          "id": "grouping-and-aggregating-06",
+          "title": "Umsatz je Bestellung",
+          "sql": "SELECT TOP 5\n    o.Id AS OrderId,\n    ROUND(SUM(i.Quantity * p.Price), 2) AS Revenue\nFROM Orders o\nINNER JOIN OrderItem i ON i.OrderId = o.Id\nINNER JOIN Product p ON p.Id = i.ProductId\nGROUP BY o.Id\nORDER BY Revenue DESC;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Gruppieren und Verbinden lassen sich kombinieren: Erst werden die Zeilen verbunden, dann je Bestellung summiert.",
+            "parts": [
+              {
+                "fragment": "SUM(i.Quantity * p.Price)",
+                "explanation": "Summe der Zeilenwerte innerhalb jeder Bestellung."
+              },
+              {
+                "fragment": "GROUP BY o.Id",
+                "explanation": "Eine Gruppe je Bestellung."
+              },
+              {
+                "fragment": "TOP 5 ... ORDER BY Revenue DESC",
+                "explanation": "Zeigt nur die fünf umsatzstärksten Bestellungen."
+              }
+            ]
+          },
+          "resultExplanation": "Die größte Bestellung ist Nummer 10 mit 116,00, danach folgen Nummer 20 (85,50), 14 (73,00), 13 (64,70) und 19 (62,00).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 5,
+          "expectsError": false
+        },
+        {
+          "id": "grouping-and-aggregating-07",
+          "title": "Gruppen filtern mit HAVING",
+          "sql": "SELECT\n    c.LastName,\n    COUNT(*) AS OrderCount\nFROM Customer c\nINNER JOIN Orders o ON o.CustomerId = c.Id\nGROUP BY c.Id, c.LastName\nHAVING COUNT(*) >= 3\nORDER BY OrderCount DESC, c.LastName;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "WHERE filtert einzelne Zeilen vor dem Gruppieren, HAVING filtert ganze Gruppen danach. Eine Bedingung auf COUNT(*) gehört daher in HAVING.",
+            "parts": [
+              {
+                "fragment": "HAVING COUNT(*) >= 3",
+                "explanation": "Behält nur Gruppen mit mindestens drei Zeilen, also Kunden mit mindestens drei Bestellungen."
+              },
+              {
+                "fragment": "GROUP BY c.Id, c.LastName",
+                "explanation": "Gruppiert pro Kunde. Die Id macht die Gruppe eindeutig, falls zwei Kunden denselben Nachnamen hätten."
+              }
+            ]
+          },
+          "resultExplanation": "3 Kunden bestellen häufig: Berger (4 Bestellungen), Köhler (3) und Roth (3).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        }
+      ]
+    },
+    {
+      "id": "changing-data",
+      "title": "Daten ändern",
+      "description": "Lege eine eigene Tabelle mit Constraints an, füge Daten ein, ändere und lösche sie. Dabei löst du absichtlich Fehler aus und siehst, wie die Datenbank die Regeln durchsetzt. Das Szenario setzt die Datenbank beim Start zurück.",
+      "topic": "DataChange",
+      "requiresFreshDatabase": true,
+      "steps": [
+        {
+          "id": "changing-data-01",
+          "title": "Tabelle mit Constraints anlegen",
+          "sql": "CREATE TABLE Review (\n    Id INT NOT NULL PRIMARY KEY,\n    CustomerId INT NOT NULL,\n    ProductId INT NOT NULL,\n    Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5),\n    ReviewText NVARCHAR(200) NULL,\n    CONSTRAINT FK_Review_Customer FOREIGN KEY (CustomerId) REFERENCES Customer (Id),\n    CONSTRAINT FK_Review_Product FOREIGN KEY (ProductId) REFERENCES Product (Id),\n    CONSTRAINT UQ_Review_CustomerProduct UNIQUE (CustomerId, ProductId)\n);",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "CREATE TABLE definiert eine neue Tabelle samt Regeln. Constraints sorgen dafür, dass keine ungültigen Daten gespeichert werden.",
+            "parts": [
+              {
+                "fragment": "Id INT NOT NULL PRIMARY KEY",
+                "explanation": "Eindeutiger Schlüssel jeder Bewertung. Er darf nie fehlen."
+              },
+              {
+                "fragment": "Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5)",
+                "explanation": "Pflichtfeld, das nur Werte von 1 bis 5 annehmen darf."
+              },
+              {
+                "fragment": "ReviewText NVARCHAR(200) NULL",
+                "explanation": "Optionaler Freitext. NULL ist erlaubt."
+              },
+              {
+                "fragment": "FOREIGN KEY (CustomerId) REFERENCES Customer (Id)",
+                "explanation": "Eine Bewertung muss zu einem existierenden Kunden gehören. Dasselbe gilt für das Produkt."
+              },
+              {
+                "fragment": "UNIQUE (CustomerId, ProductId)",
+                "explanation": "Ein Kunde darf dasselbe Produkt nur einmal bewerten."
+              }
+            ]
+          },
+          "resultExplanation": "Es gibt kein Ergebnis mit Zeilen. Die Abfrage meldet nur, dass die Tabelle angelegt wurde.",
+          "databaseEffect": "Neue, noch leere Tabelle Review mit 5 Spalten, einem Primärschlüssel, einer CHECK-Regel, zwei Fremdschlüsseln und einer UNIQUE-Regel.",
+          "expectsError": false
+        },
+        {
+          "id": "changing-data-02",
+          "title": "Eine Zeile einfügen",
+          "sql": "INSERT INTO Review (Id, CustomerId, ProductId, Rating, ReviewText)\nVALUES (1, 1, 1, 5, 'Kräftig und mild zugleich');",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "INSERT fügt eine neue Zeile ein. Du nennst die Spalten und die Werte in derselben Reihenfolge.",
+            "parts": [
+              {
+                "fragment": "INSERT INTO Review (...)",
+                "explanation": "Ziel ist die Tabelle Review mit der Liste der Spalten, die du füllst."
+              },
+              {
+                "fragment": "VALUES (1, 1, 1, 5, ...)",
+                "explanation": "Die Werte in der Reihenfolge der Spaltenliste: Id 1, Kunde 1 (Anna Berger), Produkt 1 (Espresso Classico), Bewertung 5, Text."
+              }
+            ]
+          },
+          "resultExplanation": "Die Datenbank meldet 1 betroffene Zeile. Es gibt kein Ergebnis mit Zeilen.",
+          "databaseEffect": "Die Tabelle Review enthält jetzt 1 Zeile.",
+          "expectedRowsAffected": 1,
+          "expectsError": false
+        },
+        {
+          "id": "changing-data-03",
+          "title": "Mehrere Zeilen auf einmal",
+          "sql": "INSERT INTO Review (Id, CustomerId, ProductId, Rating, ReviewText)\nVALUES\n    (2, 2, 3, 3, 'Etwas zu bitter'),\n    (3, 4, 9, 5, NULL),\n    (4, 5, 6, 2, 'Schmeckt wie Heu');",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "Hinter VALUES kannst du mehrere Zeilen in Klammern durch Kommas getrennt angeben. Das ist ein einziger Befehl.",
+            "parts": [
+              {
+                "fragment": "VALUES (...), (...), (...)",
+                "explanation": "Drei Zeilen in einem Aufruf."
+              },
+              {
+                "fragment": "NULL",
+                "explanation": "Die Zeile mit Id 3 hat keinen Text. Das ist erlaubt, weil ReviewText NULL zulässt."
+              }
+            ]
+          },
+          "resultExplanation": "Die Datenbank meldet 3 betroffene Zeilen.",
+          "databaseEffect": "Die Tabelle Review enthält jetzt 4 Zeilen.",
+          "expectedRowsAffected": 3,
+          "expectsError": false
+        },
+        {
+          "id": "changing-data-04",
+          "title": "Eigene Daten ansehen",
+          "sql": "SELECT\n    r.Id,\n    c.FirstName,\n    p.Name AS Product,\n    r.Rating,\n    r.ReviewText\nFROM Review r\nINNER JOIN Customer c ON c.Id = r.CustomerId\nINNER JOIN Product p ON p.Id = r.ProductId\nORDER BY r.Id;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Die neue Tabelle lässt sich wie jede andere abfragen und mit den vorhandenen Tabellen verbinden.",
+            "parts": [
+              {
+                "fragment": "FROM Review r",
+                "explanation": "Ausgangspunkt ist die neue Tabelle."
+              },
+              {
+                "fragment": "INNER JOIN Customer c ... INNER JOIN Product p",
+                "explanation": "Löst die Fremdschlüssel in lesbare Namen auf."
+              }
+            ]
+          },
+          "resultExplanation": "4 Zeilen: Anna bewertet den Espresso Classico mit 5, Ben den Cold Brew mit 3, David die Handmühle mit 5 (ohne Text, also NULL) und Elif den Sencha mit 2.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 4,
+          "expectsError": false
+        },
+        {
+          "id": "changing-data-05",
+          "title": "Zeilen ändern mit UPDATE",
+          "sql": "UPDATE Review\nSET\n    Rating = 4,\n    ReviewText = 'Nach dem zweiten Versuch viel besser'\nWHERE Id = 2;",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "UPDATE ändert vorhandene Zeilen. Die WHERE-Bedingung bestimmt, welche. Ohne WHERE würden alle Zeilen der Tabelle geändert.",
+            "parts": [
+              {
+                "fragment": "UPDATE Review",
+                "explanation": "Tabelle, deren Zeilen geändert werden."
+              },
+              {
+                "fragment": "SET Rating = 4, ReviewText = ...",
+                "explanation": "Neue Werte für zwei Spalten."
+              },
+              {
+                "fragment": "WHERE Id = 2",
+                "explanation": "Nur die Zeile mit Id 2, also Bens Bewertung."
+              }
+            ]
+          },
+          "resultExplanation": "Die Datenbank meldet 1 betroffene Zeile. Prüfe das Ergebnis mit einer SELECT-Abfrage auf Review: Bens Bewertung steht jetzt bei 4 Sternen.",
+          "databaseEffect": "Eine Zeile der Tabelle Review wurde geändert (Rating und ReviewText). Es kommen keine neuen Zeilen hinzu.",
+          "expectedRowsAffected": 1,
+          "expectsError": false
+        },
+        {
+          "id": "changing-data-06",
+          "title": "Fehler: CHECK-Regel verletzt",
+          "sql": "INSERT INTO Review (Id, CustomerId, ProductId, Rating, ReviewText)\nVALUES (5, 1, 2, 6, 'Zu gut für die Skala');",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "Die Bewertung 6 verstößt gegen die CHECK-Regel Rating BETWEEN 1 AND 5. Die Datenbank lehnt die Zeile ab.",
+            "parts": [
+              {
+                "fragment": "2, 6, 'Zu gut für die Skala'",
+                "explanation": "Die 6 ist der Wert für Rating. Sie liegt außerhalb des erlaubten Bereichs von 1 bis 5."
+              }
+            ]
+          },
+          "resultExplanation": "Du erhältst eine Fehlermeldung zur Verletzung der CHECK-Regel. Es wurde nichts eingefügt: Ein fehlgeschlagener INSERT ändert die Tabelle nicht.",
+          "databaseEffect": "Nichts. Der Befehl scheiterte, die Tabelle bleibt unverändert.",
+          "expectsError": true
+        },
+        {
+          "id": "changing-data-07",
+          "title": "Fehler: Kunde existiert nicht",
+          "sql": "INSERT INTO Review (Id, CustomerId, ProductId, Rating, ReviewText)\nVALUES (5, 99, 2, 4, 'Gibt es mich überhaupt?');",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "Der Fremdschlüssel verlangt, dass es einen Kunden mit der Id 99 gibt. Den gibt es nicht.",
+            "parts": [
+              {
+                "fragment": "5, 99, 2",
+                "explanation": "Die 99 ist der Wert für CustomerId. Sie verweist auf einen Kunden, der in der Tabelle Customer nicht existiert."
+              }
+            ]
+          },
+          "resultExplanation": "Du erhältst eine Fehlermeldung zur Verletzung der FOREIGN KEY-Beziehung. Die Zeile wird nicht gespeichert.",
+          "databaseEffect": "Nichts. Der Befehl scheiterte, die Tabelle bleibt unverändert.",
+          "expectsError": true
+        },
+        {
+          "id": "changing-data-08",
+          "title": "Fehler: doppelte Bewertung",
+          "sql": "INSERT INTO Review (Id, CustomerId, ProductId, Rating, ReviewText)\nVALUES (5, 1, 1, 4, 'Ich bewerte nochmal');",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "Anna hat den Espresso Classico bereits bewertet. Die Kombination (CustomerId, ProductId) muss eindeutig sein.",
+            "parts": [
+              {
+                "fragment": "(5, 1, 1, ...)",
+                "explanation": "Kunde 1 und Produkt 1 gibt es in Zeile 1 bereits."
+              }
+            ]
+          },
+          "resultExplanation": "Du erhältst eine Fehlermeldung zur Verletzung der UNIQUE-Regel. Auch dieser INSERT ändert die Tabelle nicht.",
+          "databaseEffect": "Nichts. Der Befehl scheiterte, die Tabelle bleibt unverändert.",
+          "expectsError": true
+        },
+        {
+          "id": "changing-data-09",
+          "title": "Fehler: Elternzeile löschen",
+          "sql": "DELETE FROM Customer WHERE Id = 1;",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "Kunde 1 wird von Bestellungen und Bewertungen referenziert. Die Datenbank lässt eine Zeile nicht löschen, solange andere Zeilen auf sie verweisen.",
+            "parts": [
+              {
+                "fragment": "DELETE FROM Customer WHERE Id = 1",
+                "explanation": "Versucht, Anna Berger zu löschen, obwohl Orders und Review auf sie verweisen."
+              }
+            ]
+          },
+          "resultExplanation": "Du erhältst eine Fehlermeldung zur Verletzung der FOREIGN KEY-Beziehung. Anna Berger bleibt erhalten.",
+          "databaseEffect": "Nichts. Der Befehl scheiterte, die Tabelle bleibt unverändert.",
+          "expectsError": true
+        },
+        {
+          "id": "changing-data-10",
+          "title": "Zeilen löschen mit DELETE",
+          "sql": "DELETE FROM Review WHERE Rating < 3;",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "DELETE entfernt alle Zeilen, auf die die WHERE-Bedingung zutrifft. Auch hier gilt: Ohne WHERE verschwinden alle Zeilen.",
+            "parts": [
+              {
+                "fragment": "DELETE FROM Review",
+                "explanation": "Zeilen werden aus Review entfernt."
+              },
+              {
+                "fragment": "WHERE Rating < 3",
+                "explanation": "Nur schlechte Bewertungen: Elifs 2-Sterne-Bewertung."
+              }
+            ]
+          },
+          "resultExplanation": "Die Datenbank meldet 1 betroffene Zeile. SELECT COUNT(*) FROM Review ergibt danach 3.",
+          "databaseEffect": "Die Zeile mit Id 4 wurde gelöscht. Review enthält noch 3 Zeilen.",
+          "expectedRowsAffected": 1,
+          "expectsError": false
+        },
+        {
+          "id": "changing-data-11",
+          "title": "Bestand erhöhen",
+          "sql": "UPDATE Product SET Stock = Stock + 50 WHERE Id = 4;",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "UPDATE kann den alten Wert zur Berechnung des neuen verwenden. Hier wird der Bestand um 50 erhöht.",
+            "parts": [
+              {
+                "fragment": "SET Stock = Stock + 50",
+                "explanation": "Der neue Bestand ist der alte plus 50. Bei Stock = NULL bliebe das Ergebnis NULL."
+              },
+              {
+                "fragment": "WHERE Id = 4",
+                "explanation": "Produkt 4 ist der Espresso Entkoffeiniert, dessen Bestand 0 war."
+              }
+            ]
+          },
+          "resultExplanation": "Die Datenbank meldet 1 betroffene Zeile. Der Espresso Entkoffeiniert hat jetzt 50 Stück auf Lager statt 0.",
+          "databaseEffect": "Eine Zeile der bestehenden Tabelle Product wurde geändert (Stock: von 0 auf 50).",
+          "expectedRowsAffected": 1,
+          "expectsError": false
+        },
+        {
+          "id": "changing-data-12",
+          "title": "Endergebnis prüfen",
+          "sql": "SELECT\n    COUNT(*) AS Reviews,\n    AVG(Rating) AS AverageRating\nFROM Review;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Zum Abschluss prüfst du die Tabelle: Es sind drei Bewertungen übrig.",
+            "parts": [
+              {
+                "fragment": "COUNT(*)",
+                "explanation": "Anzahl der verbliebenen Bewertungen."
+              },
+              {
+                "fragment": "AVG(Rating)",
+                "explanation": "Mittelwert der Bewertungen."
+              }
+            ]
+          },
+          "resultExplanation": "Eine Zeile mit 3 Bewertungen und dem Durchschnitt 4,67 (Bewertungen 5, 4 und 5). Der Durchschnitt ist ein Dezimalwert, auch wenn Rating eine ganze Zahl ist.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 1,
+          "expectsError": false
+        }
+      ]
+    }
+  ]
+}

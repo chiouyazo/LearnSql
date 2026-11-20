@@ -1,0 +1,8 @@
+@inject IStringLocalizer<ExerciseStrings> L
+
+<span class="exercise-difficulty exercise-difficulty-@Difficulty.ToString().ToLowerInvariant()">@L["Difficulty" + Difficulty]</span>
+
+@code {
+    [Parameter, EditorRequired]
+    public ExerciseDifficulty Difficulty { get; set; }
+}

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ResultsRegion" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="RunQuery" xml:space="preserve">
+    <value>Ausführen</value>
+  </data>
+  <data name="CancelRun" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="RunningHint" xml:space="preserve">
+    <value>Abfrage läuft, Escape bricht ab</value>
+  </data>
+  <data name="NotReadyHint" xml:space="preserve">
+    <value>Die Datenbank wird vorbereitet</value>
+  </data>
+  <data name="RollbackTooltip" xml:space="preserve">
+    <value>Alle Änderungen dieser Ausführung nach dem Lauf wieder zurückrollen</value>
+  </data>
+  <data name="RollbackLabel" xml:space="preserve">
+    <value>Änderungen zurückrollen</value>
+  </data>
+  <data name="EmptyNotRun" xml:space="preserve">
+    <value>Noch nichts ausgeführt. Schreibe eine Abfrage und drücke Strg+Enter.</value>
+  </data>
+  <data name="EmptyNoResultSet" xml:space="preserve">
+    <value>Die Anweisung hat keine Ergebnismenge zurückgegeben.</value>
+  </data>
+  <data name="ResultTab" xml:space="preserve">
+    <value>Ergebnis {0} ({1})</value>
+  </data>
+  <data name="MessagesTab" xml:space="preserve">
+    <value>Meldungen</value>
+  </data>
+  <data name="SummarySuccess" xml:space="preserve">
+    <value>Ergebnismengen: {0}, Zeilen: {1}</value>
+  </data>
+  <data name="SummaryCancelled" xml:space="preserve">
+    <value>Abgebrochen</value>
+  </data>
+  <data name="SummaryTimeout" xml:space="preserve">
+    <value>Zeitlimit überschritten</value>
+  </data>
+  <data name="SummaryFailed" xml:space="preserve">
+    <value>Fehlgeschlagen</value>
+  </data>
+  <data name="AnnounceRunning" xml:space="preserve">
+    <value>Abfrage läuft</value>
+  </data>
+  <data name="GridSummary" xml:space="preserve">
+    <value>Zeilen: {0}, Spalten: {1}</value>
+  </data>
+  <data name="GridTruncated" xml:space="preserve">
+    <value>Nur die ersten {0} Zeilen werden angezeigt</value>
+  </data>
+  <data name="ExportCsv" xml:space="preserve">
+    <value>CSV exportieren</value>
+  </data>
+  <data name="GridAriaLabel" xml:space="preserve">
+    <value>Ergebnistabelle</value>
+  </data>
+  <data name="GridSortTooltip" xml:space="preserve">
+    <value>Nach {0} sortieren</value>
+  </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>Der Export ist fehlgeschlagen.</value>
+  </data>
+  <data name="MessageTruncated" xml:space="preserve">
+    <value>Die Ausgabe ist auf {0} Zeilen begrenzt. Es existieren weitere Zeilen.</value>
+  </data>
+  <data name="MessageRolledBack" xml:space="preserve">
+    <value>Die Änderungen dieser Ausführung wurden zurückgerollt.</value>
+  </data>
+  <data name="MessageHints" xml:space="preserve">
+    <value>Hinweise zur Abfrage</value>
+  </data>
+  <data name="DiagnosticsAriaLabel" xml:space="preserve">
+    <value>Probleme in der Abfrage</value>
+  </data>
+  <data name="DiagnosticJumpTooltip" xml:space="preserve">
+    <value>Zur Stelle im Editor springen</value>
+  </data>
+  <data name="DiagnosticPosition" xml:space="preserve">
+    <value>Zeile {0}, Spalte {1}</value>
+  </data>
+  <data name="ErrorCancelledTitle" xml:space="preserve">
+    <value>Ausführung abgebrochen</value>
+  </data>
+  <data name="ErrorCancelledText" xml:space="preserve">
+    <value>Du hast die Ausführung abgebrochen. Die Datenbank bleibt nutzbar.</value>
+  </data>
+  <data name="ErrorTimeoutTitle" xml:space="preserve">
+    <value>Zeitlimit überschritten</value>
+  </data>
+  <data name="ErrorTimeoutText" xml:space="preserve">
+    <value>Die Abfrage hat zu lange gedauert und wurde beendet. Prüfe JOIN-Bedingungen, rekursive Abfragen und fehlende Filter.</value>
+  </data>
+  <data name="ErrorRejectedTitle" xml:space="preserve">
+    <value>Anweisung nicht erlaubt</value>
+  </data>
+  <data name="ErrorRejectedText" xml:space="preserve">
+    <value>Diese Anweisung ist in dieser Umgebung nicht zugelassen und wurde nicht ausgeführt.</value>
+  </data>
+  <data name="ErrorLimitTitle" xml:space="preserve">
+    <value>Grenzwert überschritten</value>
+  </data>
+  <data name="ErrorLimitText" xml:space="preserve">
+    <value>Die Abfrage hat einen Grenzwert dieser Umgebung überschritten, zum Beispiel für Datenmenge oder Wertgröße.</value>
+  </data>
+  <data name="ErrorInternalTitle" xml:space="preserve">
+    <value>Interner Fehler</value>
+  </data>
+  <data name="ErrorInternalText" xml:space="preserve">
+    <value>Bei der Ausführung ist ein unerwarteter Fehler aufgetreten. Setze die Datenbank zurück und versuche es erneut.</value>
+  </data>
+  <data name="ErrorDiagnosticsTitle" xml:space="preserve">
+    <value>Die Abfrage wurde nicht ausgeführt ({0} Problem(e))</value>
+  </data>
+  <data name="ErrorDiagnosticsText" xml:space="preserve">
+    <value>Klicke auf einen Eintrag, um im Editor zur Stelle zu springen.</value>
+  </data>
+  <data name="ErrorJumpToStatement" xml:space="preserve">
+    <value>Zur Stelle im Editor springen</value>
+  </data>
+  <data name="TechnicalDetails" xml:space="preserve">
+    <value>Technische Details</value>
+  </data>
+  <data name="MessageHiddenResultSets" xml:space="preserve">
+    <value>{0} weitere Ergebnismengen werden nicht angezeigt.</value>
+  </data>
+  <data name="SummaryNoResultSet" xml:space="preserve">
+    <value>Ohne Ergebnismenge</value>
+  </data>
+</root>

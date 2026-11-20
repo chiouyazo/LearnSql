@@ -1,0 +1,10 @@
+.exercise-difficulty {
+    display: inline-block;
+    padding: 0 0.5rem;
+    border: 1px solid var(--mud-palette-lines-inputs);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    line-height: 1.4rem;
+    white-space: nowrap;
+    color: var(--mud-palette-text-secondary);
+}

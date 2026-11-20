@@ -1,0 +1,21 @@
+@inject IStringLocalizer<ExerciseStrings> L
+
+<span class="exercise-status exercise-status-@Status.ToString().ToLowerInvariant()">
+    <MudIcon Icon="@IconFor(Status)" Size="Size.Small"/>
+    <span>@L["Status" + Status]</span>
+</span>
+
+@code {
+    [Parameter, EditorRequired]
+    public ExerciseStatus Status { get; set; }
+
+    private static string IconFor(ExerciseStatus status)
+    {
+        return status switch
+        {
+            ExerciseStatus.Solved => Icons.Material.Filled.CheckCircle,
+            ExerciseStatus.Attempted => Icons.Material.Filled.Timelapse,
+            _ => Icons.Material.Outlined.Circle,
+        };
+    }
+}

@@ -1,0 +1,331 @@
+{
+  "title": "Playground: IT Trading Company",
+  "description": "An IT trading company with 19 tables for master data, customers, employees, orders, invoices and payments.",
+  "exercises": [
+    {
+      "id": "select-01",
+      "title": "Country list",
+      "description": "Show the name and ISO2 code of all countries, sorted alphabetically by name.",
+      "hints": [
+        "You only need the Country table and two columns.",
+        "Sort with ORDER BY.",
+        "SELECT Name, Iso2 FROM Country ORDER BY Name"
+      ]
+    },
+    {
+      "id": "select-02",
+      "title": "Most expensive services",
+      "description": "Show the name and net sales price of the three most expensive items that are services (IsService = 1).",
+      "hints": [
+        "Filter for services first, then sort by price.",
+        "ORDER BY SalesPriceNet DESC and TOP 3 limit the output.",
+        "SELECT TOP 3 Name, SalesPriceNet FROM Item WHERE IsService = 1 ORDER BY SalesPriceNet DESC"
+      ]
+    },
+    {
+      "id": "filter-01",
+      "title": "Creditworthy key accounts",
+      "description": "Show the company name and credit limit of all active, unblocked customers with a credit limit of at least 50000. Sort by company name.",
+      "hints": [
+        "Three conditions must hold at the same time.",
+        "IsActive and IsBlocked are BIT columns with the values 0 and 1.",
+        "WHERE IsActive = 1 AND IsBlocked = 0 AND CreditLimit >= 50000"
+      ]
+    },
+    {
+      "id": "filter-02",
+      "title": "Employees without a salary",
+      "description": "Which employees have no salary on record? Show first name, last name and phone.",
+      "hints": [
+        "A missing salary is NULL.",
+        "Use IS NULL instead of = NULL.",
+        "WHERE Salary IS NULL"
+      ]
+    },
+    {
+      "id": "filter-03",
+      "title": "Orders without a contact person",
+      "description": "Show the order number and order date of all orders that have no contact person (ContactId) recorded, sorted by order date.",
+      "hints": [
+        "You are looking for orders where ContactId is missing.",
+        "Filter with IS NULL and sort by OrderDate.",
+        "WHERE ContactId IS NULL ORDER BY OrderDate"
+      ]
+    },
+    {
+      "id": "filter-04",
+      "title": "Invoices without a service date",
+      "description": "Show the invoice number and status of all invoices that have no service date (ServiceDate) and are not credit notes.",
+      "hints": [
+        "Two conditions: ServiceDate is missing and IsCreditNote is 0.",
+        "Combine IS NULL with AND.",
+        "WHERE ServiceDate IS NULL AND IsCreditNote = 0"
+      ]
+    },
+    {
+      "id": "join-01",
+      "title": "Order, customer and sales representative",
+      "description": "Show the order number, the customer's company name and the last name of the responsible employee for all orders, sorted by order number.",
+      "hints": [
+        "Orders points to Customer through CustomerId and to Employee through EmployeeId.",
+        "Two INNER JOINs in a row.",
+        "INNER JOIN Customer c ON c.Id = o.CustomerId INNER JOIN Employee e ON e.Id = o.EmployeeId"
+      ]
+    },
+    {
+      "id": "join-02",
+      "title": "Customers without orders",
+      "description": "Which customers have not placed an order yet? Show the company name, sorted alphabetically.",
+      "hints": [
+        "You also have to keep customers without an order.",
+        "LEFT JOIN from Customer to Orders, then filter for the missing match.",
+        "WHERE o.Id IS NULL"
+      ]
+    },
+    {
+      "id": "join-03",
+      "title": "Item groups with parent group",
+      "description": "Show each item group with the name of its parent group (ParentName). Groups without a parent group should appear with NULL. Sort by the group's Id.",
+      "hints": [
+        "The ItemGroup table references itself (ParentGroupId).",
+        "Join the table to itself using two different aliases. A LEFT JOIN keeps groups without a parent group.",
+        "FROM ItemGroup g LEFT JOIN ItemGroup parent ON parent.Id = g.ParentGroupId"
+      ]
+    },
+    {
+      "id": "join-04",
+      "title": "Invoices without a payment",
+      "description": "Show the invoice number and status of all invoices with no recorded payment, sorted by invoice number.",
+      "hints": [
+        "Again, the matching row is missing in another table.",
+        "LEFT JOIN from Invoice to Payment.",
+        "WHERE p.Id IS NULL"
+      ]
+    },
+    {
+      "id": "agg-01",
+      "title": "Orders per employee",
+      "description": "Show the last name and the number of orders (OrderCount) for employees with at least 4 orders. Sort by count descending, then by last name.",
+      "hints": [
+        "Group the orders by employee.",
+        "Conditions on COUNT(*) belong in HAVING.",
+        "GROUP BY e.Id, e.LastName HAVING COUNT(*) >= 4"
+      ]
+    },
+    {
+      "id": "agg-02",
+      "title": "Revenue per customer",
+      "description": "For each customer, calculate the sum of the net amounts (NetTotal, rounded to 2 decimals) of all invoices that are neither cancelled nor drafts. Credit notes count with their negative amount. Show the top five customers, highest revenue first.",
+      "hints": [
+        "Filter on the invoice status first, then group by customer.",
+        "WHERE Status <> 'Cancelled' AND Status <> 'Draft', then SUM(TotalNet).",
+        "SELECT TOP 5 with ORDER BY NetTotal DESC"
+      ]
+    },
+    {
+      "id": "agg-03",
+      "title": "Open items",
+      "description": "For all non-cancelled invoices with status Issued or PartiallyPaid (no credit notes), show the invoice number, the gross amount, the amount paid (Paid, 0 if there are no payments) and the remaining amount (Remaining). Round Paid and Remaining to 2 decimals. Sort by remaining amount descending.",
+      "hints": [
+        "Invoices without a payment must not be lost.",
+        "LEFT JOIN to Payment and COALESCE(SUM(p.Amount), 0).",
+        "The remaining amount is i.TotalGross - COALESCE(SUM(p.Amount), 0), grouped by invoice."
+      ]
+    },
+    {
+      "id": "sub-01",
+      "title": "Customers with an open invoice",
+      "description": "Show the company name of all customers who have at least one invoice with status Issued or PartiallyPaid, without a join. Sort alphabetically.",
+      "hints": [
+        "First find the customer ids in the invoice table.",
+        "IN with a subquery on Invoice.",
+        "WHERE Id IN (SELECT CustomerId FROM Invoice WHERE Status IN ('Issued', 'PartiallyPaid'))"
+      ]
+    },
+    {
+      "id": "sub-02",
+      "title": "Above the group average",
+      "description": "Show item name, price and group name of all items that cost more than the average price of their own item group. Sort by group name and item name.",
+      "hints": [
+        "The value to compare against depends on the current row (correlated subquery).",
+        "The subquery calculates the average of the items with the same ItemGroupId.",
+        "WHERE i.SalesPriceNet > (SELECT AVG(i2.SalesPriceNet) FROM Item i2 WHERE i2.ItemGroupId = i.ItemGroupId)"
+      ]
+    },
+    {
+      "id": "win-01",
+      "title": "Numbering orders",
+      "description": "Number each customer's orders chronologically (Seq). Show order number, customer id, order date and Seq. Sort by customer id and order date.",
+      "hints": [
+        "You need a running number that starts at 1 again for each customer.",
+        "ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)",
+        "ROW_NUMBER() OVER (PARTITION BY CustomerId ORDER BY OrderDate, Id) AS Seq"
+      ]
+    },
+    {
+      "id": "win-02",
+      "title": "Cumulative revenue",
+      "description": "For all outgoing invoices (no credit notes, neither cancelled nor drafts), show invoice number, date, net amount and the running total revenue (Running, rounded to 2 decimals), sorted by date and Id.",
+      "hints": [
+        "A running value is a sum over all rows up to the current one.",
+        "SUM(...) OVER (ORDER BY ...) without PARTITION BY adds up continuously.",
+        "ROUND(SUM(TotalNet) OVER (ORDER BY InvoiceDate, Id), 2) AS Running"
+      ]
+    },
+    {
+      "id": "win-03",
+      "title": "Customer ranking",
+      "description": "Calculate each customer's rank (Rnk) by net revenue from invoices (no credit notes, neither cancelled nor drafts). Show company name, revenue (Net, rounded to 2 decimals) and rank, sorted by rank.",
+      "hints": [
+        "Group by customer first, then assign the rank.",
+        "RANK() OVER (ORDER BY SUM(i.TotalNet) DESC) can use aggregates.",
+        "GROUP BY c.Id, c.CompanyName, then ORDER BY Rnk"
+      ]
+    },
+    {
+      "id": "win-04",
+      "title": "Comparison with the previous invoice",
+      "description": "For each outgoing invoice (no credit notes, neither cancelled nor drafts), show invoice number, customer id, net amount and the net amount of the same customer's previous invoice (Previous, NULL for the first one). Sort by customer id, date and Id.",
+      "hints": [
+        "You are looking for the value of the previous row within a group.",
+        "LAG(column) OVER (PARTITION BY ... ORDER BY ...)",
+        "LAG(TotalNet) OVER (PARTITION BY CustomerId ORDER BY InvoiceDate, Id) AS Previous"
+      ]
+    }
+  ],
+  "guidedScenarios": [
+    {
+      "id": "invoices-and-payments",
+      "title": "Invoices and payments",
+      "description": "You follow the path from the customer through the invoice to the payment. Along the way you learn to recognize credit notes, find invoices without a payment with a LEFT JOIN and calculate open items. All steps are read-only.",
+      "steps": [
+        {
+          "id": "invoices-and-payments-01",
+          "title": "The latest invoices with customer names",
+          "queryExplanation": {
+            "summary": "An invoice only knows the CustomerId. An INNER JOIN fetches the company name, and ORDER BY with TOP shows the most recent invoices.",
+            "parts": [
+              {
+                "fragment": "INNER JOIN Customer c ON c.Id = i.CustomerId",
+                "explanation": "Assigns the customer to each invoice."
+              },
+              {
+                "fragment": "ORDER BY i.InvoiceDate DESC, i.InvoiceNo DESC",
+                "explanation": "Newest first. The invoice number breaks ties when the dates are equal."
+              },
+              {
+                "fragment": "TOP 5",
+                "explanation": "Limits the output to five rows."
+              }
+            ]
+          },
+          "resultExplanation": "The most recent invoice is INV-2026-0013 from 2026-11-03 for the Stadt Bremerhaven, with a net amount of 10,242.00. Four more invoices follow, going back to 2026-07-31.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "invoices-and-payments-02",
+          "title": "Recognizing credit notes",
+          "queryExplanation": {
+            "summary": "Credit notes live in the same table as invoices. The IsCreditNote flag tells them apart, and their amount is negative.",
+            "parts": [
+              {
+                "fragment": "WHERE IsCreditNote = 1",
+                "explanation": "Keeps only credit notes. IsCreditNote is a BIT column with 0 or 1."
+              },
+              {
+                "fragment": "OriginalInvoiceId",
+                "explanation": "Points to the invoice being corrected."
+              }
+            ]
+          },
+          "resultExplanation": "2 credit notes: CN-2025-0001 for -449.00 (invoice 10, defective monitor) and CN-2026-0001 for -1,708.20 (invoice 15, transport damage).",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "invoices-and-payments-03",
+          "title": "Finding invoices without a payment",
+          "queryExplanation": {
+            "summary": "LEFT JOIN keeps every invoice, even without a payment. Where no payment exists, the Payment columns are NULL.",
+            "parts": [
+              {
+                "fragment": "LEFT JOIN Payment p ON p.InvoiceId = i.Id",
+                "explanation": "All invoices stay, matching payments are attached."
+              },
+              {
+                "fragment": "WHERE p.Id IS NULL",
+                "explanation": "Only invoices without a payment remain."
+              }
+            ]
+          },
+          "resultExplanation": "8 invoices have no payment. They include both credit notes, the cancelled invoice INV-2026-0005, the draft INV-2026-0013 and four open invoices with status Issued.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "invoices-and-payments-04",
+          "title": "Summing payments per invoice",
+          "queryExplanation": {
+            "summary": "With a LEFT JOIN and grouping, SUM returns NULL when payments are missing. COALESCE turns that into 0. COUNT(p.Id) counts only real payments.",
+            "parts": [
+              {
+                "fragment": "SUM(p.Amount)",
+                "explanation": "Sum of all payments for an invoice. Without payments the result is NULL."
+              },
+              {
+                "fragment": "COALESCE(..., 0)",
+                "explanation": "Replaces NULL with 0."
+              },
+              {
+                "fragment": "COUNT(p.Id)",
+                "explanation": "Counts only rows where p.Id is not NULL. COUNT(*) would return 1 even when there is no payment."
+              }
+            ]
+          },
+          "resultExplanation": "6 invoices are not fully paid yet. INV-2026-0008 has received 2,304.00 and INV-2026-0015 has received 1,326.00. The other four have Paid 0 and Payments 0.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "invoices-and-payments-05",
+          "title": "Calculating open items",
+          "queryExplanation": {
+            "summary": "The remaining amount is the gross amount minus the amount paid. It is calculated after grouping, so the subtraction sits outside SUM.",
+            "parts": [
+              {
+                "fragment": "i.TotalGross",
+                "explanation": "A calculated column of the Invoice table (net plus tax). It has to be in the GROUP BY because it is not aggregated."
+              },
+              {
+                "fragment": "i.TotalGross - COALESCE(SUM(p.Amount), 0)",
+                "explanation": "Remaining = gross minus payments."
+              },
+              {
+                "fragment": "ORDER BY Remaining DESC",
+                "explanation": "The highest open amount comes first."
+              }
+            ]
+          },
+          "resultExplanation": "6 open items in total. The largest is INV-2026-0010 (Maison Delacroix) with 2,958.00, followed by INV-2026-0007 (Vandermeer) with 2,754.00 and INV-2026-0008 (Lumen, partially paid) with 2,304.00.",
+          "databaseEffect": "Nothing, the query only reads."
+        },
+        {
+          "id": "invoices-and-payments-06",
+          "title": "Revenue per customer",
+          "queryExplanation": {
+            "summary": "Grouped by customer and summed, the invoices produce a ranking. Cancelled invoices and drafts are excluded, and credit notes reduce the revenue.",
+            "parts": [
+              {
+                "fragment": "WHERE i.Status <> 'Cancelled' AND i.Status <> 'Draft'",
+                "explanation": "Excludes cancelled invoices and drafts."
+              },
+              {
+                "fragment": "SUM(i.TotalNet)",
+                "explanation": "Net revenue per customer. Credit notes have negative amounts and are therefore subtracted."
+              }
+            ]
+          },
+          "resultExplanation": "Nordwind Energie GmbH leads with 93,004.72 from 5 invoices, followed by the Stadt Bremerhaven (45,552.20 after deducting the credit note), Harbor Logistics (25,860.60), Redwood Analytics (20,966.04) and Brandt Maschinenbau (20,176.70).",
+          "databaseEffect": "Nothing, the query only reads."
+        }
+      ]
+    }
+  ]
+}

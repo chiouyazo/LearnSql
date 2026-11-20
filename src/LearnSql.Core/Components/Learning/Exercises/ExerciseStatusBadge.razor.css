@@ -1,0 +1,20 @@
+.exercise-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+}
+
+.exercise-status-solved {
+    color: var(--mud-palette-success);
+    font-weight: 600;
+}
+
+.exercise-status-attempted {
+    color: var(--mud-palette-warning-darken, var(--mud-palette-warning));
+}
+
+.exercise-status-open {
+    color: var(--mud-palette-text-secondary);
+}

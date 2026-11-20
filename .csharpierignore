@@ -1,0 +1,10 @@
+**/Generated/
+**/bin/
+**/obj/
+**/*.csproj
+**/*.props
+**/*.targets
+**/*.slnx
+**/*.xml
+**/*.config
+**/*.resx

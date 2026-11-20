@@ -1,0 +1,31 @@
+.diff-block {
+    margin-top: 0.75rem;
+}
+
+.diff-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.diff-table {
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.diff-table th,
+.diff-table td {
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--mud-palette-lines-default);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.diff-table th {
+    background: var(--mud-palette-background-gray);
+    font-weight: 600;
+}
+
+.diff-null {
+    font-style: italic;
+    color: var(--mud-palette-text-secondary);
+}

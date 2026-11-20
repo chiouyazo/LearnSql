@@ -1,0 +1,88 @@
+@implements IDisposable
+
+<section class="result-panel" aria-label="@L["ResultsRegion"]" @onkeydown="OnKeyDown">
+    <div class="result-toolbar">
+        <MudButton Variant="Variant.Filled" Color="@(Runner.IsRunning ? Color.Warning : Color.Primary)"
+                   Size="Size.Small" Disabled="@(!Runner.IsRunning && !Session.IsReady)"
+                   StartIcon="@(Runner.IsRunning ? null : Icons.Material.Filled.PlayArrow)"
+                   aria-label="@(Runner.IsRunning ? L["CancelRun"] : L["RunQuery"])"
+                   aria-keyshortcuts="@(Runner.IsRunning ? "Escape" : "Control+Enter")"
+                   OnClick="PrimaryActionAsync">
+            @if (Runner.IsRunning)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Inherit" Class="mr-2"/>
+                <span>@L["CancelRun"]</span>
+            }
+            else
+            {
+                <span>@L["RunQuery"]</span>
+            }
+        </MudButton>
+        <ElapsedTime Running="Runner.IsRunning" Duration="@(_run?.Result.Duration ?? TimeSpan.Zero)"/>
+        @if (Runner.IsRunning)
+        {
+            <MudText Class="text-muted" Typo="Typo.caption">@L["RunningHint"]</MudText>
+        }
+        else if (_run is not null)
+        {
+            <MudText Class="text-muted" Typo="Typo.caption">@Summary</MudText>
+        }
+        else if (!Session.IsReady)
+        {
+            <MudText Class="text-muted" Typo="Typo.caption">@L["NotReadyHint"]</MudText>
+        }
+        <MudSpacer/>
+        <MudTooltip Text="@L["RollbackTooltip"]">
+            <MudSwitch T="bool" Value="Runner.Options.RollbackAfterExecution" ValueChanged="OnRollbackChanged"
+                       Disabled="Runner.IsRunning" Size="Size.Small" Color="Color.Primary"
+                       Label="@L["RollbackLabel"]" Class="rollback-switch"/>
+        </MudTooltip>
+    </div>
+
+    <div class="visually-hidden" role="status" aria-live="polite">@_announcement</div>
+
+    <div class="result-body">
+        @if (_run is null)
+        {
+            <div class="result-empty">
+                <MudIcon Icon="@Icons.Material.Outlined.TableChart" Size="Size.Large" Color="Color.Default"/>
+                <MudText Class="text-muted" Typo="Typo.body2">@L["EmptyNotRun"]</MudText>
+            </div>
+        }
+        else
+        {
+            @if (_run.Result.Error is not null)
+            {
+                <div class="result-error">
+                    <ErrorPanel Error="_run.Result.Error" Diagnostics="_run.Result.Diagnostics" Origin="_run.Origin"
+                                OnNavigate="OnNavigate"/>
+                </div>
+            }
+            @if (_resultSets.Count > 0)
+            {
+                <MudTabs @bind-ActivePanelIndex="_activeTab" Class="result-tabs" TabPanelsClass="result-tab-panel"
+                         Elevation="0" Rounded="false" KeepPanelsAlive="false">
+                    @for (int index = 0; index < _resultSets.Count; index++)
+                    {
+                        ResultSet resultSet = _resultSets[index];
+                        <MudTabPanel Text="@L["ResultTab", index + 1, resultSet.Rows.Count]" Icon="@Icons.Material.Filled.TableRows">
+                            <ResultGrid ResultSet="resultSet"/>
+                        </MudTabPanel>
+                    }
+                    <MudTabPanel Text="@L["MessagesTab"]" Icon="@Icons.Material.Filled.Notes">
+                        <MessagesView Result="_run.Result" Options="_run.Options" Origin="_run.Origin"
+                                      HiddenResultSets="_hiddenResultSets" OnNavigate="OnNavigate"/>
+                    </MudTabPanel>
+                </MudTabs>
+            }
+            else if (_run.Result.Error is null)
+            {
+                <div class="result-empty">
+                    <MudIcon Icon="@Icons.Material.Outlined.CheckCircle" Size="Size.Large" Color="Color.Success"/>
+                    <MudText Class="text-muted" Typo="Typo.body2">@L["EmptyNoResultSet"]</MudText>
+                </div>
+                <MessagesView Result="_run.Result" Options="_run.Options" Origin="_run.Origin" OnNavigate="OnNavigate"/>
+            }
+        }
+    </div>
+</section>

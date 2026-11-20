@@ -1,0 +1,633 @@
+{
+  "id": "analytics",
+  "sortOrder": 2,
+  "title": "Analytics: Umsatz über 24 Monate",
+  "description": "Umsatzdaten von November 2024 bis Oktober 2026 mit 24 Kunden, 15 Produkten, 241 Bestellungen und 498 Positionen. Bei Segment, Vertriebskanal und Rabatt fehlen teilweise Werte, und einige Kunden haben nie bestellt.",
+  "schemaResources": [
+    "Data/analytics/Schema/01.Tables.sql"
+  ],
+  "viewResources": [
+    "Base/Views/ColumnsView.sql",
+    "Base/Views/TablesView.sql"
+  ],
+  "seedResources": [
+    "Data/analytics/Seed/01.SalesData.sql"
+  ],
+  "exercises": [
+    {
+      "id": "select-01",
+      "title": "Hardware nach Preis",
+      "description": "Zeige Name und Listenpreis aller Produkte der Kategorie Hardware, das teuerste zuerst.",
+      "topic": "Select",
+      "difficulty": "Beginner",
+      "hints": [
+        "Filtere nach der Kategorie und sortiere nach dem Preis.",
+        "ORDER BY ListPrice DESC",
+        "SELECT Name, ListPrice FROM Product WHERE Category = 'Hardware' ORDER BY ListPrice DESC"
+      ],
+      "solutionSql": "SELECT\n    Name,\n    ListPrice\nFROM Product\nWHERE Category = 'Hardware'\nORDER BY ListPrice DESC",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "select-02",
+      "title": "Kundenländer",
+      "description": "Welche Länder kommen in der Kundentabelle vor? Zeige jedes Land genau einmal, alphabetisch sortiert.",
+      "topic": "Select",
+      "difficulty": "Beginner",
+      "hints": [
+        "Ohne Zusatz würde jedes Land so oft erscheinen, wie es Kunden gibt.",
+        "DISTINCT entfernt doppelte Zeilen.",
+        "SELECT DISTINCT Country FROM Customer ORDER BY Country"
+      ],
+      "solutionSql": "SELECT DISTINCT Country FROM Customer ORDER BY Country",
+      "orderMatters": true,
+      "expectedRowCount": 5
+    },
+    {
+      "id": "filter-01",
+      "title": "Kunden ohne Segment",
+      "description": "Welche Kunden haben noch kein Segment? Zeige Name und Land, sortiert nach Name.",
+      "topic": "Filtering",
+      "difficulty": "Beginner",
+      "hints": [
+        "Ein fehlendes Segment ist NULL.",
+        "Verwende IS NULL.",
+        "WHERE Segment IS NULL ORDER BY Name"
+      ],
+      "solutionSql": "SELECT\n    Name,\n    Country\nFROM Customer\nWHERE Segment IS NULL\nORDER BY Name",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "filter-02",
+      "title": "Offene und versendete Bestellungen",
+      "description": "Zeige Id, Bestelldatum und Status aller Bestellungen, die noch nicht abgeschlossen sind (Status Open oder Shipped). Sortiere nach Bestelldatum und Id.",
+      "topic": "Filtering",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Es genügt, wenn einer von zwei Werten zutrifft.",
+        "IN prüft mehrere Werte kurz.",
+        "WHERE Status IN ('Open', 'Shipped')"
+      ],
+      "solutionSql": "SELECT\n    Id,\n    OrderDate,\n    Status\nFROM Orders\nWHERE Status IN ('Open', 'Shipped')\nORDER BY OrderDate, Id",
+      "orderMatters": true,
+      "expectedRowCount": 15
+    },
+    {
+      "id": "filter-03",
+      "title": "Bestellungen ohne Vertriebskanal",
+      "description": "Wie viele Bestellungen haben keinen Vertriebskanal (Channel)? Nenne die Spalte WithoutChannel.",
+      "topic": "Filtering",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Du musst NULL-Werte zählen.",
+        "Zähle mit COUNT(*) und filtere in WHERE auf Channel.",
+        "SELECT COUNT(*) AS WithoutChannel FROM Orders WHERE Channel IS NULL"
+      ],
+      "solutionSql": "SELECT COUNT(*) AS WithoutChannel\nFROM Orders\nWHERE Channel IS NULL",
+      "orderMatters": false,
+      "expectedRowCount": 1
+    },
+    {
+      "id": "join-01",
+      "title": "Kunden ohne Bestellung",
+      "description": "Welche Kunden haben nie eine Bestellung aufgegeben? Zeige Name, Land und Anmeldedatum, sortiert nach Name.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Die Kunden ohne Bestellung gehen bei einem INNER JOIN verloren.",
+        "LEFT JOIN von Customer auf Orders, dann auf fehlenden Partner prüfen.",
+        "WHERE o.Id IS NULL"
+      ],
+      "solutionSql": "SELECT\n    c.Name,\n    c.Country,\n    c.SignupDate\nFROM Customer c\nLEFT JOIN Orders o ON o.CustomerId = c.Id\nWHERE o.Id IS NULL\nORDER BY c.Name",
+      "orderMatters": true,
+      "expectedRowCount": 3
+    },
+    {
+      "id": "join-02",
+      "title": "Positionen mit Produkt und Kunde",
+      "description": "Zeige für alle Positionen der Bestellungen mit der Id 1 bis 5 den Kundennamen, den Produktnamen und die Menge. Sortiere nach Bestell-Id und Produktname.",
+      "topic": "Joins",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Du brauchst Orders, Customer, OrderLine und Product.",
+        "Gehe von Orders aus und verbinde mit den drei anderen Tabellen.",
+        "WHERE o.Id BETWEEN 1 AND 5"
+      ],
+      "solutionSql": "SELECT\n    o.Id,\n    c.Name AS Customer,\n    p.Name AS Product,\n    l.Quantity\nFROM Orders o\nINNER JOIN Customer c ON c.Id = o.CustomerId\nINNER JOIN OrderLine l ON l.OrderId = o.Id\nINNER JOIN Product p ON p.Id = l.ProductId\nWHERE o.Id BETWEEN 1 AND 5\nORDER BY o.Id, p.Name",
+      "orderMatters": true,
+      "expectedRowCount": 12
+    },
+    {
+      "id": "agg-01",
+      "title": "Bestellungen pro Kanal",
+      "description": "Zähle die Bestellungen je Vertriebskanal. Bestellungen ohne Kanal sollen als Unknown erscheinen. Sortiere nach Anzahl absteigend (Spalten Channel und OrderCount).",
+      "topic": "Aggregation",
+      "difficulty": "Intermediate",
+      "hints": [
+        "NULL bildet beim Gruppieren eine eigene Gruppe.",
+        "COALESCE(Channel, 'Unknown') ersetzt NULL. Gruppiere nach demselben Ausdruck.",
+        "GROUP BY COALESCE(Channel, 'Unknown')"
+      ],
+      "solutionSql": "SELECT\n    COALESCE(Channel, 'Unknown') AS Channel,\n    COUNT(*) AS OrderCount\nFROM Orders\nGROUP BY COALESCE(Channel, 'Unknown')\nORDER BY OrderCount DESC",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "agg-02",
+      "title": "Umsatz je Produktkategorie",
+      "description": "Berechne den Umsatz je Produktkategorie (Revenue, auf 2 Stellen gerundet). Der Der Umsatz einer Position ist Quantity * UnitPrice * (1 - Rabatt in Prozent / 100). Ein fehlender Rabatt (NULL) bedeutet 0 Prozent. Stornierte Bestellungen zählen nicht. Sortiere nach Umsatz absteigend.",
+      "topic": "Aggregation",
+      "difficulty": "Advanced",
+      "hints": [
+        "Der Rabatt kann NULL sein. Verwende COALESCE, sonst wird die ganze Zeile NULL.",
+        "Verbinde OrderLine mit Orders (für den Status) und mit Product (für die Kategorie).",
+        "SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)) mit GROUP BY p.Category"
+      ],
+      "solutionSql": "SELECT\n    p.Category,\n    ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\nFROM OrderLine l\nINNER JOIN Orders o ON o.Id = l.OrderId\nINNER JOIN Product p ON p.Id = l.ProductId\nWHERE o.Status <> 'Cancelled'\nGROUP BY p.Category\nORDER BY Revenue DESC",
+      "orderMatters": true,
+      "expectedRowCount": 4
+    },
+    {
+      "id": "agg-03",
+      "title": "Umsatz je Monat",
+      "description": "Berechne den Umsatz je Monat (Month als Text im Format JJJJ-MM, Revenue auf 2 Stellen gerundet, ohne stornierte Bestellungen), chronologisch sortiert.",
+      "topic": "Aggregation",
+      "difficulty": "Advanced",
+      "hints": [
+        "Der Monat sind die ersten 7 Zeichen des Datums.",
+        "SUBSTRING(o.OrderDate, 1, 7) liefert das Format JJJJ-MM. Gruppiere danach.",
+        "GROUP BY SUBSTRING(o.OrderDate, 1, 7) und ORDER BY Month"
+      ],
+      "solutionSql": "SELECT\n    SUBSTRING(o.OrderDate, 1, 7) AS Month,\n    ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\nFROM Orders o\nINNER JOIN OrderLine l ON l.OrderId = o.Id\nWHERE o.Status <> 'Cancelled'\nGROUP BY SUBSTRING(o.OrderDate, 1, 7)\nORDER BY Month",
+      "orderMatters": true,
+      "expectedRowCount": 24
+    },
+    {
+      "id": "agg-04",
+      "title": "Kunden mit hohem Umsatz",
+      "description": "Zeige Kunden (Name) mit einem Gesamtumsatz über 10000 (Revenue, gerundet, ohne stornierte Bestellungen), höchster Umsatz zuerst.",
+      "topic": "Aggregation",
+      "difficulty": "Advanced",
+      "hints": [
+        "Zuerst Umsatz je Kunde berechnen, dann die Gruppen filtern.",
+        "Die Bedingung auf SUM gehört in HAVING.",
+        "HAVING SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)) > 10000"
+      ],
+      "solutionSql": "SELECT\n    c.Name,\n    ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\nFROM Customer c\nINNER JOIN Orders o ON o.CustomerId = c.Id\nINNER JOIN OrderLine l ON l.OrderId = o.Id\nWHERE o.Status <> 'Cancelled'\nGROUP BY c.Id, c.Name\nHAVING SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)) > 10000\nORDER BY Revenue DESC",
+      "orderMatters": true,
+      "expectedRowCount": 10
+    },
+    {
+      "id": "sub-01",
+      "title": "Produkte mit hohem Rabatt",
+      "description": "Zeige alle Produkte (Name), die in mindestens einer Position mit Rabatt von mehr als 10 Prozent verkauft wurden, alphabetisch sortiert.",
+      "topic": "Subqueries",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Suche die ProductIds der Positionen mit Rabatt über 10.",
+        "IN mit Unterabfrage auf OrderLine.",
+        "WHERE Id IN (SELECT ProductId FROM OrderLine WHERE DiscountPercent > 10)"
+      ],
+      "solutionSql": "SELECT Name\nFROM Product\nWHERE Id IN (\n    SELECT ProductId\n    FROM OrderLine\n    WHERE DiscountPercent > 10\n)\nORDER BY Name",
+      "orderMatters": true,
+      "expectedRowCount": 13
+    },
+    {
+      "id": "sub-02",
+      "title": "Bestellungen über dem Durchschnitt",
+      "description": "Zeige die Ids der Bestellungen, deren Umsatz (Revenue, ohne Stornierung) über dem Durchschnittsumsatz aller nicht stornierten Bestellungen liegt. Sortiere nach Id.",
+      "topic": "Subqueries",
+      "difficulty": "Advanced",
+      "hints": [
+        "Berechne zuerst den Umsatz je Bestellung in einer abgeleiteten Tabelle.",
+        "Der Durchschnitt über diese Umsätze ist eine zweite Unterabfrage.",
+        "WHERE Revenue > (SELECT AVG(Revenue) FROM (...) x)"
+      ],
+      "solutionSql": "SELECT\n    t.OrderId,\n    t.Revenue\nFROM (\n    SELECT\n        o.Id AS OrderId,\n        SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)) AS Revenue\n    FROM Orders o\n    INNER JOIN OrderLine l ON l.OrderId = o.Id\n    WHERE o.Status <> 'Cancelled'\n    GROUP BY o.Id\n) t\nWHERE t.Revenue > (\n    SELECT AVG(u.Revenue)\n    FROM (\n        SELECT SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)) AS Revenue\n        FROM Orders o\n        INNER JOIN OrderLine l ON l.OrderId = o.Id\n        WHERE o.Status <> 'Cancelled'\n        GROUP BY o.Id\n    ) u\n)\nORDER BY t.OrderId",
+      "orderMatters": true,
+      "expectedRowCount": 76
+    },
+    {
+      "id": "win-01",
+      "title": "Erste Bestellung je Kunde",
+      "description": "Finde für jeden Kunden mit Bestellungen die erste Bestellung (Bestell-Id und Datum). Bei gleichem Datum gewinnt die kleinere Id. Sortiere nach Kunden-Id.",
+      "topic": "WindowFunctions",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Nummeriere die Bestellungen jedes Kunden und behalte die Nummer 1.",
+        "ROW_NUMBER() OVER (PARTITION BY CustomerId ORDER BY OrderDate, Id) in einer abgeleiteten Tabelle, außen WHERE rn = 1.",
+        "Fensterfunktionen dürfen nicht direkt im WHERE stehen. Packe sie in eine Unterabfrage."
+      ],
+      "solutionSql": "SELECT\n    t.CustomerId,\n    t.OrderId,\n    t.OrderDate\nFROM (\n    SELECT\n        o.CustomerId,\n        o.Id AS OrderId,\n        o.OrderDate,\n        ROW_NUMBER() OVER (\n            PARTITION BY o.CustomerId\n            ORDER BY o.OrderDate, o.Id\n        ) AS rn\n    FROM Orders o\n) t\nWHERE t.rn = 1\nORDER BY t.CustomerId",
+      "orderMatters": true,
+      "expectedRowCount": 21
+    },
+    {
+      "id": "win-02",
+      "title": "Kumulierter Monatsumsatz",
+      "description": "Zeige je Monat Umsatz und laufenden Gesamtumsatz seit Beginn (Running, auf 2 Stellen gerundet). Verwende die Monatsumsätze ohne stornierte Bestellungen, chronologisch sortiert.",
+      "topic": "WindowFunctions",
+      "difficulty": "Intermediate",
+      "hints": [
+        "Berechne zuerst den Monatsumsatz als abgeleitete Tabelle.",
+        "SUM(Revenue) OVER (ORDER BY Month) summiert fortlaufend.",
+        "ROUND(SUM(Revenue) OVER (ORDER BY Month), 2) AS Running"
+      ],
+      "solutionSql": "SELECT\n    m.Month,\n    m.Revenue,\n    ROUND(SUM(m.Revenue) OVER (ORDER BY m.Month), 2) AS Running\nFROM (\n    SELECT\n        SUBSTRING(o.OrderDate, 1, 7) AS Month,\n        ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\n    FROM Orders o\n    INNER JOIN OrderLine l ON l.OrderId = o.Id\n    WHERE o.Status <> 'Cancelled'\n    GROUP BY SUBSTRING(o.OrderDate, 1, 7)\n) m\nORDER BY m.Month",
+      "orderMatters": true,
+      "expectedRowCount": 24
+    },
+    {
+      "id": "win-03",
+      "title": "Veränderung zum Vormonat",
+      "description": "Zeige je Monat den Umsatz, den Umsatz des Vormonats (Previous) und die Veränderung (Change, auf 2 Stellen gerundet). Für den ersten Monat sind beide NULL. Chronologisch sortiert.",
+      "topic": "WindowFunctions",
+      "difficulty": "Advanced",
+      "hints": [
+        "Du brauchst den Wert der vorherigen Zeile.",
+        "LAG(Revenue) OVER (ORDER BY Month) liefert den Vormonat, im ersten Monat NULL.",
+        "ROUND(Revenue - LAG(Revenue) OVER (ORDER BY Month), 2) AS Change"
+      ],
+      "solutionSql": "SELECT\n    m.Month,\n    m.Revenue,\n    LAG(m.Revenue) OVER (ORDER BY m.Month) AS Previous,\n    ROUND(m.Revenue - LAG(m.Revenue) OVER (ORDER BY m.Month), 2) AS Change\nFROM (\n    SELECT\n        SUBSTRING(o.OrderDate, 1, 7) AS Month,\n        ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\n    FROM Orders o\n    INNER JOIN OrderLine l ON l.OrderId = o.Id\n    WHERE o.Status <> 'Cancelled'\n    GROUP BY SUBSTRING(o.OrderDate, 1, 7)\n) m\nORDER BY m.Month",
+      "orderMatters": true,
+      "expectedRowCount": 24
+    },
+    {
+      "id": "win-04",
+      "title": "Gleitender Dreimonatsschnitt",
+      "description": "Berechne je Monat den Durchschnitt des Umsatzes aus dem aktuellen und den zwei vorherigen Monaten (Avg3, auf 2 Stellen gerundet). Am Anfang stehen weniger Monate zur Verfügung. Chronologisch sortiert.",
+      "topic": "WindowFunctions",
+      "difficulty": "Advanced",
+      "hints": [
+        "Du brauchst einen Fensterrahmen aus drei Zeilen.",
+        "AVG(...) OVER (ORDER BY ... ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+        "ROUND(AVG(m.Revenue) OVER (ORDER BY m.Month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS Avg3"
+      ],
+      "solutionSql": "SELECT\n    m.Month,\n    m.Revenue,\n    ROUND(AVG(m.Revenue) OVER (\n        ORDER BY m.Month\n        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW\n    ), 2) AS Avg3\nFROM (\n    SELECT\n        SUBSTRING(o.OrderDate, 1, 7) AS Month,\n        ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\n    FROM Orders o\n    INNER JOIN OrderLine l ON l.OrderId = o.Id\n    WHERE o.Status <> 'Cancelled'\n    GROUP BY SUBSTRING(o.OrderDate, 1, 7)\n) m\nORDER BY m.Month",
+      "orderMatters": true,
+      "expectedRowCount": 24
+    },
+    {
+      "id": "win-05",
+      "title": "Rang der Kunden je Land",
+      "description": "Vergib je Land einen Rang nach Gesamtumsatz (CountryRank, höchster Umsatz = 1). Zeige Land, Name, Umsatz und Rang. Sortiere nach Land und Rang.",
+      "topic": "WindowFunctions",
+      "difficulty": "Advanced",
+      "hints": [
+        "Der Rang soll in jedem Land neu bei 1 beginnen.",
+        "RANK() OVER (PARTITION BY Country ORDER BY Revenue DESC)",
+        "Berechne zuerst den Umsatz je Kunde in einer abgeleiteten Tabelle."
+      ],
+      "solutionSql": "SELECT\n    t.Country,\n    t.Name,\n    t.Revenue,\n    RANK() OVER (\n        PARTITION BY t.Country\n        ORDER BY t.Revenue DESC\n    ) AS CountryRank\nFROM (\n    SELECT\n        c.Id AS CustomerId,\n        c.Name,\n        c.Country,\n        ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\n    FROM Customer c\n    INNER JOIN Orders o ON o.CustomerId = c.Id\n    INNER JOIN OrderLine l ON l.OrderId = o.Id\n    WHERE o.Status <> 'Cancelled'\n    GROUP BY c.Id, c.Name, c.Country\n) t\nORDER BY t.Country, CountryRank",
+      "orderMatters": true,
+      "expectedRowCount": 21
+    },
+    {
+      "id": "win-06",
+      "title": "Anteil am Gesamtumsatz",
+      "description": "Zeige für jeden Kunden mit Umsatz den Anteil am Gesamtumsatz in Prozent (SharePercent, auf eine Nachkommastelle gerundet). Sortiere nach Anteil absteigend und dann nach Name.",
+      "topic": "WindowFunctions",
+      "difficulty": "Advanced",
+      "hints": [
+        "Du brauchst die Summe über alle Kunden in jeder Zeile.",
+        "SUM(Revenue) OVER () ist eine Summe über das gesamte Ergebnis.",
+        "ROUND(Revenue * 100.0 / SUM(Revenue) OVER (), 1) AS SharePercent"
+      ],
+      "solutionSql": "SELECT\n    t.Name,\n    t.Revenue,\n    ROUND(t.Revenue * 100.0 / SUM(t.Revenue) OVER (), 1) AS SharePercent\nFROM (\n    SELECT\n        c.Id AS CustomerId,\n        c.Name,\n        c.Country,\n        ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\n    FROM Customer c\n    INNER JOIN Orders o ON o.CustomerId = c.Id\n    INNER JOIN OrderLine l ON l.OrderId = o.Id\n    WHERE o.Status <> 'Cancelled'\n    GROUP BY c.Id, c.Name, c.Country\n) t\nORDER BY SharePercent DESC, t.Name",
+      "orderMatters": true,
+      "expectedRowCount": 21
+    }
+  ],
+  "guidedScenarios": [
+    {
+      "id": "window-basics",
+      "title": "Fensterfunktionen: Monate vergleichen",
+      "description": "Du baust eine Sicht mit Monatsumsätzen und wendest darauf Fensterfunktionen an: Rangfolgen, laufende Summen, Vergleich mit dem Vormonat und gleitende Durchschnitte. Das Szenario legt eine Sicht an und setzt die Datenbank beim Start zurück.",
+      "topic": "WindowFunctions",
+      "requiresFreshDatabase": true,
+      "steps": [
+        {
+          "id": "window-basics-01",
+          "title": "Monatsumsätze als Sicht anlegen",
+          "sql": "CREATE VIEW MonthlyRevenue AS\nSELECT\n    SUBSTRING(o.OrderDate, 1, 7) AS Month,\n    COUNT(DISTINCT o.Id) AS OrderCount,\n    ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\nFROM Orders o\nINNER JOIN OrderLine l ON l.OrderId = o.Id\nWHERE o.Status <> 'Cancelled'\nGROUP BY SUBSTRING(o.OrderDate, 1, 7);",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "Eine Sicht (VIEW) speichert eine Abfrage unter einem Namen. Die folgenden Schritte nutzen MonthlyRevenue wie eine Tabelle.",
+            "parts": [
+              {
+                "fragment": "CREATE VIEW MonthlyRevenue AS",
+                "explanation": "Legt die Sicht an. Sie speichert keine Daten, sondern führt bei jedem Zugriff die Abfrage dahinter aus."
+              },
+              {
+                "fragment": "SUBSTRING(o.OrderDate, 1, 7)",
+                "explanation": "Schneidet aus dem Datum JJJJ-MM-TT die ersten 7 Zeichen aus, also den Monat."
+              },
+              {
+                "fragment": "COUNT(DISTINCT o.Id)",
+                "explanation": "Zählt Bestellungen, nicht Positionen. Eine Bestellung hat mehrere Positionen."
+              },
+              {
+                "fragment": "SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0))",
+                "explanation": "Umsatz einer Position mit Rabatt. Fehlt der Rabatt (NULL), gilt 0 Prozent."
+              },
+              {
+                "fragment": "WHERE o.Status <> 'Cancelled'",
+                "explanation": "Stornierte Bestellungen zählen nicht."
+              }
+            ]
+          },
+          "resultExplanation": "Die Abfrage liefert keine Zeilen. Die Sicht ist angelegt.",
+          "databaseEffect": "Neue Sicht MonthlyRevenue mit den Spalten Month, OrderCount und Revenue. Es werden keine Daten kopiert.",
+          "expectsError": false
+        },
+        {
+          "id": "window-basics-02",
+          "title": "Die Monatsumsätze ansehen",
+          "sql": "SELECT\n    Month,\n    OrderCount,\n    Revenue\nFROM MonthlyRevenue\nORDER BY Month;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Die Sicht liefert eine Zeile pro Monat. Darauf bauen die weiteren Schritte auf.",
+            "parts": [
+              {
+                "fragment": "FROM MonthlyRevenue",
+                "explanation": "Die Sicht wird wie eine Tabelle abgefragt."
+              },
+              {
+                "fragment": "ORDER BY Month",
+                "explanation": "Chronologisch, weil JJJJ-MM als Text richtig sortiert."
+              }
+            ]
+          },
+          "resultExplanation": "24 Zeilen von 2024-11 bis 2026-10. Der Umsatz schwankt stark: Im August 2025 gab es nur 980,50, im März 2026 dagegen 19.756,38.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 24,
+          "expectsError": false
+        },
+        {
+          "id": "window-basics-03",
+          "title": "Rangfolgen und Gleichstände",
+          "sql": "SELECT TOP 10\n    Month,\n    OrderCount,\n    ROW_NUMBER() OVER (ORDER BY OrderCount DESC, Month) AS RowNo,\n    RANK() OVER (ORDER BY OrderCount DESC) AS RankNo,\n    DENSE_RANK() OVER (ORDER BY OrderCount DESC) AS DenseRankNo\nFROM MonthlyRevenue\nORDER BY OrderCount DESC, Month;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Fensterfunktionen berechnen einen Wert für jede Zeile, ohne Zeilen zusammenzufassen. Drei Rangfunktionen unterscheiden sich bei Gleichständen.",
+            "parts": [
+              {
+                "fragment": "OVER (ORDER BY OrderCount DESC)",
+                "explanation": "Das Fenster: alle Zeilen, absteigend nach Bestellanzahl sortiert."
+              },
+              {
+                "fragment": "ROW_NUMBER()",
+                "explanation": "Fortlaufende Nummer ohne Lücken und ohne Gleichstände. Bei gleicher Anzahl entscheidet hier der Monat."
+              },
+              {
+                "fragment": "RANK()",
+                "explanation": "Gleichstand bekommt denselben Rang, danach entsteht eine Lücke."
+              },
+              {
+                "fragment": "DENSE_RANK()",
+                "explanation": "Gleichstand bekommt denselben Rang, danach geht es ohne Lücke weiter."
+              }
+            ]
+          },
+          "resultExplanation": "Oktober 2026 (15 Bestellungen) und September 2026 (14) liegen vorn. Danach haben November 2025, März 2026 und Mai 2026 je 12 Bestellungen: RANK vergibt dreimal den Rang 3 und springt dann auf 6, DENSE_RANK vergibt dreimal 3 und danach 4. ROW_NUMBER nummeriert dagegen 3, 4 und 5.",
+          "databaseEffect": "Nichts, die Abfrage liest nur. Die Fensterfunktionen fügen nur Spalten zum Ergebnis hinzu.",
+          "expectedResultRows": 10,
+          "expectsError": false
+        },
+        {
+          "id": "window-basics-04",
+          "title": "Laufende Summe",
+          "sql": "SELECT\n    Month,\n    Revenue,\n    ROUND(SUM(Revenue) OVER (ORDER BY Month), 2) AS RunningTotal\nFROM MonthlyRevenue\nORDER BY Month;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "SUM als Fensterfunktion summiert alle Zeilen vom Anfang bis zur aktuellen Zeile. So entsteht ein kumulierter Wert.",
+            "parts": [
+              {
+                "fragment": "SUM(Revenue) OVER (ORDER BY Month)",
+                "explanation": "Summe aller Monate bis einschließlich der aktuellen Zeile."
+              },
+              {
+                "fragment": "ROUND(..., 2)",
+                "explanation": "Rundet, damit keine Gleitkomma-Reste im Ergebnis stehen."
+              }
+            ]
+          },
+          "resultExplanation": "Die letzte Zeile (2026-10) zeigt 223.002,75: der Gesamtumsatz der 24 Monate. Zum Jahreswechsel 2025/2026 stand die Summe bei 107.693,25.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 24,
+          "expectsError": false
+        },
+        {
+          "id": "window-basics-05",
+          "title": "Vergleich mit dem Vormonat",
+          "sql": "SELECT\n    Month,\n    Revenue,\n    LAG(Revenue) OVER (ORDER BY Month) AS PreviousRevenue,\n    ROUND(Revenue - LAG(Revenue) OVER (ORDER BY Month), 2) AS Change\nFROM MonthlyRevenue\nORDER BY Month;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "LAG greift auf den Wert einer früheren Zeile zu. Im ersten Monat gibt es keinen Vorgänger, deshalb liefert LAG dort NULL.",
+            "parts": [
+              {
+                "fragment": "LAG(Revenue) OVER (ORDER BY Month)",
+                "explanation": "Der Umsatz der Zeile davor in chronologischer Reihenfolge."
+              },
+              {
+                "fragment": "Revenue - LAG(...)",
+                "explanation": "Veränderung zum Vormonat. NULL minus Zahl bleibt NULL."
+              }
+            ]
+          },
+          "resultExplanation": "Die erste Zeile (2024-11) hat NULL bei PreviousRevenue und Change. Der größte Sprung nach oben war Mai 2025 (+13.203,88), der größte Rückgang Juni 2025 (-14.364,23).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 24,
+          "expectsError": false
+        },
+        {
+          "id": "window-basics-06",
+          "title": "Gleitender Durchschnitt",
+          "sql": "SELECT\n    Month,\n    Revenue,\n    ROUND(AVG(Revenue) OVER (\n        ORDER BY Month\n        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW\n    ), 2) AS Average3Months\nFROM MonthlyRevenue\nORDER BY Month;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Ein Fensterrahmen (ROWS BETWEEN) begrenzt, welche Zeilen in die Berechnung eingehen. Hier sind es die aktuelle und die zwei vorherigen Zeilen.",
+            "parts": [
+              {
+                "fragment": "ROWS BETWEEN 2 PRECEDING AND CURRENT ROW",
+                "explanation": "Rahmen aus höchstens drei Zeilen: zwei davor und die aktuelle."
+              },
+              {
+                "fragment": "AVG(Revenue) OVER (...)",
+                "explanation": "Mittelwert nur über den Rahmen, deshalb ein gleitender Durchschnitt."
+              }
+            ]
+          },
+          "resultExplanation": "Die Kurve ist glatter als die Monatswerte. Die ersten beiden Zeilen mitteln nur 1 bzw. 2 Monate (9.698,88 und 7.952,37), danach immer drei. Der letzte Wert (2026-10) liegt bei 13.505,22.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 24,
+          "expectsError": false
+        }
+      ]
+    },
+    {
+      "id": "window-partitions",
+      "title": "Fensterfunktionen: Kunden gruppenweise vergleichen",
+      "description": "Mit PARTITION BY teilst du das Fenster in Gruppen. Du bestimmst den Rang eines Kunden im Land, den besten Kunden pro Land, den Anteil am Gesamtumsatz und die erste Bestellung jedes Kunden. Am Ende siehst du, warum 3 Kunden fehlen. Das Szenario legt eine Sicht an und setzt die Datenbank beim Start zurück.",
+      "topic": "WindowFunctions",
+      "requiresFreshDatabase": true,
+      "steps": [
+        {
+          "id": "window-partitions-01",
+          "title": "Kundenumsätze als Sicht anlegen",
+          "sql": "CREATE VIEW CustomerRevenue AS\nSELECT\n    c.Id AS CustomerId,\n    c.Name,\n    c.Country,\n    ROUND(SUM(l.Quantity * l.UnitPrice * (1 - COALESCE(l.DiscountPercent, 0) / 100.0)), 2) AS Revenue\nFROM Customer c\nINNER JOIN Orders o ON o.CustomerId = c.Id\nINNER JOIN OrderLine l ON l.OrderId = o.Id\nWHERE o.Status <> 'Cancelled'\nGROUP BY c.Id, c.Name, c.Country;",
+          "kind": "ChangesData",
+          "queryExplanation": {
+            "summary": "Die Sicht fasst den Umsatz je Kunde zusammen. Sie enthält nur Kunden mit mindestens einer nicht stornierten Bestellung, weil der INNER JOIN die anderen aussortiert.",
+            "parts": [
+              {
+                "fragment": "CREATE VIEW CustomerRevenue AS",
+                "explanation": "Legt die Sicht an."
+              },
+              {
+                "fragment": "INNER JOIN Orders ... INNER JOIN OrderLine",
+                "explanation": "Verbindet jeden Kunden mit seinen Bestellungen und Positionen."
+              },
+              {
+                "fragment": "GROUP BY c.Id, c.Name, c.Country",
+                "explanation": "Eine Zeile je Kunde."
+              }
+            ]
+          },
+          "resultExplanation": "Die Abfrage liefert keine Zeilen. Die Sicht ist angelegt.",
+          "databaseEffect": "Neue Sicht CustomerRevenue mit den Spalten CustomerId, Name, Country und Revenue.",
+          "expectsError": false
+        },
+        {
+          "id": "window-partitions-02",
+          "title": "Rang gesamt und je Land",
+          "sql": "SELECT\n    Country,\n    Name,\n    Revenue,\n    RANK() OVER (ORDER BY Revenue DESC) AS OverallRank,\n    RANK() OVER (\n        PARTITION BY Country\n        ORDER BY Revenue DESC\n    ) AS CountryRank\nFROM CustomerRevenue\nORDER BY Country, CountryRank;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "PARTITION BY teilt die Zeilen in Gruppen. Die Fensterfunktion wird für jede Gruppe getrennt berechnet, der Rang beginnt also pro Land neu bei 1.",
+            "parts": [
+              {
+                "fragment": "RANK() OVER (ORDER BY Revenue DESC)",
+                "explanation": "Rang über alle Kunden hinweg."
+              },
+              {
+                "fragment": "RANK() OVER (PARTITION BY Country ORDER BY Revenue DESC)",
+                "explanation": "Rang nur innerhalb des Landes."
+              }
+            ]
+          },
+          "resultExplanation": "21 Zeilen. Rheinwerk Systems GmbH ist mit 25.839,03 gesamt auf Platz 1 und in Deutschland ebenfalls auf Platz 1. Brouwer Techniek BV ist gesamt auf Platz 2 und in den Niederlanden auf Platz 1. Pierre Martin liegt gesamt auf Platz 21 und in Frankreich auf Platz 4.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 21,
+          "expectsError": false
+        },
+        {
+          "id": "window-partitions-03",
+          "title": "Der beste Kunde je Land",
+          "sql": "SELECT\n    t.Country,\n    t.Name,\n    t.Revenue\nFROM (\n    SELECT\n        Country,\n        Name,\n        Revenue,\n        ROW_NUMBER() OVER (\n            PARTITION BY Country\n            ORDER BY Revenue DESC\n        ) AS RowNo\n    FROM CustomerRevenue\n) t\nWHERE t.RowNo = 1\nORDER BY t.Country;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Fensterfunktionen dürfen nicht in WHERE stehen. Deshalb berechnest du die Nummer in einer Unterabfrage und filterst außen darauf.",
+            "parts": [
+              {
+                "fragment": "ROW_NUMBER() OVER (PARTITION BY Country ORDER BY Revenue DESC)",
+                "explanation": "Nummeriert die Kunden jedes Landes nach Umsatz."
+              },
+              {
+                "fragment": "FROM (...) t",
+                "explanation": "Abgeleitete Tabelle: Die Unterabfrage verhält sich wie eine Tabelle mit dem Alias t."
+              },
+              {
+                "fragment": "WHERE t.RowNo = 1",
+                "explanation": "Behält nur den ersten Kunden jedes Landes."
+              }
+            ]
+          },
+          "resultExplanation": "5 Zeilen, eine je Land: Lukas Brandner (Österreich), Atelier Rivage SAS (Frankreich), Rheinwerk Systems GmbH (Deutschland), Brouwer Techniek BV (Niederlande) und Alpen Outdoor AG (Schweiz).",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 5,
+          "expectsError": false
+        },
+        {
+          "id": "window-partitions-04",
+          "title": "Anteil am Gesamtumsatz",
+          "sql": "SELECT TOP 5\n    Name,\n    Revenue,\n    ROUND(Revenue * 100.0 / SUM(Revenue) OVER (), 1) AS SharePercent\nFROM CustomerRevenue\nORDER BY Revenue DESC;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "OVER () ohne Inhalt bedeutet: Das Fenster ist das gesamte Ergebnis. So steht die Gesamtsumme in jeder Zeile zur Verfügung.",
+            "parts": [
+              {
+                "fragment": "SUM(Revenue) OVER ()",
+                "explanation": "Gesamtumsatz aller Kunden, in jeder Zeile wiederholt."
+              },
+              {
+                "fragment": "Revenue * 100.0 / ...",
+                "explanation": "Anteil in Prozent. Die 100.0 mit Nachkommastelle verhindert eine ganzzahlige Division."
+              },
+              {
+                "fragment": "TOP 5",
+                "explanation": "Zeigt nur die fünf größten Anteile."
+              }
+            ]
+          },
+          "resultExplanation": "Rheinwerk Systems GmbH steht für 11,6 Prozent des Umsatzes, Brouwer Techniek BV für 8,7 und Atelier Rivage SAS für 8,2. Die fünf größten Kunden erreichen zusammen rund 42 Prozent.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 5,
+          "expectsError": false
+        },
+        {
+          "id": "window-partitions-05",
+          "title": "Die erste Bestellung jedes Kunden",
+          "sql": "SELECT\n    t.CustomerId,\n    t.OrderId,\n    t.OrderDate\nFROM (\n    SELECT\n        o.CustomerId,\n        o.Id AS OrderId,\n        o.OrderDate,\n        ROW_NUMBER() OVER (\n            PARTITION BY o.CustomerId\n            ORDER BY o.OrderDate, o.Id\n        ) AS RowNo\n    FROM Orders o\n) t\nWHERE t.RowNo = 1\nORDER BY t.CustomerId;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Dasselbe Muster liefert die jeweils erste Zeile pro Gruppe, hier die älteste Bestellung jedes Kunden.",
+            "parts": [
+              {
+                "fragment": "PARTITION BY o.CustomerId ORDER BY o.OrderDate, o.Id",
+                "explanation": "Pro Kunde chronologisch nummerieren. Die Id löst Gleichstände beim Datum auf."
+              },
+              {
+                "fragment": "WHERE t.RowNo = 1",
+                "explanation": "Nur die erste Bestellung."
+              }
+            ]
+          },
+          "resultExplanation": "21 Zeilen für 21 Kunden. Kunde 1 hat seine erste Bestellung (Nr. 19) am 2024-12-28, Kunde 5 (Nr. 1) am 2024-11-04. Die Kunden 12, 23 und 24 erscheinen nicht, weil sie nie bestellt haben.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 21,
+          "expectsError": false
+        },
+        {
+          "id": "window-partitions-06",
+          "title": "Warum fehlen 3 Kunden?",
+          "sql": "SELECT\n    c.Id,\n    c.Name,\n    COALESCE(c.Segment, 'unbekannt') AS Segment,\n    c.SignupDate\nFROM Customer c\nLEFT JOIN Orders o ON o.CustomerId = c.Id\nWHERE o.Id IS NULL\nORDER BY c.Id;",
+          "kind": "ReadOnly",
+          "queryExplanation": {
+            "summary": "Fensterfunktionen sehen nur Zeilen, die der Join übrig lässt. Um Kunden ohne Bestellung zu finden, braucht es einen LEFT JOIN und eine Prüfung auf NULL.",
+            "parts": [
+              {
+                "fragment": "LEFT JOIN Orders o",
+                "explanation": "Behält alle Kunden, auch ohne Bestellung."
+              },
+              {
+                "fragment": "WHERE o.Id IS NULL",
+                "explanation": "Nur Kunden ohne Bestellung."
+              },
+              {
+                "fragment": "COALESCE(c.Segment, 'unbekannt')",
+                "explanation": "Ersetzt ein fehlendes Segment durch einen Text."
+              }
+            ]
+          },
+          "resultExplanation": "3 Kunden haben nie bestellt: Helga Moser und Lena Hofmann (beide ohne Segment, daher unbekannt) sowie Katharina Auer (Segment Consumer). Sie sind der Grund, warum die Sicht 21 statt 24 Kunden enthält.",
+          "databaseEffect": "Nichts, die Abfrage liest nur.",
+          "expectedResultRows": 3,
+          "expectsError": false
+        }
+      ]
+    }
+  ]
+}

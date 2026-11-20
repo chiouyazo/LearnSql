@@ -1,0 +1,12 @@
+.guided-backup {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.guided-backup-actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}

@@ -1,0 +1,29 @@
+<div class="sql-editor">
+    @if (_loadFailed)
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" role="alert" Class="ma-2">
+            <MudText Typo="Typo.body2" Class="mb-2">@L["EditorLoadFailed"]</MudText>
+            <MudButton Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Filled.Refresh"
+                       OnClick="LoadMonacoAsync">
+                @L["TryAgain"]
+            </MudButton>
+        </MudAlert>
+    }
+    else
+    {
+        @if (_scriptsReady)
+        {
+            <BlazorMonaco.Editor.StandaloneCodeEditor @ref="_editor" Id="@_id" CssClass="sql-editor-host"
+                                                      ConstructionOptions="CreateOptions"
+                                                      OnDidInit="OnEditorInitAsync"
+                                                      OnDidChangeModelContent="OnContentChangedAsync"
+                                                      OnMouseDown="OnMouseDownAsync"/>
+        }
+        @if (!_initialized)
+        {
+            <div class="sql-editor-skeleton" aria-hidden="true">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%" Animation="Animation.Wave"/>
+            </div>
+        }
+    }
+</div>

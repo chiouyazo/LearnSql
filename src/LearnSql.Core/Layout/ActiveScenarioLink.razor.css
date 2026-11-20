@@ -1,0 +1,21 @@
+.active-scenario-host {
+    min-width: 0;
+}
+
+.active-scenario-host ::deep .active-scenario.mud-button-root {
+    text-transform: none;
+}
+
+.active-scenario-host ::deep .active-scenario-text {
+    display: block;
+    max-width: 14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .active-scenario-host ::deep .active-scenario-text {
+        max-width: 5.5rem;
+    }
+}

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="TabExercises" xml:space="preserve">
+    <value>Aufgaben</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Aufgaben werden geladen</value>
+  </data>
+  <data name="Intro" xml:space="preserve">
+    <value>Wähle eine Aufgabe, schreibe die Abfrage im Editor und prüfe sie. Bewertet wird das Ergebnis, nicht der Lösungsweg.</value>
+  </data>
+  <data name="EmptyScenario" xml:space="preserve">
+    <value>Dieses Szenario enthält keine Aufgaben.</value>
+  </data>
+  <data name="ProgressOverall" xml:space="preserve">
+    <value>{0} von {1} Aufgaben gelöst</value>
+  </data>
+  <data name="ProgressOverallAria" xml:space="preserve">
+    <value>Gesamtfortschritt: {0} von {1} Aufgaben gelöst</value>
+  </data>
+  <data name="PathProgress" xml:space="preserve">
+    <value>{0} von {1} gelöst</value>
+  </data>
+  <data name="PathProgressAria" xml:space="preserve">
+    <value>Fortschritt {0}: {1} von {2} gelöst</value>
+  </data>
+  <data name="TopicSelect" xml:space="preserve">
+    <value>SELECT: Spalten abfragen</value>
+  </data>
+  <data name="TopicFiltering" xml:space="preserve">
+    <value>WHERE: Zeilen filtern</value>
+  </data>
+  <data name="TopicJoins" xml:space="preserve">
+    <value>JOIN: Tabellen verbinden</value>
+  </data>
+  <data name="TopicAggregation" xml:space="preserve">
+    <value>GROUP BY: Zeilen zusammenfassen</value>
+  </data>
+  <data name="TopicSubqueries" xml:space="preserve">
+    <value>Unterabfragen</value>
+  </data>
+  <data name="TopicWindowFunctions" xml:space="preserve">
+    <value>Fensterfunktionen</value>
+  </data>
+  <data name="TopicDataChange" xml:space="preserve">
+    <value>Daten ändern</value>
+  </data>
+  <data name="TopicOther" xml:space="preserve">
+    <value>Weitere Themen</value>
+  </data>
+  <data name="DifficultyBeginner" xml:space="preserve">
+    <value>Einsteiger</value>
+  </data>
+  <data name="DifficultyIntermediate" xml:space="preserve">
+    <value>Fortgeschritten</value>
+  </data>
+  <data name="DifficultyAdvanced" xml:space="preserve">
+    <value>Profi</value>
+  </data>
+  <data name="StatusOpen" xml:space="preserve">
+    <value>Offen</value>
+  </data>
+  <data name="StatusAttempted" xml:space="preserve">
+    <value>Versucht</value>
+  </data>
+  <data name="StatusSolved" xml:space="preserve">
+    <value>Gelöst</value>
+  </data>
+  <data name="OpenExerciseAria" xml:space="preserve">
+    <value>Aufgabe {0} öffnen, Schwierigkeit {1}, Status {2}</value>
+  </data>
+  <data name="ResetProgress" xml:space="preserve">
+    <value>Fortschritt zurücksetzen</value>
+  </data>
+  <data name="ResetDialogTitle" xml:space="preserve">
+    <value>Fortschritt zurücksetzen?</value>
+  </data>
+  <data name="ResetDialogMessage" xml:space="preserve">
+    <value>Status, Versuche, aufgedeckte Hinweise und Lösungsansichten aller Aufgaben dieses Szenarios werden gelöscht. Deine Editorinhalte bleiben erhalten.</value>
+  </data>
+  <data name="ResetDialogConfirm" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="ResetDone" xml:space="preserve">
+    <value>Der Fortschritt wurde zurückgesetzt.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="BackToOverview" xml:space="preserve">
+    <value>Zur Übersicht</value>
+  </data>
+  <data name="NextExercise" xml:space="preserve">
+    <value>Nächste Aufgabe</value>
+  </data>
+  <data name="Attempts" xml:space="preserve">
+    <value>Versuche: {0}</value>
+  </data>
+  <data name="SolvedAt" xml:space="preserve">
+    <value>Gelöst am {0}</value>
+  </data>
+  <data name="SolutionViewedNote" xml:space="preserve">
+    <value>Lösung angesehen</value>
+  </data>
+  <data name="ExpectedRowsOne" xml:space="preserve">
+    <value>Erwartet wird 1 Ergebniszeile.</value>
+  </data>
+  <data name="ExpectedRowsMany" xml:space="preserve">
+    <value>Erwartet werden {0} Ergebniszeilen.</value>
+  </data>
+  <data name="OrderMatters" xml:space="preserve">
+    <value>Die Reihenfolge der Zeilen wird bewertet (ORDER BY).</value>
+  </data>
+  <data name="OrderIrrelevant" xml:space="preserve">
+    <value>Die Reihenfolge der Zeilen spielt keine Rolle.</value>
+  </data>
+  <data name="ColumnsNote" xml:space="preserve">
+    <value>Spaltennamen dürfen abweichen, die Reihenfolge der Spalten zählt.</value>
+  </data>
+  <data name="LoadIntoEditor" xml:space="preserve">
+    <value>In den Editor laden</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Prüfen</value>
+  </data>
+  <data name="Checking" xml:space="preserve">
+    <value>Wird geprüft</value>
+  </data>
+  <data name="CancelRun" xml:space="preserve">
+    <value>Abfrage abbrechen</value>
+  </data>
+  <data name="EditorUnavailable" xml:space="preserve">
+    <value>Der Editor ist nicht verfügbar.</value>
+  </data>
+  <data name="LoadedEmpty" xml:space="preserve">
+    <value>Der Editor ist bereit. Schreibe deine Abfrage und klicke auf Prüfen.</value>
+  </data>
+  <data name="LoadedDraft" xml:space="preserve">
+    <value>Dein letzter Entwurf für diese Aufgabe wurde geladen.</value>
+  </data>
+  <data name="ReplaceDialogTitle" xml:space="preserve">
+    <value>Editorinhalt ersetzen?</value>
+  </data>
+  <data name="ReplaceDialogMessage" xml:space="preserve">
+    <value>Der Editor enthält bereits Text. Wenn du fortfährst, geht der aktuelle Inhalt verloren.</value>
+  </data>
+  <data name="ReplaceDialogConfirm" xml:space="preserve">
+    <value>Ersetzen</value>
+  </data>
+  <data name="HintsTitle" xml:space="preserve">
+    <value>Hinweise</value>
+  </data>
+  <data name="HintLabel" xml:space="preserve">
+    <value>Hinweis {0}:</value>
+  </data>
+  <data name="RevealHint" xml:space="preserve">
+    <value>Nächsten Hinweis aufdecken ({0} von {1})</value>
+  </data>
+  <data name="AllHintsRevealed" xml:space="preserve">
+    <value>Alle Hinweise sind aufgedeckt.</value>
+  </data>
+  <data name="SolutionTitle" xml:space="preserve">
+    <value>Lösung</value>
+  </data>
+  <data name="ShowSolution" xml:space="preserve">
+    <value>Lösung ansehen</value>
+  </data>
+  <data name="HideSolution" xml:space="preserve">
+    <value>Lösung ausblenden</value>
+  </data>
+  <data name="UseSolution" xml:space="preserve">
+    <value>Ins Editorfenster übernehmen</value>
+  </data>
+  <data name="SolutionApplied" xml:space="preserve">
+    <value>Die Musterlösung steht jetzt im Editor.</value>
+  </data>
+  <data name="SolutionDialogTitle" xml:space="preserve">
+    <value>Lösung ansehen?</value>
+  </data>
+  <data name="SolutionDialogMessage" xml:space="preserve">
+    <value>Die Musterlösung verrät den Lösungsweg. Die Aufgabe wird als mit Lösung angesehen markiert. Möchtest du sie wirklich anzeigen?</value>
+  </data>
+  <data name="SolutionDialogConfirm" xml:space="preserve">
+    <value>Lösung anzeigen</value>
+  </data>
+  <data name="FeedbackCorrect" xml:space="preserve">
+    <value>Richtig! Dein Ergebnis stimmt mit der Erwartung überein.</value>
+  </data>
+  <data name="FeedbackWrong" xml:space="preserve">
+    <value>Das Ergebnis stimmt noch nicht.</value>
+  </data>
+  <data name="DiffColumns" xml:space="preserve">
+    <value>Spaltenanzahl: erwartet {0}, erhalten {1}.</value>
+  </data>
+  <data name="DiffRowCounts" xml:space="preserve">
+    <value>Zeilenanzahl: erwartet {0}, erhalten {1}.</value>
+  </data>
+  <data name="DiffMissingOne" xml:space="preserve">
+    <value>Es fehlt 1 erwartete Zeile.</value>
+  </data>
+  <data name="DiffMissingMany" xml:space="preserve">
+    <value>Es fehlen {0} erwartete Zeilen.</value>
+  </data>
+  <data name="DiffExtraOne" xml:space="preserve">
+    <value>1 Zeile ist zu viel.</value>
+  </data>
+  <data name="DiffExtraMany" xml:space="preserve">
+    <value>{0} Zeilen sind zu viel.</value>
+  </data>
+  <data name="DiffOrder" xml:space="preserve">
+    <value>Die Zeilen sind richtig, aber ihre Reihenfolge stimmt nicht. Prüfe das ORDER BY.</value>
+  </data>
+  <data name="DiffTruncated" xml:space="preserve">
+    <value>Dein Ergebnis hat mehr Zeilen, als verglichen werden können.</value>
+  </data>
+  <data name="MultipleResultSets" xml:space="preserve">
+    <value>Dein Skript hat {0} Ergebnismengen geliefert, bewertet wurde die letzte.</value>
+  </data>
+  <data name="ShowDiff" xml:space="preserve">
+    <value>Unterschiede anzeigen</value>
+  </data>
+  <data name="HideDiff" xml:space="preserve">
+    <value>Unterschiede ausblenden</value>
+  </data>
+  <data name="DiffMissingTitle" xml:space="preserve">
+    <value>Erwartete Zeilen, die in deinem Ergebnis fehlen</value>
+  </data>
+  <data name="DiffExtraTitle" xml:space="preserve">
+    <value>Zeilen in deinem Ergebnis, die nicht erwartet werden</value>
+  </data>
+  <data name="DiffLimit" xml:space="preserve">
+    <value>Es werden höchstens {0} Zeilen angezeigt, {1} weitere sind nicht aufgeführt.</value>
+  </data>
+  <data name="FailedDiagnostics" xml:space="preserve">
+    <value>Deine Abfrage konnte nicht ausgeführt werden (Syntax oder nicht unterstützte Konstrukte).</value>
+  </data>
+  <data name="FailedSql" xml:space="preserve">
+    <value>Beim Ausführen deiner Abfrage ist ein SQL-Server-Fehler aufgetreten.</value>
+  </data>
+  <data name="FailedOther" xml:space="preserve">
+    <value>Deine Abfrage wurde nicht ausgeführt.</value>
+  </data>
+  <data name="FailedExplanation" xml:space="preserve">
+    <value>Es wurde noch kein Ergebnis verglichen. Markierungen im Editor und Einzelheiten stehen im Ergebnisbereich.</value>
+  </data>
+  <data name="FeedbackNoResult" xml:space="preserve">
+    <value>Deine Abfrage hat keine Ergebnismenge geliefert.</value>
+  </data>
+  <data name="FeedbackNoResultText" xml:space="preserve">
+    <value>Diese Aufgabe erwartet eine SELECT-Abfrage, deren Ergebnis verglichen wird.</value>
+  </data>
+  <data name="FeedbackModified" xml:space="preserve">
+    <value>Die Datenbank wurde verändert.</value>
+  </data>
+  <data name="FeedbackModifiedText" xml:space="preserve">
+    <value>Damit der Vergleich zuverlässig ist, müssen die Daten dem Ausgangszustand entsprechen. Setze die Datenbank mit der Schaltfläche Datenbank zurücksetzen zurück und prüfe erneut.</value>
+  </data>
+  <data name="FeedbackReferenceFailed" xml:space="preserve">
+    <value>Die Musterlösung konnte nicht ausgeführt werden. Das ist ein Fehler in der Aufgabe, nicht in deiner Abfrage.</value>
+  </data>
+  <data name="FeedbackCancelled" xml:space="preserve">
+    <value>Die Prüfung wurde abgebrochen.</value>
+  </data>
+  <data name="FeedbackEmptyInput" xml:space="preserve">
+    <value>Der Editor enthält keine Abfrage.</value>
+  </data>
+  <data name="FeedbackNotReady" xml:space="preserve">
+    <value>Die Datenbank wird noch vorbereitet.</value>
+  </data>
+  <data name="FeedbackBusy" xml:space="preserve">
+    <value>Es läuft bereits eine Abfrage. Warte, bis sie fertig ist, oder brich sie ab.</value>
+  </data>
+</root>

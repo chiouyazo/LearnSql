@@ -1,0 +1,11 @@
+global using System.Globalization;
+global using LearnSql.Core.Resources;
+global using LearnSql.Core.Services;
+global using LearnSql.Core.Services.Execution;
+global using LearnSql.Core.State;
+global using LearnSql.Data.Scenarios;
+global using LearnSql.Sql.Dialect.Diagnostics;
+global using LearnSql.Sql.Execution;
+global using Microsoft.AspNetCore.Components.Routing;
+global using Microsoft.Extensions.Localization;
+global using MudBlazor;

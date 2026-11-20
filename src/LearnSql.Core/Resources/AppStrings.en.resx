@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ProductName" xml:space="preserve">
+    <value>LearnSql</value>
+  </data>
+  <data name="SkipToContent" xml:space="preserve">
+    <value>Skip to content</value>
+  </data>
+  <data name="ToggleNavigation" xml:space="preserve">
+    <value>Show or hide navigation</value>
+  </data>
+  <data name="SwitchToLight" xml:space="preserve">
+    <value>Switch to light theme</value>
+  </data>
+  <data name="SwitchToDark" xml:space="preserve">
+    <value>Switch to dark theme</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ResetDatabase" xml:space="preserve">
+    <value>Reset database</value>
+  </data>
+  <data name="ResetDialogTitle" xml:space="preserve">
+    <value>Reset database?</value>
+  </data>
+  <data name="ResetDialogMessage" xml:space="preserve">
+    <value>All changes to the data are lost. The database returns to the initial state of the scenario. The content of your editor is kept.</value>
+  </data>
+  <data name="ResetDialogConfirm" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NavHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="NavPlayground" xml:space="preserve">
+    <value>Playground</value>
+  </data>
+  <data name="PageErrorTitle" xml:space="preserve">
+    <value>This page could not be displayed</value>
+  </data>
+  <data name="PageErrorMessage" xml:space="preserve">
+    <value>An unexpected error occurred. The content of your editor is kept.</value>
+  </data>
+  <data name="TryAgain" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="LoadingStep" xml:space="preserve">
+    <value>Step {0} of {1}</value>
+  </data>
+  <data name="LoadingStartup" xml:space="preserve">
+    <value>Preparing LearnSql</value>
+  </data>
+  <data name="LoadingSwitchScenario" xml:space="preserve">
+    <value>Loading scenario</value>
+  </data>
+  <data name="LoadingReset" xml:space="preserve">
+    <value>Resetting database</value>
+  </data>
+  <data name="PhasePreparingEngine" xml:space="preserve">
+    <value>Starting the database engine</value>
+  </data>
+  <data name="PhaseResettingDatabase" xml:space="preserve">
+    <value>Clearing the database</value>
+  </data>
+  <data name="PhaseCreatingSchema" xml:space="preserve">
+    <value>Creating tables</value>
+  </data>
+  <data name="PhaseCreatingViews" xml:space="preserve">
+    <value>Creating system views</value>
+  </data>
+  <data name="PhaseSeedingData" xml:space="preserve">
+    <value>Inserting sample data</value>
+  </data>
+  <data name="PhaseReadingSchema" xml:space="preserve">
+    <value>Reading the schema</value>
+  </data>
+  <data name="PhaseReady" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="PhaseStarting" xml:space="preserve">
+    <value>Starting</value>
+  </data>
+  <data name="TechnicalDetails" xml:space="preserve">
+    <value>Technical details</value>
+  </data>
+  <data name="FailureEngineTitle" xml:space="preserve">
+    <value>The database engine could not be started</value>
+  </data>
+  <data name="FailureEngineExplanation" xml:space="preserve">
+    <value>An error occurred while loading the engine in the browser. Check your connection and try again.</value>
+  </data>
+  <data name="FailureUnknownScenarioTitle" xml:space="preserve">
+    <value>Scenario not found</value>
+  </data>
+  <data name="FailureUnknownScenarioExplanation" xml:space="preserve">
+    <value>The selected scenario does not exist. Choose another scenario in the sidebar or try again.</value>
+  </data>
+  <data name="FailureCancelledTitle" xml:space="preserve">
+    <value>Operation cancelled</value>
+  </data>
+  <data name="FailureCancelledExplanation" xml:space="preserve">
+    <value>Loading was cancelled. You can try again.</value>
+  </data>
+  <data name="FailureScenarioTitle" xml:space="preserve">
+    <value>The scenario could not be loaded</value>
+  </data>
+  <data name="FailureScenarioExplanation" xml:space="preserve">
+    <value>An error occurred while building the database. Try again or choose another scenario.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Page not found</value>
+  </data>
+  <data name="NotFoundText" xml:space="preserve">
+    <value>The page you are looking for does not exist.</value>
+  </data>
+  <data name="NotFoundBack" xml:space="preserve">
+    <value>Back to the start page</value>
+  </data>
+  <data name="NavScenarios" xml:space="preserve">
+    <value>Scenarios</value>
+  </data>
+  <data name="ActiveScenarioLink" xml:space="preserve">
+    <value>Active scenario: {0}. Open workspace</value>
+  </data>
+</root>

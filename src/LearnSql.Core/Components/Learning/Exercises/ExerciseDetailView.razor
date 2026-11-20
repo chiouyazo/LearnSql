@@ -1,0 +1,120 @@
+@implements IDisposable
+
+<article class="exercise-detail" aria-labelledby="exercise-detail-title" aria-busy="@(_checking ? "true" : "false")">
+    <div class="exercise-detail-nav">
+        <MudButton Variant="Variant.Text" Size="Size.Small" StartIcon="@Icons.Material.Filled.ArrowBack"
+                   OnClick="OnBack">
+            @L["BackToOverview"]
+        </MudButton>
+        @if (HasNext)
+        {
+            <MudButton Variant="Variant.Text" Size="Size.Small" EndIcon="@Icons.Material.Filled.ArrowForward"
+                       OnClick="OnNext">
+                @L["NextExercise"]
+            </MudButton>
+        }
+    </div>
+
+    <h2 id="exercise-detail-title" class="exercise-heading" tabindex="-1" @ref="_heading">@Exercise.Title</h2>
+    <div class="exercise-facts">
+        <ExerciseDifficultyChip Difficulty="Exercise.Difficulty"/>
+        <ExerciseStatusBadge Status="Progress.Status"/>
+        <span class="exercise-fact">@L["Attempts", Progress.Attempts]</span>
+        @if (Progress.SolvedAt is DateTimeOffset solvedAt)
+        {
+            <span class="exercise-fact">@L["SolvedAt", solvedAt.ToLocalTime().ToString("g", CultureInfo.CurrentUICulture)]</span>
+        }
+        @if (Progress.SolutionViewed)
+        {
+            <span class="exercise-fact">@L["SolutionViewedNote"]</span>
+        }
+    </div>
+
+    <p class="exercise-description">@Exercise.Description</p>
+    <ul class="exercise-expectations">
+        <li>@(Exercise.ExpectedRowCount == 1 ? L["ExpectedRowsOne"] : L["ExpectedRowsMany", Exercise.ExpectedRowCount])</li>
+        <li>@(Exercise.OrderMatters ? L["OrderMatters"] : L["OrderIrrelevant"])</li>
+        <li>@L["ColumnsNote"]</li>
+    </ul>
+
+    <div class="exercise-actions">
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Filled.EditNote"
+                   OnClick="LoadIntoEditorAsync">
+            @L["LoadIntoEditor"]
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                   StartIcon="@(_checking ? null : Icons.Material.Filled.PlayArrow)"
+                   Disabled="@(IsBusy || !Session.IsReady)" OnClick="CheckAsync">
+            @if (_checking)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2"/>
+                <span>@L["Checking"]</span>
+            }
+            else
+            {
+                <span>@L["Check"]</span>
+            }
+        </MudButton>
+        @if (Runner.IsRunning)
+        {
+            <MudButton Variant="Variant.Text" Size="Size.Small" Color="Color.Error"
+                       StartIcon="@Icons.Material.Filled.Stop" OnClick="Runner.Cancel">
+                @L["CancelRun"]
+            </MudButton>
+        }
+    </div>
+
+    <ExerciseFeedback Result="_result"/>
+
+    <section class="exercise-section" aria-labelledby="exercise-hints-title">
+        <h3 id="exercise-hints-title" class="exercise-section-title">@L["HintsTitle"]</h3>
+        <div aria-live="polite">
+            @if (Progress.HintsRevealed > 0)
+            {
+                <ol class="exercise-hints">
+                    @for (int index = 0; index < Progress.HintsRevealed; index++)
+                    {
+                        int number = index + 1;
+                        <li><strong>@L["HintLabel", number]</strong> @Exercise.Hints[index]</li>
+                    }
+                </ol>
+            }
+        </div>
+        @if (Progress.HintsRevealed < Exercise.Hints.Count)
+        {
+            <MudButton Variant="Variant.Text" Size="Size.Small" StartIcon="@Icons.Material.Filled.Lightbulb"
+                       OnClick="RevealHintAsync">
+                @L["RevealHint", Progress.HintsRevealed, Exercise.Hints.Count]
+            </MudButton>
+        }
+        else
+        {
+            <MudText Typo="Typo.caption" Class="text-muted">@L["AllHintsRevealed"]</MudText>
+        }
+    </section>
+
+    <section class="exercise-section" aria-labelledby="exercise-solution-title">
+        <h3 id="exercise-solution-title" class="exercise-section-title">@L["SolutionTitle"]</h3>
+        @if (_solutionVisible)
+        {
+            <pre class="exercise-code"><code>@Exercise.SolutionSql</code></pre>
+            <div class="exercise-actions">
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Filled.ContentPasteGo"
+                           OnClick="UseSolutionAsync">
+                    @L["UseSolution"]
+                </MudButton>
+                <MudButton Variant="Variant.Text" Size="Size.Small" StartIcon="@Icons.Material.Filled.VisibilityOff"
+                           OnClick="HideSolution">
+                    @L["HideSolution"]
+                </MudButton>
+            </div>
+        }
+        else
+        {
+            <MudButton Variant="Variant.Text" Size="Size.Small" StartIcon="@Icons.Material.Filled.Visibility"
+                       OnClick="ShowSolutionAsync">
+                @L["ShowSolution"]
+            </MudButton>
+        }
+    </section>
+</article>

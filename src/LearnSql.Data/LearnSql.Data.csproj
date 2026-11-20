@@ -1,20 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
+<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <EmbeddedResource Include="Base\Views\*.sql" />
     <None Remove="Base\Views\*.sql" />
-    <EmbeddedResource Include="Base\Tables\*.sql" />
-    <None Remove="Base\Tables\*.sql" />
+    <EmbeddedResource Include="Base\Schema\*.sql" />
+    <None Remove="Base\Schema\*.sql" />
     <EmbeddedResource Include="Data\**\*.sql" />
     <None Remove="Data\**\*.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Base\Constraints\" />
+    <EmbeddedResource Include="Data\**\scenario.json" />
+    <None Remove="Data\**\scenario.json" />
+    <EmbeddedResource Include="Data\**\scenario.*.json" WithCulture="false" />
+    <None Remove="Data\**\scenario.*.json" />
   </ItemGroup>
 </Project>

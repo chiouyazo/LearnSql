@@ -1,0 +1,17 @@
+@inherits ErrorBoundaryBase
+
+@if (CurrentException is null)
+{
+    @ChildContent
+}
+else
+{
+    <MudAlert Severity="Severity.Error" Variant="Variant.Filled" role="alert" Class="mb-4">
+        <MudText Typo="Typo.subtitle1">@L["PageErrorTitle"]</MudText>
+        <MudText Typo="Typo.body2" Class="mb-2">@L["PageErrorMessage"]</MudText>
+        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Refresh" OnClick="Recover">
+            @L["TryAgain"]
+        </MudButton>
+    </MudAlert>
+}

@@ -1,0 +1,23 @@
+<ul class="diagnostic-list" aria-label="@L["DiagnosticsAriaLabel"]">
+    @foreach (DialectDiagnostic diagnostic in Diagnostics)
+    {
+        DialectDiagnostic item = diagnostic;
+        <li>
+            <button type="button" class="diagnostic-item" @onclick="() => NavigateAsync(item)"
+                    title="@L["DiagnosticJumpTooltip"]">
+                <MudIcon Icon="@IconFor(item)" Color="@ColorFor(item)" Size="Size.Small" Class="diagnostic-icon"/>
+                <span class="diagnostic-body">
+                    <span class="diagnostic-position">
+                        @L["DiagnosticPosition", item.Span.Start.Line, item.Span.Start.Column]
+                        <span class="diagnostic-code">@item.Code</span>
+                    </span>
+                    <span class="diagnostic-message">@item.Message</span>
+                    @if (!string.IsNullOrWhiteSpace(item.Hint))
+                    {
+                        <span class="diagnostic-hint">@item.Hint</span>
+                    }
+                </span>
+            </button>
+        </li>
+    }
+</ul>

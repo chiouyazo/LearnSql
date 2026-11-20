@@ -1,0 +1,46 @@
+@inject IStringLocalizer<ExerciseStrings> L
+
+<div class="diff-block">
+    <MudText Typo="Typo.subtitle2" HtmlTag="h4">@Title</MudText>
+    <div class="diff-scroll">
+        <table class="diff-table" aria-label="@Title">
+            <thead>
+                <tr>
+                    @foreach (string column in Columns)
+                    {
+                        <th scope="col">@column</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (object?[] row in Rows.Take(Limit))
+                {
+                    <tr>
+                        @foreach (object? value in row)
+                        {
+                            <td class="@(value is null ? "diff-null" : null)">@CellFormatter.Format(value)</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Rows.Count > Limit)
+    {
+        <MudText Typo="Typo.caption" Class="text-muted">@L["DiffLimit", Limit, Rows.Count - Limit]</MudText>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public IReadOnlyList<string> Columns { get; set; } = [];
+
+    [Parameter, EditorRequired]
+    public IReadOnlyList<object?[]> Rows { get; set; } = [];
+
+    [Parameter]
+    public int Limit { get; set; } = 10;
+}

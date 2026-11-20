@@ -1,0 +1,58 @@
+.exercise-path {
+    margin-bottom: 1.25rem;
+}
+
+.exercise-path-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.exercise-path-count {
+    font-size: 0.8125rem;
+    color: var(--mud-palette-text-secondary);
+    white-space: nowrap;
+}
+
+.exercise-list {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.exercise-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: var(--mud-default-borderradius);
+    background: var(--mud-palette-surface);
+    color: var(--mud-palette-text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.exercise-row:hover {
+    background: var(--mud-palette-action-default-hover);
+}
+
+.exercise-row-title {
+    flex: 1 1 10rem;
+    overflow-wrap: anywhere;
+}
+
+.exercise-row-meta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}

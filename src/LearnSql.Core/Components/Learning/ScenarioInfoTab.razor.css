@@ -1,0 +1,38 @@
+.scenario-info {
+    height: 100%;
+    padding: 0.75rem 1rem;
+    overflow: auto;
+}
+
+.scenario-info-player {
+    margin-bottom: 1rem;
+}
+
+.scenario-info-guided {
+    margin-bottom: 1.25rem;
+}
+
+::deep .scenario-info-text {
+    overflow-wrap: anywhere;
+}
+
+.scenario-info-facts {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+}
+
+.scenario-info-facts div {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.scenario-info-facts dt {
+    min-width: 8rem;
+    color: var(--mud-palette-text-secondary);
+}
+
+.scenario-info-facts dd {
+    margin: 0;
+    font-weight: 600;
+}

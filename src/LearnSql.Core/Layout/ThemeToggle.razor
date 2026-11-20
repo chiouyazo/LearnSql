@@ -1,0 +1,27 @@
+@implements IDisposable
+@inject ThemeState Theme
+@inject IStringLocalizer<AppStrings> L
+
+<MudTooltip Text="@Label">
+    <MudIconButton Icon="@(Theme.IsDark ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                   Color="Color.Inherit" aria-label="@Label" OnClick="Theme.ToggleAsync"/>
+</MudTooltip>
+
+@code {
+    private string Label => Theme.IsDark ? L["SwitchToLight"] : L["SwitchToDark"];
+
+    protected override void OnInitialized()
+    {
+        Theme.Changed += OnChanged;
+    }
+
+    public void Dispose()
+    {
+        Theme.Changed -= OnChanged;
+    }
+
+    private void OnChanged(object? sender, EventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

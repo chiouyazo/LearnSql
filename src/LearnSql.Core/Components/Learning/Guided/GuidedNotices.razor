@@ -1,0 +1,75 @@
+@using LearnSql.Core.Services.Guided
+@implements IDisposable
+@inject GuidedCoordinator Coordinator
+@inject GuidedPrompts Prompts
+@inject IStringLocalizer<GuidedStrings> L
+
+<div class="guided-notices" role="status" aria-live="polite">
+    @if (Coordinator.Notice != GuidedNotice.None)
+    {
+        <MudAlert Severity="@NoticeSeverity" Variant="Variant.Outlined" Dense="true" Class="mb-3"
+                  ShowCloseIcon="true" CloseIconClicked="@(() => Coordinator.DismissNotice())">
+            @NoticeText
+        </MudAlert>
+    }
+</div>
+
+@if (Coordinator.HasBackup)
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-3">
+        <div class="guided-backup">
+            <span>@L["BackupText"]</span>
+            <span class="guided-backup-actions">
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" Disabled="Coordinator.IsBusy"
+                           OnClick="RestoreTextAsync">@L["BackupRestore"]</MudButton>
+                <MudButton Variant="Variant.Text" Size="Size.Small" Disabled="Coordinator.IsBusy"
+                           OnClick="Coordinator.DiscardBackupAsync">@L["BackupDiscard"]</MudButton>
+            </span>
+        </div>
+    </MudAlert>
+}
+
+@code {
+    private Severity NoticeSeverity =>
+        Coordinator.Notice switch
+        {
+            GuidedNotice.TextRestored => Severity.Success,
+            GuidedNotice.ScenarioSwitched or GuidedNotice.TextKept => Severity.Info,
+            _ => Severity.Warning,
+        };
+
+    private string NoticeText =>
+        Coordinator.Notice switch
+        {
+            GuidedNotice.EditorUnavailable => L["NoticeEditorUnavailable"],
+            GuidedNotice.NotReady => L["NoticeNotReady"],
+            GuidedNotice.Busy => L["NoticeBusy"],
+            GuidedNotice.ResetFailed => L["NoticeResetFailed"],
+            GuidedNotice.DatabaseWasReset => L["NoticeDatabaseWasReset"],
+            GuidedNotice.ScenarioSwitched => L["NoticeScenarioSwitched"],
+            GuidedNotice.BackupOccupied => L["NoticeBackupOccupied"],
+            GuidedNotice.TextRestored => L["NoticeTextRestored"],
+            GuidedNotice.TextKept => L["NoticeTextKept"],
+            _ => string.Empty,
+        };
+
+    protected override void OnInitialized()
+    {
+        Coordinator.Changed += OnChanged;
+    }
+
+    public void Dispose()
+    {
+        Coordinator.Changed -= OnChanged;
+    }
+
+    private void OnChanged(object? sender, EventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private async Task RestoreTextAsync()
+    {
+        Prompts.Report(await Coordinator.RestoreTextAsync());
+    }
+}
